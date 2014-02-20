@@ -1,7 +1,8 @@
 <?php
 
 require 'file.php';
-require 'line.php';
+require 'node.php';
+require 'text.php';
 
 class Jade_View
 {

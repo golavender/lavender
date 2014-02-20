@@ -3,69 +3,142 @@
 class Jade_File
 {
   private $_contents;
-  private $_lines = array();
+  private $_children = array();
 
+  private $_tokens = array();
 
-  private function _deal_with_line($previous, $line)
+  private function _consume_until($until)
   {
-    if ($previous->get_level() < $line->get_level()) {
-      return $previous->add_child($line);
-    }
+    $result = '';
+    $until = str_split($until);
 
-    $parent = $previous;
-
-    while ($parent = $parent->get_parent()) {
-
-      if (get_class($parent) == 'Jade_File') {
-        return $parent->add_line($line);
-      } else if ($parent->get_level() < $line->get_level()) {
-        return $parent->add_child($line);
+    while ($next = $this->_peek()) {
+      if (in_array($next, $until)) {
+        break;
+      } else {
+        $result .= $this->_consume_next();
       }
     }
-
-    throw new Exception('foobar');
+    return $result;
   }
 
-  private function _parse_line_tree($lines)
+  private function _consume_next($length = 1)
   {
-    $previous = array_shift($lines);
-    $this->add_line($previous);
+    $result = substr($this->_contents, 0, $length);
+    $this->_contents = substr($this->_contents, $length);
+    return $result;
+  }
 
-    while ($line = array_shift($lines)) {
-      $this->_deal_with_line($previous, $line);
-      $previous = $line;
+  private function _consume_whitespace()
+  {
+    $start_length = strlen($this->_contents);
+    $this->_contents = ltrim($this->_contents);
+    return $start_length - strlen($this->_contents);
+  }
+
+  private function _peek($length = 1)
+  {
+    if (!$this->_contents) {
+      return FALSE;
     }
+    return substr($this->_contents, 0, $length);
   }
 
   public function __construct($path)
   {
     $this->_contents = file_get_contents($path);
-
-    $raw_lines = explode("\n", $this->_contents);
-
-    $lines = array();
-    foreach ($raw_lines as $raw_line) {
-      array_push($lines, new Jade_Line($raw_line));
-    }
-
-    $this->_parse_line_tree($lines);
   }
 
-  public function compile($data)
+  private function _tokenize($data)
   {
+    $parent = $this;
+    $level  = 0;
+
+    while ($next = $this->_peek()) {
+
+      switch ($next) {
+        case "\n":
+          $this->_consume_next(); // the '\n'
+          $level = $this->_consume_whitespace();
+
+          while ($level <= $parent->get_level()) {
+            $parent = $parent->get_parent();
+          }
+
+          break;
+        case "|":
+          $this->_consume_next(); // the '|'
+          # the rest of the line should just be text
+          $text = $this->_consume_until("\n");
+          $text = new Jade_Text(ltrim($text));
+          $parent->add_child($text);
+          break;
+        default:
+          $node = $this->_build_node($contents);
+          $node->set_level($level);
+          $parent->add_child($node);
+          $parent = $node;
+      }
+    }
+  }
+
+  public function compile()
+  {
+    $this->_tokenize();
     $result = '';
 
-    foreach($this->_lines as $line) {
-      $result .= $line->compile();
+
+    foreach ($this->_children as $child) {
+      $result .= $child->compile();
     }
 
     return $result;
   }
 
-  public function add_line($line)
+  private function _build_node()
   {
-    array_push($this->_lines, $line);
-    $line->set_parent($this);
+    $node_name = $this->_consume_until(" .(\n");
+    $node = new Jade_Node($node_name);
+
+    while ($next = $this->_peek()) {
+
+      switch ($next) {
+        case '.':
+          $this->_consume_next(); // the '.'
+          $class = $this->_consume_until(" .(\n");
+          $node->set_class($class);
+          break;
+        case '(':
+          $this->_consume_next(); // the '('
+          $raw = $this->_consume_until(")");
+          $this->_consume_next(); // the ')'
+          $attributes = explode(',', $raw);
+          $node->set_attributes($attributes);
+          break;
+        case " ":
+        case "\t":
+          # the rest of the line should just be text
+          $text = $this->_consume_until("\n");
+          $text = new Jade_Text(ltrim($text));
+          $node->add_child($text);
+          break;
+        case "\n":
+          return $node;
+        default:
+          throw new Exception("asdf");
+      }
+    }
+  }
+
+  public function get_level()
+  {
+    return -1;
+  }
+
+  public function add_child($child)
+  {
+    array_push($this->_children, $child);
+    $child->set_parent($this);
 
     return $this;
   }
