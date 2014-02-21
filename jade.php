@@ -11,6 +11,17 @@ require __DIR__ . '/extensions/html.php';
 class Jade
 {
   private static $_extensions = array();
+  private static $_config = array();
+
+  public static function config(array $config)
+  {
+    static::$_config = array_merge(static::$_config, $config);
+  }
+
+  public static function get_config($key)
+  {
+    return static::$_config[$key];
+  }
 
   public static function view($name)
   {
