@@ -2,7 +2,7 @@
 
 class Jade_View
 {
-  private $_view_dir = '../views/';
+  private $_view_dir = '../../views/';
   private $_view_file;
 
   public function __construct($name)
