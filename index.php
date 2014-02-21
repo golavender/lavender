@@ -1,8 +1,8 @@
 <?php
 
-require 'jade/view.php';
+require 'jade/jade.php';
 
-$view = new Jade_View('hello.jade');
+$view = Jade::view('hello.jade');
 
 echo $view->compile();
 

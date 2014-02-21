@@ -1,9 +1,5 @@
 <?php
 
-require 'file.php';
-require 'node.php';
-require 'text.php';
-
 class Jade_View
 {
   private $_view_dir = '../views/';
