@@ -68,6 +68,7 @@ class Jade_Node
   public function compile()
   {
     $attributes = $this->_attributes;
+    $name = $this->_name ?: 'div';
 
     if ($this->_classes) {
       $attributes[] = 'class="' . implode(' ', $this->_classes) . '"';
@@ -79,7 +80,7 @@ class Jade_Node
       $attributes = '';
     }
 
-    $result = "<{$this->_name}{$attributes}>";
+    $result = "<{$name}{$attributes}>";
 
     foreach ($this->_children as $child) {
       $result .= $child->compile();

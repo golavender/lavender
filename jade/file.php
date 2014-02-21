@@ -32,7 +32,7 @@ class Jade_File
   private function _consume_whitespace()
   {
     $start_length = strlen($this->_contents);
-    $this->_contents = ltrim($this->_contents);
+    $this->_contents = ltrim($this->_contents, " \t");
     return $start_length - strlen($this->_contents);
   }
 
@@ -74,7 +74,7 @@ class Jade_File
           $parent->add_child($text);
           break;
         default:
-          $node = $this->_build_node($contents);
+          $node = $this->_build_node();
           $node->set_level($level);
           $parent->add_child($node);
           $parent = $node;
@@ -97,7 +97,9 @@ class Jade_File
 
   private function _build_node()
   {
-    $node_name = $this->_consume_until(" .(\n");
+    $special_characters = " .(#\n";
+
+    $node_name = $this->_consume_until($special_characters);
     $node = new Jade_Node($node_name);
 
     while ($next = $this->_peek()) {
@@ -105,8 +107,13 @@ class Jade_File
       switch ($next) {
         case '.':
           $this->_consume_next(); // the '.'
-          $class = $this->_consume_until(" .(\n");
+          $class = $this->_consume_until($special_characters);
           $node->set_class($class);
+          break;
+        case '#':
+          $this->_consume_next(); // the '#'
+          $id = $this->_consume_until($special_characters);
+          $node->set_attribute('id = "'.$id.'"');
           break;
         case '(':
           $this->_consume_next(); // the '('
