@@ -26,17 +26,47 @@ class Jade_Extension_Expression extends Jade_Node
           $this->_expression_tree[] = new Jade_Expression_Node_String($string);
           break;
         case " ":
+        case ",":
+        case ";":
+        case ")":
         case "\t":
         case "\n":
           return;
+
+        // really the return above should be the default and this should be [a-z]
         default:
-          $name = $content->consume_until("\n\t \"'(");
+          $name = $content->consume_until("\n\t \"'()");
 
           if (!$name) {
             throw new Exception("unexpected character: \"$next\"");
           }
 
-          $this->_expression_tree[] = new Jade_Expression_Node_Variable($name);
+          if ($content->peek() == '(') {
+            // we got a method here bud
+
+            $content->consume_next(); // the '('
+            $arguments = array();
+
+            while ($next = $content->peek()) {
+              switch ($next) {
+                case ')':
+                  $content->consume_next(); // the ')'
+                  break 2;
+                case ',':
+                  $content->consume_next(); // the ','
+                  break;
+                default:
+                  $expression = Jade::get_extension_by_name('expression');
+                  $expression->tokenize_content($content);
+                  $arguments[] = $expression;
+              }
+            }
+            $method = new Jade_Expression_Node_Method($name);
+            $method->set_arguments($arguments);
+            $this->_expression_tree[] = $method;
+          } else {
+            $this->_expression_tree[] = new Jade_Expression_Node_Variable($name);
+          }
       }
     }
   }
@@ -94,7 +124,34 @@ class Jade_Expression_Node_Variable
     if (isset($scope[$this->_name])) {
       return $scope[$this->_name];
     } else {
-      return '';
+      return NULL;
+    }
+  }
+}
+
+class Jade_Expression_Node_Method extends Jade_Expression_Node_Variable
+{
+  private $_arguments;
+
+  public function set_arguments(array $arguments = array())
+  {
+    $this->_arguments = $arguments;
+  }
+
+  public function compile($context, $scope)
+  {
+    $method = parent::compile($context, $scope);
+    $arguments = array();
+
+    if ($method) {
+
+      foreach ($this->_arguments as $argument) {
+        $arguments[] = $argument->compile($scope);
+      }
+
+      return call_user_func_array($method, $arguments);
+    } else {
+      return NULL;
     }
   }
 }

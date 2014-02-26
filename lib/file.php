@@ -27,7 +27,13 @@ class Jade_File
           $parent = $parent->get_parent();
         }
       } else {
-        $token = $this->_content->peek_until(" \n");
+        $token = trim($this->_content->peek_until(" \n"));
+
+        // just ignore extra whitespace that is not newline
+        if (!$token) {
+          continue;
+        }
+
         $node = Jade::get_extension_by_token($token) ?: Jade::get_extension_by_name('html');
 
         if (!$node) {
