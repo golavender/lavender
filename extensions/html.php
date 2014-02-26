@@ -58,7 +58,7 @@ class Jade_Extension_Html extends Jade_Node
         case "\t":
           # the rest of the line should just be text
           $text = $content->consume_until("\n");
-          $text_node = Jade::get_extension('text');
+          $text_node = Jade::get_extension_by_name('text');
           $text_node->set_text($text);
           $this->add_child($text_node);
           break;

@@ -28,7 +28,7 @@ class Jade_File
         }
       } else {
         $token = $this->_content->peek_until(" \n");
-        $node = Jade::get_extension($token) ?: Jade::get_extension('html');
+        $node = Jade::get_extension_by_token($token) ?: Jade::get_extension_by_name('html');
 
         if (!$node) {
           throw new Exception("Unknown expression: \"$token\"");

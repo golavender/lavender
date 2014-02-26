@@ -1,7 +1,11 @@
 
-div.bam#1
+h1 welcome to the new templating era motherfucker
+
+div.bam#1(style="border: 1px solid red;")
   span(awesome-attribute="foobar")
-  | foobar
+  = "red"
 
-#thisdiv asdf
+#thisdiv(style="border: 1px solid green; margin-top: 5px;") green
 
+if "asdf"
+  #thisdiv2(style="border: 1px solid blue; margin-top: 5px;") blue

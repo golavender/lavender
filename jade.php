@@ -7,6 +7,8 @@ require __DIR__ . '/lib/node.php';
 
 require __DIR__ . '/extensions/text.php';
 require __DIR__ . '/extensions/html.php';
+require __DIR__ . '/extensions/expression.php';
+require __DIR__ . '/extensions/if.php';
 
 class Jade
 {
@@ -28,18 +30,35 @@ class Jade
     return new Jade_View($name);
   }
 
-  public static function register_extension($token, $extension)
+  public static function register_extension($name, $class, array $tokens = array())
   {
-    static::$_extensions[$token] = $extension;
+    static::$_extensions[] = array(
+      'name'   => $name,
+      'class'  => $class,
+      'tokens' => $tokens,
+    );
   }
 
-  public static function get_extension($token)
+  public static function get_extension_by_name($name)
   {
-    if (isset(static::$_extensions[$token])) {
-      $class = static::$_extensions[$token];
-      return new $class();
-    } else {
-      return FALSE;
+    foreach (static::$_extensions as $extension) {
+      if ($extension['name'] == $name) {
+        return new $extension['class'];
+      }
     }
+
+    return FALSE;
+  }
+
+  public static function get_extension_by_token($token)
+  {
+    foreach (static::$_extensions as $extension) {
+
+      if (in_array($token, $extension['tokens'])) {
+        return new $extension['class'];
+      }
+    }
+
+    return FALSE;
   }
 }

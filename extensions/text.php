@@ -23,5 +23,4 @@ class Jade_Extension_Text extends Jade_Node
   }
 }
 
-Jade::register_extension('|', 'Jade_Extension_Text');
-Jade::register_extension('text', 'Jade_Extension_Text');
+Jade::register_extension('text', 'Jade_Extension_Text', array('|'));
