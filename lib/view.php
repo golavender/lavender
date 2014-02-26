@@ -9,9 +9,9 @@ class Jade_View
     $this->_view_file = new Jade_File(Jade::get_config('view_dir') . '/' . $name);
   }
 
-  public function compile($data = array())
+  public function compile($scope = array())
   {
-    return $this->_view_file->compile();
+    return $this->_view_file->compile($scope);
   }
 
 }

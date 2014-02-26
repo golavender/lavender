@@ -3,9 +3,15 @@ h1 welcome to the new templating era motherfucker
 
 div.bam#1(style="border: 1px solid red;")
   span(awesome-attribute="foobar")
-  = "red"
+  | red
 
 #thisdiv(style="border: 1px solid green; margin-top: 5px;") green
 
-if "asdf"
-  #thisdiv2(style="border: 1px solid blue; margin-top: 5px;") blue
+if foo
+  div(style="border: 1px solid black; margin-top: 5px;")= foo
+   
+if bar
+  div(style="border: 1px solid black; margin-top: 5px;")
+    = bar
+
+#thisdiv2(style="border: 1px solid blue; margin-top: 5px;") blue

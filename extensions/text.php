@@ -17,7 +17,7 @@ class Jade_Extension_Text extends Jade_Node
     $this->_text = $text;
   }
 
-  public function compile()
+  public function compile(array $scope)
   {
     return $this->_text;
   }

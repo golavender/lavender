@@ -33,12 +33,12 @@ abstract class Jade_Node
     return $this;
   }
 
-  public function compile()
+  public function compile(array $scope)
   {
     $result = '';
 
     foreach ($this->_children as $child) {
-      $result .= $child->compile();
+      $result .= $child->compile($scope);
     }
 
     return $result;

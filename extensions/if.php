@@ -12,10 +12,10 @@ class Jade_Extension_If extends Jade_Node
     $this->_expression->tokenize_content($content);
   }
 
-  public function compile()
+  public function compile(array $scope)
   {
-    if ($this->_expression->is_truthy()) {
-      return parent::compile();
+    if ($this->_expression->is_truthy($scope)) {
+      return parent::compile($scope);
     } else {
       return '';
     }

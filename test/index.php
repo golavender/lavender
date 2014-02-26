@@ -8,5 +8,5 @@ Jade::config(array(
 
 $view = Jade::view('hello.jade');
 
-echo $view->compile();
+echo $view->compile($_GET);
 

@@ -43,13 +43,13 @@ class Jade_File
     }
   }
 
-  public function compile()
+  public function compile(array $scope)
   {
     $this->_tokenize();
     $result = '';
 
     foreach ($this->_children as $child) {
-      $result .= $child->compile();
+      $result .= $child->compile($scope);
     }
 
     return $result;

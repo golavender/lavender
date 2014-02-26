@@ -45,7 +45,7 @@ class Jade_Extension_Html extends Jade_Node
         case '#':
           $content->consume_next(); // the '#'
           $id = $content->consume_until($special_characters);
-          $this->set_attribute('id = "'.$id.'"');
+          $this->set_attribute('id="'.$id.'"');
           break;
         case '(':
           $content->consume_next(); // the '('
@@ -53,6 +53,12 @@ class Jade_Extension_Html extends Jade_Node
           $content->consume_next(); // the ')'
           $attributes = explode(',', $raw);
           $this->set_attributes($attributes);
+          break;
+        case '=':
+          # the rest of the line is an expression
+          $expression = Jade::get_extension_by_name('expression');
+          $expression->tokenize_content($content);
+          $this->add_child($expression);
           break;
         case " ":
         case "\t":
@@ -70,7 +76,7 @@ class Jade_Extension_Html extends Jade_Node
     }
   }
 
-  public function compile()
+  public function compile(array $scope)
   {
     $attributes = $this->_attributes;
 
@@ -85,7 +91,7 @@ class Jade_Extension_Html extends Jade_Node
     }
 
     $result = "<{$this->_name}{$attributes}>";
-    $result .= parent::compile();
+    $result .= parent::compile($scope);
     $result .= "</{$this->_name}>";
 
     return $result;
