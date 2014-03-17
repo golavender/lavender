@@ -17,6 +17,10 @@ class Jade_Extension_Expression extends Jade_Node
     while ($next = $content->peek()) {
 
       switch ($next) {
+        // '.' is just a separator, no need to actually do anything with it
+        case '.':
+          $content->consume_next(); // the '.'
+          break;
         case '"':
         case "'":
           $content->consume_next(); // the '"'
@@ -35,7 +39,7 @@ class Jade_Extension_Expression extends Jade_Node
 
         // really the return above should be the default and this should be [a-z]
         default:
-          $name = $content->consume_until("\n\t \"'()");
+          $name = $content->consume_until("\n\t \"'().");
 
           if (!$name) {
             throw new Exception("unexpected character: \"$next\"");
@@ -121,8 +125,12 @@ class Jade_Expression_Node_Variable
 
   public function compile($context, $scope)
   {
-    if (isset($scope[$this->_name])) {
-      return $scope[$this->_name];
+    $context = $context ?: $scope;
+
+    if (is_array($context) && isset($context[$this->_name])) {
+      return $context[$this->_name];
+    } else if (is_object($context) && isset($context->{$this->_name})) {
+      return $context->{$this->_name};
     } else {
       return NULL;
     }

@@ -14,6 +14,14 @@ if bar
   div(style="border: 1px solid black; margin-top: 5px;")
     = bar
 
+if test_array.key
+  div(style="border: 1px dashed orange; margin-top: 5px;")
+    = test_array.key
+
+if test_object.key
+  div(style="border: 1px dashed orange; margin-top: 5px;")
+    = test_object.key
+
 div(style="border: 1px solid black; margin-top: 5px;")
   = test("aasdf", baz)
 
