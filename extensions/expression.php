@@ -12,6 +12,31 @@ class Jade_Extension_Expression extends Jade_Node
       $content->consume_next(); // the '='
     }
 
+    $this->_parse_left_to_right($content);
+
+    $content->consume_whitespace();
+
+    if ($content->peek(2) == '>=') {
+      $content->consume_next(2); // the '<='
+      $compare = new Jade_Expression_Node_Greater_Than_Equal_To(clone $this, $content);
+      $this->_expression_tree = array($compare);
+    } else if ($content->peek(2) == '<=') {
+      $content->consume_next(2); // the '<='
+      $compare = new Jade_Expression_Node_Less_Than_Equal_To(clone $this, $content);
+      $this->_expression_tree = array($compare);
+    } else if ($content->peek() == '>') {
+      $content->consume_next(); // the '>'
+      $compare = new Jade_Expression_Node_Greater_Than(clone $this, $content);
+      $this->_expression_tree = array($compare);
+    } else if ($content->peek() == '<') {
+      $content->consume_next(); // the '<'
+      $compare = new Jade_Expression_Node_Less_Than(clone $this, $content);
+      $this->_expression_tree = array($compare);
+    }
+  }
+
+  private function _parse_left_to_right(Jade_Content $content)
+  {
     $content->consume_whitespace();
 
     while ($next = $content->peek()) {
@@ -29,6 +54,7 @@ class Jade_Extension_Expression extends Jade_Node
 
           $this->_expression_tree[] = new Jade_Expression_Node_String($string);
           break;
+        case '>':
         case " ":
         case ",":
         case ";":
@@ -161,5 +187,49 @@ class Jade_Expression_Node_Method extends Jade_Expression_Node_Variable
     } else {
       return NULL;
     }
+  }
+}
+
+abstract class Jade_Expression_Node_Comparison
+{
+  protected $_left;
+  protected $_right;
+
+  public function __construct($left, $right)
+  {
+    $this->_left = $left;
+    $this->_right = Jade::get_extension_by_name('expression');
+    $this->_right->tokenize_content($right);
+  }
+
+  abstract public function compile($context, $scope);
+}
+
+class Jade_Expression_Node_Greater_Than extends Jade_Expression_Node_Comparison
+{
+  public function compile($content, $scope)
+  {
+    return $this->_left->compile($scope) > $this->_right->compile($scope);
+  }
+}
+class Jade_Expression_Node_Less_Than extends Jade_Expression_Node_Comparison
+{
+  public function compile($content, $scope)
+  {
+    return $this->_left->compile($scope) < $this->_right->compile($scope);
+  }
+}
+class Jade_Expression_Node_Greater_Than_Equal_To extends Jade_Expression_Node_Comparison
+{
+  public function compile($content, $scope)
+  {
+    return $this->_left->compile($scope) >= $this->_right->compile($scope);
+  }
+}
+class Jade_Expression_Node_Less_Than_Equal_To extends Jade_Expression_Node_Comparison
+{
+  public function compile($content, $scope)
+  {
+    return $this->_left->compile($scope) <= $this->_right->compile($scope);
   }
 }

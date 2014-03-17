@@ -19,6 +19,9 @@ $_GET['test_array'] = array(
 
 $_GET['test_object'] = new test();
 
+$_GET['seven'] = 7;
+$_GET['eight'] = 8;
+
 $_GET['test'] = function($arg1, $arg2) {
   return 'this is a test function: ' . $arg1 . ' ' . $arg2;
 };

@@ -38,12 +38,12 @@ class Jade_Content
     return $start_length - strlen($this->_content);
   }
 
-  public function peek($index = 0)
+  public function peek($length = 1, $index = 0)
   {
     if (!$this->_content) {
       return FALSE;
     }
-    return substr($this->_content, $index, 1);
+    return substr($this->_content, $index, $length);
   }
 
   public function peek_until($until)
@@ -52,7 +52,7 @@ class Jade_Content
     $until = str_split($until);
 
     $i = 0;
-    while ($next = $this->peek($i)) {
+    while ($next = $this->peek(1, $i)) {
       if (in_array($next, $until)) {
         break;
       } else {

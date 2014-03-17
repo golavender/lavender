@@ -14,6 +14,32 @@ if bar
   div(style="border: 1px solid black; margin-top: 5px;")
     = bar
 
+if seven > eight
+  div(style="border: 1px dashed blue; margin-top: 5px;")
+    | seven is bigger than eight
+if eight > seven 
+  div(style="border: 1px dashed blue; margin-top: 5px;")
+    | eight is bigger than seven
+if eight >= seven 
+  div(style="border: 1px dashed blue; margin-top: 5px;")
+    | eight is bigger or equal to than seven
+if eight >= eight 
+  div(style="border: 1px dashed blue; margin-top: 5px;")
+    | eight is bigger or equal to than eight 
+
+if seven < eight
+  div(style="border: 1px dashed blue; margin-top: 5px;")
+    | seven is less than eight
+if eight < seven 
+  div(style="border: 1px dashed blue; margin-top: 5px;")
+    | eight is less than seven 
+if seven <= eight 
+  div(style="border: 1px dashed blue; margin-top: 5px;")
+    | eight is less or equal to than seven
+if eight <= eight 
+  div(style="border: 1px dashed blue; margin-top: 5px;")
+    | eight is less or equal to than eight 
+
 if test_array.key
   div(style="border: 1px dashed orange; margin-top: 5px;")
     = test_array.key
