@@ -8,16 +8,18 @@ class Jade_Extension_Expression extends Jade_Node
     '<=' => 'Jade_Expression_Node_Less_Than_Equal_To',
     '||' => 'Jade_Expression_Node_Or',
     '&&' => 'Jade_Expression_Node_And',
+    '==' => 'Jade_Expression_Node_Equal_To',
     '>'  => 'Jade_Expression_Node_Greater_Than',
     '<'  => 'Jade_Expression_Node_Less_Than',
   );
   private $_operator_order  = array(
     '>=' => 1,
-    '<=' => 2,
-    '>'  => 3,
-    '<'  => 4,
-    '||' => 5,
-    '&&' => 6,
+    '<=' => 1,
+    '>'  => 1,
+    '<'  => 1,
+    '==' => 1,
+    '||' => 2,
+    '&&' => 2,
   );
 
   public function tokenize_content(Jade_Content $content)
@@ -80,6 +82,8 @@ class Jade_Extension_Expression extends Jade_Node
 
       } else if (preg_match('/[1-9]/', $next)) {
         // todo - integers
+        $number = $content->consume_regex('/[0-9\.]/i');
+        $expression[] = new Jade_Expression_Node_Number($number);
 
       } else if (preg_match('/[a-z]/i', $next)) {
 
@@ -166,6 +170,21 @@ class Jade_Expression_Node_String
   public function compile($context, $scope)
   {
     return $this->_string;
+  }
+}
+
+class Jade_Expression_Node_Number
+{
+  private $_number;
+
+  public function __construct($number)
+  {
+    $this->_number = $number;
+  }
+
+  public function compile($context, $scope)
+  {
+    return $this->_number;
   }
 }
 
@@ -274,5 +293,12 @@ class Jade_Expression_Node_And extends Jade_Expression_Node_Comparison
   public function compile($content, $scope)
   {
     return $this->_left->compile($scope) && $this->_right->compile($scope);
+  }
+}
+class Jade_Expression_Node_Equal_To extends Jade_Expression_Node_Comparison
+{
+  public function compile($content, $scope)
+  {
+    return $this->_left->compile($scope) == $this->_right->compile($scope);
   }
 }
