@@ -14,7 +14,7 @@ class Jade_Content
     $result = '';
     $until = str_split($until);
 
-    while ($next = $this->peek()) {
+    while (($next = $this->peek()) !== '') {
       if (in_array($next, $until)) {
         break;
       } else {
@@ -35,7 +35,7 @@ class Jade_Content
   {
     $result = '';
 
-    while ($next = $this->peek()) {
+    while (($next = $this->peek()) !== '') {
       if (preg_match($regex, $next)) {
         $result .= $this->consume_next();
       } else {
@@ -56,7 +56,7 @@ class Jade_Content
   public function peek($length = 1, $index = 0)
   {
     if (!$this->_content) {
-      return FALSE;
+      return '';
     }
     return substr($this->_content, $index, $length);
   }
@@ -67,7 +67,7 @@ class Jade_Content
     $until = str_split($until);
 
     $i = 0;
-    while ($next = $this->peek(1, $i)) {
+    while (($next = $this->peek(1, $i)) !== '') {
       if (in_array($next, $until)) {
         break;
       } else {

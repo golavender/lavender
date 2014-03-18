@@ -9,6 +9,7 @@ class Jade_Extension_Expression extends Jade_Node
     '||' => 'Jade_Expression_Node_Or',
     '&&' => 'Jade_Expression_Node_And',
     '==' => 'Jade_Expression_Node_Equal_To',
+    '%'  => 'Jade_Expression_Node_Modulus',
     '>'  => 'Jade_Expression_Node_Greater_Than',
     '<'  => 'Jade_Expression_Node_Less_Than',
   );
@@ -18,6 +19,7 @@ class Jade_Extension_Expression extends Jade_Node
     '>'  => 1,
     '<'  => 1,
     '==' => 1,
+    '%'  => 1,
     '||' => 2,
     '&&' => 2,
   );
@@ -40,8 +42,7 @@ class Jade_Extension_Expression extends Jade_Node
     $content->consume_whitespace();
     $expression = array();
 
-    while ($next = $content->peek()) {
-
+    while (($next = $content->peek()) !== '') {
       foreach ($this->_operators as $operator => $class) {
         $length = strlen($operator);
 
@@ -80,8 +81,7 @@ class Jade_Extension_Expression extends Jade_Node
 
         $expression[] = new Jade_Expression_Node_String($string);
 
-      } else if (preg_match('/[1-9]/', $next)) {
-        // todo - integers
+      } else if (preg_match('/[0-9]/', $next)) {
         $number = $content->consume_regex('/[0-9\.]/i');
         $expression[] = new Jade_Expression_Node_Number($number);
 
@@ -102,7 +102,7 @@ class Jade_Extension_Expression extends Jade_Node
           $content->consume_next(); // the '('
           $arguments = array();
 
-          while ($next = $content->peek()) {
+          while (($next = $content->peek()) !== '') {
             switch ($next) {
               case ')':
                 $content->consume_next(); // the ')'
@@ -184,7 +184,7 @@ class Jade_Expression_Node_Number
 
   public function compile($context, $scope)
   {
-    return $this->_number;
+    return (float) $this->_number;
   }
 }
 
@@ -300,5 +300,12 @@ class Jade_Expression_Node_Equal_To extends Jade_Expression_Node_Comparison
   public function compile($content, $scope)
   {
     return $this->_left->compile($scope) == $this->_right->compile($scope);
+  }
+}
+class Jade_Expression_Node_Modulus extends Jade_Expression_Node_Comparison
+{
+  public function compile($content, $scope)
+  {
+    return $this->_left->compile($scope) % $this->_right->compile($scope);
   }
 }
