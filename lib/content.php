@@ -31,6 +31,21 @@ class Jade_Content
     return $result;
   }
 
+  public function consume_regex($regex)
+  {
+    $result = '';
+
+    while ($next = $this->peek()) {
+      if (preg_match($regex, $next)) {
+        $result .= $this->consume_next();
+      } else {
+        break;
+      }
+    }
+
+    return $result;
+  }
+
   public function consume_whitespace()
   {
     $start_length = strlen($this->_content);

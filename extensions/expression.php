@@ -3,6 +3,22 @@
 class Jade_Extension_Expression extends Jade_Node
 {
   private $_expression_tree = array();
+  private $_operators       = array(
+    '>=' => 'Jade_Expression_Node_Greater_Than_Equal_To',
+    '<=' => 'Jade_Expression_Node_Less_Than_Equal_To',
+    '||' => 'Jade_Expression_Node_Or',
+    '&&' => 'Jade_Expression_Node_And',
+    '>'  => 'Jade_Expression_Node_Greater_Than',
+    '<'  => 'Jade_Expression_Node_Less_Than',
+  );
+  private $_operator_order  = array(
+    '>=' => 1,
+    '<=' => 2,
+    '>'  => 3,
+    '<'  => 4,
+    '||' => 5,
+    '&&' => 6,
+  );
 
   public function tokenize_content(Jade_Content $content)
   {
@@ -12,93 +28,101 @@ class Jade_Extension_Expression extends Jade_Node
       $content->consume_next(); // the '='
     }
 
-    $this->_parse_left_to_right($content);
+    $this->_expression_tree = $this->_parse_left_to_right($content);
 
     $content->consume_whitespace();
-
-    if ($content->peek(2) == '>=') {
-      $content->consume_next(2); // the '<='
-      $compare = new Jade_Expression_Node_Greater_Than_Equal_To(clone $this, $content);
-      $this->_expression_tree = array($compare);
-    } else if ($content->peek(2) == '<=') {
-      $content->consume_next(2); // the '<='
-      $compare = new Jade_Expression_Node_Less_Than_Equal_To(clone $this, $content);
-      $this->_expression_tree = array($compare);
-    } else if ($content->peek() == '>') {
-      $content->consume_next(); // the '>'
-      $compare = new Jade_Expression_Node_Greater_Than(clone $this, $content);
-      $this->_expression_tree = array($compare);
-    } else if ($content->peek() == '<') {
-      $content->consume_next(); // the '<'
-      $compare = new Jade_Expression_Node_Less_Than(clone $this, $content);
-      $this->_expression_tree = array($compare);
-    }
   }
 
-  private function _parse_left_to_right(Jade_Content $content)
+  private function _parse_left_to_right(Jade_Content $content, $parent = NULL)
   {
     $content->consume_whitespace();
+    $expression = array();
 
     while ($next = $content->peek()) {
 
-      switch ($next) {
-        // '.' is just a separator, no need to actually do anything with it
-        case '.':
-          $content->consume_next(); // the '.'
-          break;
-        case '"':
-        case "'":
-          $content->consume_next(); // the '"'
-          $string = $content->consume_until($next);
-          $content->consume_next(); // the '"'
+      foreach ($this->_operators as $operator => $class) {
+        $length = strlen($operator);
 
-          $this->_expression_tree[] = new Jade_Expression_Node_String($string);
-          break;
-        case '>':
-        case " ":
-        case ",":
-        case ";":
-        case ")":
-        case "\t":
-        case "\n":
-          return;
+        if ($content->peek($length) == $operator) {
 
-        // really the return above should be the default and this should be [a-z]
-        default:
-          $name = $content->consume_until("\n\t \"'().");
-
-          if (!$name) {
-            throw new Exception("unexpected character: \"$next\"");
+          if ($parent && $this->_operator_order[$operator] >= $this->_operator_order[$parent]) {
+            break 2; // the while
           }
 
-          if ($content->peek() == '(') {
-            // we got a method here bud
+          $content->consume_next($length);
+          $content->consume_whitespace();
 
-            $content->consume_next(); // the '('
-            $arguments = array();
+          $left = Jade::get_extension_by_name('expression');
+          $left->set_tree($expression);
 
-            while ($next = $content->peek()) {
-              switch ($next) {
-                case ')':
-                  $content->consume_next(); // the ')'
-                  break 2;
-                case ',':
-                  $content->consume_next(); // the ','
-                  break;
-                default:
-                  $expression = Jade::get_extension_by_name('expression');
-                  $expression->tokenize_content($content);
-                  $arguments[] = $expression;
-              }
+          $right = Jade::get_extension_by_name('expression');
+          $right->set_tree($this->_parse_left_to_right($content, $operator));
+
+          $operator_object = new $class($left, $right);
+
+          $expression = array($operator_object);
+
+          continue 2; // the while
+        }
+      }
+
+      if ($next == '.' || $next == ' ') {
+        // todo - '.' should probably have some more robust logic
+        // just a separator, no need to actually do anything with it
+        $content->consume_next();
+
+      } else if ($next == '"' || $next == "'") {
+        $content->consume_next(); // the '"'
+        $string = $content->consume_until($next);
+        $content->consume_next(); // the '"'
+
+        $expression[] = new Jade_Expression_Node_String($string);
+
+      } else if (preg_match('/[1-9]/', $next)) {
+        // todo - integers
+
+      } else if (preg_match('/[a-z]/i', $next)) {
+
+        $name = $content->consume_regex('/[a-z0-9_]/i');
+
+        if (!$name) {
+          throw new Exception("unexpected character: \"$next\"");
+        }
+
+        if ($content->peek() != '(') {
+          // just a variable
+          $expression[] = new Jade_Expression_Node_Variable($name);
+
+        } else {
+          // we got a method here bud
+          $content->consume_next(); // the '('
+          $arguments = array();
+
+          while ($next = $content->peek()) {
+            switch ($next) {
+              case ')':
+                $content->consume_next(); // the ')'
+                break 2;
+              case ',':
+                $content->consume_next(); // the ','
+                break;
+              default:
+                $sub_expression = Jade::get_extension_by_name('expression');
+                $sub_expression->tokenize_content($content);
+                $arguments[] = $sub_expression;
             }
-            $method = new Jade_Expression_Node_Method($name);
-            $method->set_arguments($arguments);
-            $this->_expression_tree[] = $method;
-          } else {
-            $this->_expression_tree[] = new Jade_Expression_Node_Variable($name);
           }
+          $method = new Jade_Expression_Node_Method($name);
+          $method->set_arguments($arguments);
+          $expression[] = $method;
+        }
+
+      } else {
+        break;
       }
     }
+
+    return $expression;
   }
 
   public function add_child($child)
@@ -120,6 +144,11 @@ class Jade_Extension_Expression extends Jade_Node
   public function is_truthy(array $scope)
   {
     return (bool) $this->compile($scope);
+  }
+
+  public function set_tree(array $tree)
+  {
+    $this->_expression_tree = $tree;
   }
 }
 
@@ -198,8 +227,7 @@ abstract class Jade_Expression_Node_Comparison
   public function __construct($left, $right)
   {
     $this->_left = $left;
-    $this->_right = Jade::get_extension_by_name('expression');
-    $this->_right->tokenize_content($right);
+    $this->_right = $right;
   }
 
   abstract public function compile($context, $scope);
@@ -231,5 +259,20 @@ class Jade_Expression_Node_Less_Than_Equal_To extends Jade_Expression_Node_Compa
   public function compile($content, $scope)
   {
     return $this->_left->compile($scope) <= $this->_right->compile($scope);
+  }
+}
+
+class Jade_Expression_Node_Or extends Jade_Expression_Node_Comparison
+{
+  public function compile($content, $scope)
+  {
+    return $this->_left->compile($scope) || $this->_right->compile($scope);
+  }
+}
+class Jade_Expression_Node_And extends Jade_Expression_Node_Comparison
+{
+  public function compile($content, $scope)
+  {
+    return $this->_left->compile($scope) && $this->_right->compile($scope);
   }
 }

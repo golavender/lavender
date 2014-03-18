@@ -40,6 +40,14 @@ if eight <= eight
   div(style="border: 1px dashed blue; margin-top: 5px;")
     | eight is less or equal to than eight 
 
+if eight > seven && seven < eight 
+  div(style="border: 1px dashed red; margin-top: 5px;")
+    | eight > seven && seven < eight
+
+if eight > seven || eight < seven 
+  div(style="border: 1px dashed red; margin-top: 5px;")
+    | eight > seven || eight < seven
+
 if test_array.key
   div(style="border: 1px dashed orange; margin-top: 5px;")
     = test_array.key
