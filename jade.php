@@ -10,6 +10,7 @@ require __DIR__ . '/extensions/text.php';
 require __DIR__ . '/extensions/html.php';
 require __DIR__ . '/extensions/expression.php';
 require __DIR__ . '/extensions/if.php';
+require __DIR__ . '/extensions/each.php';
 
 class Jade
 {
