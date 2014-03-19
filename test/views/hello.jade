@@ -1,12 +1,12 @@
 
 h1 welcome to the new templating era motherfucker
 
-div.bam#1(style="border: 1px solid red;")
+div.bam#asdf(style="border: 1px solid red;")
   span(awesome-attribute="foobar")
   | red
 
-each value in test_array
-  div(style="border: 1px solid black; margin-top: 5px;")= value 
+each value, key in test_array
+  div(id=key,style="border: 1px solid black; margin-top: 5px;")= value 
 
 #thisdiv(style="border: 1px solid green; margin-top: 5px;") green
 

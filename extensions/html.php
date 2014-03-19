@@ -11,21 +11,14 @@ class Jade_Extension_Html extends Jade_Node
     array_push($this->_classes, $class);
   }
 
-  public function set_attribute($attribute)
+  public function set_attribute($name, $value)
   {
-    array_push($this->_attributes, $attribute);
+    $this->_attributes[$name] = $value;
   }
 
   public function set_classes(array $classes)
   {
     array_map($this->_set_class, $classes);
-  }
-
-  public function set_attributes(array $attributes)
-  {
-    foreach ($attributes as $attribute) {
-      $this->set_attribute(trim($attribute));
-    }
   }
 
   public function tokenize_content(Jade_Content $content)
@@ -45,14 +38,36 @@ class Jade_Extension_Html extends Jade_Node
         case '#':
           $content->consume_next(); // the '#'
           $id = $content->consume_until($special_characters);
-          $this->set_attribute('id="'.$id.'"');
+          $this->set_attribute('id', $id);
           break;
         case '(':
           $content->consume_next(); // the '('
-          $raw = $content->consume_until(")");
+          $content->consume_whitespace();
+
+          while ($content->peek() != '' && $content->peek() != ')') {
+            $name = $content->consume_regex("/[a-z\-]/i");
+            $content->consume_whitespace();
+            if ($content->peek() != '=') {
+              throw new Jade_Exception($content, 'expected "=" in attribute expression');
+            }
+            $content->consume_next(); // the '='
+            $content->consume_whitespace();
+
+            $expression = Jade::get_extension_by_name('expression');
+            $expression->tokenize_content($content);
+
+            $this->set_attribute($name, $expression);
+
+            $content->consume_whitespace();
+
+            if ($content->peek() == ',') {
+              $content->consume_next(); // the ','
+              $content->consume_whitespace();
+            }
+          }
+
           $content->consume_next(); // the ')'
-          $attributes = explode(',', $raw);
-          $this->set_attributes($attributes);
+
           break;
         case '=':
           # the rest of the line is an expression
@@ -78,16 +93,18 @@ class Jade_Extension_Html extends Jade_Node
 
   public function compile(array $scope)
   {
-    $attributes = $this->_attributes;
-
     if ($this->_classes) {
-      $attributes[] = 'class="' . implode(' ', $this->_classes) . '"';
+      $this->set_attribute('class', implode(' ', $this->_classes));
     }
 
-    if ($attributes) {
-      $attributes = ' ' . implode(' ', $attributes);
-    } else {
-      $attributes = '';
+    $attributes = '';
+
+    foreach ($this->_attributes as $name => $value) {
+      if (gettype($value) == gettype(Jade::get_extension_by_name('expression'))) {
+        $value = $value->compile($scope);
+      }
+
+      $attributes .= " $name=\"$value\"";
     }
 
     $result = "<{$this->_name}{$attributes}>";
