@@ -37,7 +37,7 @@ class Jade_File
         $node = Jade::get_extension_by_token($token) ?: Jade::get_extension_by_name('html');
 
         if (!$node) {
-          throw new Exception("Unknown expression: \"$token\"");
+          throw new Jade_Exception($this->_content);
         }
 
         $node->tokenize_content($this->_content);
@@ -59,6 +59,11 @@ class Jade_File
     }
 
     return $result;
+  }
+
+  public function get_content()
+  {
+    return $this->_content;
   }
 
   public function get_level()

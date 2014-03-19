@@ -4,6 +4,7 @@ require __DIR__ . '/lib/content.php';
 require __DIR__ . '/lib/view.php';
 require __DIR__ . '/lib/file.php';
 require __DIR__ . '/lib/node.php';
+require __DIR__ . '/lib/exception.php';
 
 require __DIR__ . '/extensions/text.php';
 require __DIR__ . '/extensions/html.php';

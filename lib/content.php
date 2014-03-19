@@ -3,10 +3,16 @@
 class Jade_Content
 {
   public $_content;
+  private $_line = 1;
 
   public function __construct($raw_content)
   {
     $this->_content = $raw_content;
+  }
+
+  public function get_line()
+  {
+    return $this->_line;
   }
 
   public function consume_until($until)
@@ -27,6 +33,9 @@ class Jade_Content
   public function consume_next($length = 1)
   {
     $result = substr($this->_content, 0, $length);
+
+    $this->_line += substr_count($result, "\n");
+
     $this->_content = substr($this->_content, $length);
     return $result;
   }

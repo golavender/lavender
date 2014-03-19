@@ -90,7 +90,7 @@ class Jade_Extension_Expression extends Jade_Node
         $name = $content->consume_regex('/[a-z0-9_]/i');
 
         if (!$name) {
-          throw new Exception("unexpected character: \"$next\"");
+          throw new Jade_Exception($content);
         }
 
         if ($content->peek() != '(') {

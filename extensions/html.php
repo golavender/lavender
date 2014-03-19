@@ -71,7 +71,7 @@ class Jade_Extension_Html extends Jade_Node
         case "\n":
           return;
         default:
-          throw new Exception("unexpected character: \"$next\"");
+          throw new Jade_Exception($content);
       }
     }
   }
