@@ -11,6 +11,7 @@ require __DIR__ . '/extensions/html.php';
 require __DIR__ . '/extensions/expression.php';
 require __DIR__ . '/extensions/if.php';
 require __DIR__ . '/extensions/each.php';
+require __DIR__ . '/extensions/include.php';
 
 class Jade
 {
