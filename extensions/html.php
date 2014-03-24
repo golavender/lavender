@@ -1,6 +1,6 @@
 <?php
 
-class Jade_Extension_Html extends Jade_Node
+class Lavender_Extension_Html extends Lavender_Node
 {
   private $_name;
   private $_classes = array();
@@ -21,7 +21,7 @@ class Jade_Extension_Html extends Jade_Node
     array_map($this->_set_class, $classes);
   }
 
-  public function tokenize_content(Jade_Content $content)
+  public function tokenize_content(Lavender_Content $content)
   {
     $special_characters = " .(#\n";
 
@@ -48,12 +48,12 @@ class Jade_Extension_Html extends Jade_Node
             $name = $content->consume_regex("/[a-z\-]/i");
             $content->consume_whitespace();
             if ($content->peek() != '=') {
-              throw new Jade_Exception($content, 'expected "=" in attribute expression');
+              throw new Lavender_Exception($content, 'expected "=" in attribute expression');
             }
             $content->consume_next(); // the '='
             $content->consume_whitespace();
 
-            $expression = Jade::get_extension_by_name('expression');
+            $expression = Lavender::get_extension_by_name('expression');
             $expression->tokenize_content($content);
 
             $this->set_attribute($name, $expression);
@@ -71,7 +71,7 @@ class Jade_Extension_Html extends Jade_Node
           break;
         case '=':
           # the rest of the line is an expression
-          $expression = Jade::get_extension_by_name('expression');
+          $expression = Lavender::get_extension_by_name('expression');
           $expression->tokenize_content($content);
           $this->add_child($expression);
           break;
@@ -79,14 +79,14 @@ class Jade_Extension_Html extends Jade_Node
         case "\t":
           # the rest of the line should just be text
           $text = $content->consume_until("\n");
-          $text_node = Jade::get_extension_by_name('text');
+          $text_node = Lavender::get_extension_by_name('text');
           $text_node->set_text($text);
           $this->add_child($text_node);
           break;
         case "\n":
           return;
         default:
-          throw new Jade_Exception($content);
+          throw new Lavender_Exception($content);
       }
     }
   }
@@ -100,7 +100,7 @@ class Jade_Extension_Html extends Jade_Node
     $attributes = '';
 
     foreach ($this->_attributes as $name => $value) {
-      if (gettype($value) == gettype(Jade::get_extension_by_name('expression'))) {
+      if (gettype($value) == gettype(Lavender::get_extension_by_name('expression'))) {
         $value = $value->compile($scope);
       }
 
@@ -115,4 +115,4 @@ class Jade_Extension_Html extends Jade_Node
   }
 }
 
-Jade::register_extension('html', 'Jade_Extension_Html');
+Lavender::register_extension('html', 'Lavender_Extension_Html');

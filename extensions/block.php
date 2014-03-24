@@ -1,18 +1,18 @@
 <?php
 
-class Jade_Extension_Block extends Jade_Node
+class Lavender_Extension_Block extends Lavender_Node
 {
   private $_mode;
   private $_name;
 
-  public function tokenize_content(Jade_Content $content)
+  public function tokenize_content(Lavender_Content $content)
   {
     $content->consume_until(" "); // the 'block'
 
     $this->_name = trim($content->consume_until("\n"));
 
     if (!$this->_name) {
-      throw new Jade_Exception($content, 'blocks need a name yo');
+      throw new Lavender_Exception($content, 'blocks need a name yo');
     }
   }
 
@@ -39,4 +39,4 @@ class Jade_Extension_Block extends Jade_Node
   }
 }
 
-Jade::register_extension('block', 'Jade_Extension_Block', array('block'));
+Lavender::register_extension('block', 'Lavender_Extension_Block', array('block'));

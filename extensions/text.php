@@ -1,10 +1,10 @@
 <?php
 
-class Jade_Extension_Text extends Jade_Node
+class Lavender_Extension_Text extends Lavender_Node
 {
   private $_text;
 
-  public function tokenize_content(Jade_Content $content)
+  public function tokenize_content(Lavender_Content $content)
   {
     $content->consume_next(); // the '|'
     # the rest of the line should just be text
@@ -23,4 +23,4 @@ class Jade_Extension_Text extends Jade_Node
   }
 }
 
-Jade::register_extension('text', 'Jade_Extension_Text', array('|'));
+Lavender::register_extension('text', 'Lavender_Extension_Text', array('|'));

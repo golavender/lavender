@@ -1,17 +1,17 @@
 <?php
 
-class Jade_Extension_Expression extends Jade_Node
+class Lavender_Extension_Expression extends Lavender_Node
 {
   private $_expression_tree = array();
   private $_operators       = array(
-    '>=' => 'Jade_Expression_Node_Greater_Than_Equal_To',
-    '<=' => 'Jade_Expression_Node_Less_Than_Equal_To',
-    '||' => 'Jade_Expression_Node_Or',
-    '&&' => 'Jade_Expression_Node_And',
-    '==' => 'Jade_Expression_Node_Equal_To',
-    '%'  => 'Jade_Expression_Node_Modulus',
-    '>'  => 'Jade_Expression_Node_Greater_Than',
-    '<'  => 'Jade_Expression_Node_Less_Than',
+    '>=' => 'Lavender_Expression_Node_Greater_Than_Equal_To',
+    '<=' => 'Lavender_Expression_Node_Less_Than_Equal_To',
+    '||' => 'Lavender_Expression_Node_Or',
+    '&&' => 'Lavender_Expression_Node_And',
+    '==' => 'Lavender_Expression_Node_Equal_To',
+    '%'  => 'Lavender_Expression_Node_Modulus',
+    '>'  => 'Lavender_Expression_Node_Greater_Than',
+    '<'  => 'Lavender_Expression_Node_Less_Than',
   );
   private $_operator_order  = array(
     '>=' => 1,
@@ -24,7 +24,7 @@ class Jade_Extension_Expression extends Jade_Node
     '&&' => 2,
   );
 
-  public function tokenize_content(Jade_Content $content)
+  public function tokenize_content(Lavender_Content $content)
   {
     $content->consume_whitespace();
 
@@ -37,7 +37,7 @@ class Jade_Extension_Expression extends Jade_Node
     $content->consume_whitespace();
   }
 
-  private function _parse_left_to_right(Jade_Content $content, $parent = NULL)
+  private function _parse_left_to_right(Lavender_Content $content, $parent = NULL)
   {
     $content->consume_whitespace();
     $expression = array();
@@ -55,10 +55,10 @@ class Jade_Extension_Expression extends Jade_Node
           $content->consume_next($length);
           $content->consume_whitespace();
 
-          $left = Jade::get_extension_by_name('expression');
+          $left = Lavender::get_extension_by_name('expression');
           $left->set_tree($expression);
 
-          $right = Jade::get_extension_by_name('expression');
+          $right = Lavender::get_extension_by_name('expression');
           $right->set_tree($this->_parse_left_to_right($content, $operator));
 
           $operator_object = new $class($left, $right);
@@ -79,23 +79,23 @@ class Jade_Extension_Expression extends Jade_Node
         $string = $content->consume_until($next);
         $content->consume_next(); // the '"'
 
-        $expression[] = new Jade_Expression_Node_String($string);
+        $expression[] = new Lavender_Expression_Node_String($string);
 
       } else if (preg_match('/[0-9]/', $next)) {
         $number = $content->consume_regex('/[0-9\.]/i');
-        $expression[] = new Jade_Expression_Node_Number($number);
+        $expression[] = new Lavender_Expression_Node_Number($number);
 
       } else if (preg_match('/[a-z]/i', $next)) {
 
         $name = $content->consume_regex('/[a-z0-9_]/i');
 
         if (!$name) {
-          throw new Jade_Exception($content);
+          throw new Lavender_Exception($content);
         }
 
         if ($content->peek() != '(') {
           // just a variable
-          $expression[] = new Jade_Expression_Node_Variable($name);
+          $expression[] = new Lavender_Expression_Node_Variable($name);
 
         } else {
           // we got a method here bud
@@ -111,12 +111,12 @@ class Jade_Extension_Expression extends Jade_Node
                 $content->consume_next(); // the ','
                 break;
               default:
-                $sub_expression = Jade::get_extension_by_name('expression');
+                $sub_expression = Lavender::get_extension_by_name('expression');
                 $sub_expression->tokenize_content($content);
                 $arguments[] = $sub_expression;
             }
           }
-          $method = new Jade_Expression_Node_Method($name);
+          $method = new Lavender_Expression_Node_Method($name);
           $method->set_arguments($arguments);
           $expression[] = $method;
         }
@@ -156,9 +156,9 @@ class Jade_Extension_Expression extends Jade_Node
   }
 }
 
-Jade::register_extension('expression', 'Jade_Extension_Expression', array('='));
+Lavender::register_extension('expression', 'Lavender_Extension_Expression', array('='));
 
-class Jade_Expression_Node_String
+class Lavender_Expression_Node_String
 {
   private $_string;
 
@@ -173,7 +173,7 @@ class Jade_Expression_Node_String
   }
 }
 
-class Jade_Expression_Node_Number
+class Lavender_Expression_Node_Number
 {
   private $_number;
 
@@ -188,7 +188,7 @@ class Jade_Expression_Node_Number
   }
 }
 
-class Jade_Expression_Node_Variable
+class Lavender_Expression_Node_Variable
 {
   private $_name;
 
@@ -211,7 +211,7 @@ class Jade_Expression_Node_Variable
   }
 }
 
-class Jade_Expression_Node_Method extends Jade_Expression_Node_Variable
+class Lavender_Expression_Node_Method extends Lavender_Expression_Node_Variable
 {
   private $_arguments;
 
@@ -238,7 +238,7 @@ class Jade_Expression_Node_Method extends Jade_Expression_Node_Variable
   }
 }
 
-abstract class Jade_Expression_Node_Comparison
+abstract class Lavender_Expression_Node_Comparison
 {
   protected $_left;
   protected $_right;
@@ -252,28 +252,28 @@ abstract class Jade_Expression_Node_Comparison
   abstract public function compile($context, $scope);
 }
 
-class Jade_Expression_Node_Greater_Than extends Jade_Expression_Node_Comparison
+class Lavender_Expression_Node_Greater_Than extends Lavender_Expression_Node_Comparison
 {
   public function compile($content, $scope)
   {
     return $this->_left->compile($scope) > $this->_right->compile($scope);
   }
 }
-class Jade_Expression_Node_Less_Than extends Jade_Expression_Node_Comparison
+class Lavender_Expression_Node_Less_Than extends Lavender_Expression_Node_Comparison
 {
   public function compile($content, $scope)
   {
     return $this->_left->compile($scope) < $this->_right->compile($scope);
   }
 }
-class Jade_Expression_Node_Greater_Than_Equal_To extends Jade_Expression_Node_Comparison
+class Lavender_Expression_Node_Greater_Than_Equal_To extends Lavender_Expression_Node_Comparison
 {
   public function compile($content, $scope)
   {
     return $this->_left->compile($scope) >= $this->_right->compile($scope);
   }
 }
-class Jade_Expression_Node_Less_Than_Equal_To extends Jade_Expression_Node_Comparison
+class Lavender_Expression_Node_Less_Than_Equal_To extends Lavender_Expression_Node_Comparison
 {
   public function compile($content, $scope)
   {
@@ -281,28 +281,28 @@ class Jade_Expression_Node_Less_Than_Equal_To extends Jade_Expression_Node_Compa
   }
 }
 
-class Jade_Expression_Node_Or extends Jade_Expression_Node_Comparison
+class Lavender_Expression_Node_Or extends Lavender_Expression_Node_Comparison
 {
   public function compile($content, $scope)
   {
     return $this->_left->compile($scope) || $this->_right->compile($scope);
   }
 }
-class Jade_Expression_Node_And extends Jade_Expression_Node_Comparison
+class Lavender_Expression_Node_And extends Lavender_Expression_Node_Comparison
 {
   public function compile($content, $scope)
   {
     return $this->_left->compile($scope) && $this->_right->compile($scope);
   }
 }
-class Jade_Expression_Node_Equal_To extends Jade_Expression_Node_Comparison
+class Lavender_Expression_Node_Equal_To extends Lavender_Expression_Node_Comparison
 {
   public function compile($content, $scope)
   {
     return $this->_left->compile($scope) == $this->_right->compile($scope);
   }
 }
-class Jade_Expression_Node_Modulus extends Jade_Expression_Node_Comparison
+class Lavender_Expression_Node_Modulus extends Lavender_Expression_Node_Comparison
 {
   public function compile($content, $scope)
   {

@@ -1,6 +1,6 @@
 <?php
 
-class Jade_File
+class Lavender_File
 {
   private $_content;
   private $_children = array();
@@ -10,7 +10,7 @@ class Jade_File
 
   public function __construct($path)
   {
-    $this->_content = new Jade_Content(file_get_contents($path));
+    $this->_content = new Lavender_Content(file_get_contents($path));
   }
 
   private function _tokenize()
@@ -38,10 +38,10 @@ class Jade_File
           continue;
         }
 
-        $node = Jade::get_extension_by_token($token) ?: Jade::get_extension_by_name('html');
+        $node = Lavender::get_extension_by_token($token) ?: Lavender::get_extension_by_name('html');
 
         if (!$node) {
-          throw new Jade_Exception($this->_content);
+          throw new Lavender_Exception($this->_content);
         }
 
         $node->set_level($level);

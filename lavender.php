@@ -15,7 +15,7 @@ require __DIR__ . '/extensions/include.php';
 require __DIR__ . '/extensions/extends.php';
 require __DIR__ . '/extensions/block.php';
 
-class Jade
+class Lavender
 {
   private static $_extensions = array();
   private static $_config = array();
@@ -32,7 +32,7 @@ class Jade
 
   public static function view($name)
   {
-    return new Jade_View($name);
+    return new Lavender_View($name);
   }
 
   public static function register_extension($name, $class, array $tokens = array())

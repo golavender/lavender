@@ -1,6 +1,6 @@
 <?php
 
-abstract class Jade_Node
+abstract class Lavender_Node
 {
   private $_parent;
   private $_level;
@@ -55,5 +55,5 @@ abstract class Jade_Node
     return $result;
   }
 
-  public abstract function tokenize_content(Jade_Content $content);
+  public abstract function tokenize_content(Lavender_Content $content);
 }

@@ -1,12 +1,12 @@
 <?php
 
-class Jade_Extension_Extends extends Jade_Node
+class Lavender_Extension_Extends extends Lavender_Node
 {
   private $_parent_view;
   private $_content;
   private $_blocks = array();
 
-  public function tokenize_content(Jade_Content $content)
+  public function tokenize_content(Lavender_Content $content)
   {
     $this->_content = $content;
 
@@ -14,22 +14,22 @@ class Jade_Extension_Extends extends Jade_Node
 
     $path = trim($content->consume_until("\n"));
 
-    $this->_parent_view = new Jade_View($path);
+    $this->_parent_view = new Lavender_View($path);
 
     $parent_node = $this->get_parent();
 
-    if ($parent_node instanceof Jade_File) {
+    if ($parent_node instanceof Lavender_File) {
       $parent_node->post_tokenize_hook(array($this, 'validate'));
     }
     else {
-      throw new Jade_Exception($content);
+      throw new Lavender_Exception($content);
     }
   }
 
-  public function validate(Jade_File $file)
+  public function validate(Lavender_File $file)
   {
-    $extends = Jade::get_extension_by_name('extends');
-    $block = Jade::get_extension_by_name('block');
+    $extends = Lavender::get_extension_by_name('extends');
+    $block = Lavender::get_extension_by_name('block');
 
     $extend_cound = 0;
     foreach ($file->get_children() as $child) {
@@ -38,7 +38,7 @@ class Jade_Extension_Extends extends Jade_Node
         $extend_count++;
 
         if ($extend_count > 1) {
-          throw new Jade_Exception($this->content, 'can only extend one parent');
+          throw new Lavender_Exception($this->content, 'can only extend one parent');
         }
       }
       else if (get_class($child) == get_class($block)) {
@@ -46,7 +46,7 @@ class Jade_Extension_Extends extends Jade_Node
         $child->set_mode_definition();
       }
       else {
-        throw new Jade_Exception($this->_content, 'templates that extend another can only have blocks in them');
+        throw new Lavender_Exception($this->_content, 'templates that extend another can only have blocks in them');
       }
     }
   }
@@ -62,4 +62,4 @@ class Jade_Extension_Extends extends Jade_Node
   }
 }
 
-Jade::register_extension('extends', 'Jade_Extension_Extends', array('extends'));
+Lavender::register_extension('extends', 'Lavender_Extension_Extends', array('extends'));

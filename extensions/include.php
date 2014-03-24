@@ -1,16 +1,16 @@
 <?php
 
-class Jade_Extension_Include extends Jade_Node
+class Lavender_Extension_Include extends Lavender_Node
 {
   private $_subview;
 
-  public function tokenize_content(Jade_Content $content)
+  public function tokenize_content(Lavender_Content $content)
   {
     $content->consume_until(" "); // the 'include'
 
     $path = trim($content->consume_until("\n"));
 
-    $this->_subview = new Jade_View($path);
+    $this->_subview = new Lavender_View($path);
   }
 
   public function compile(array $scope)
@@ -24,4 +24,4 @@ class Jade_Extension_Include extends Jade_Node
   }
 }
 
-Jade::register_extension('include', 'Jade_Extension_Include', array('include'));
+Lavender::register_extension('include', 'Lavender_Extension_Include', array('include'));

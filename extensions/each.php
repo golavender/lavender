@@ -1,12 +1,12 @@
 <?php
 
-class Jade_Extension_Each extends Jade_Node
+class Lavender_Extension_Each extends Lavender_Node
 {
   private $_expression;
   private $_iterator;
   private $_key_iterator;
 
-  public function tokenize_content(Jade_Content $content)
+  public function tokenize_content(Lavender_Content $content)
   {
     $content->consume_until(" "); // the 'each'
     $content->consume_whitespace();
@@ -25,12 +25,12 @@ class Jade_Extension_Each extends Jade_Node
     }
 
     if ($content->peek(2) != 'in') {
-      throw new Jade_Exception($content, 'expected "in"');
+      throw new Lavender_Exception($content, 'expected "in"');
     }
 
     $content->consume_next(2);
 
-    $this->_expression = Jade::get_extension_by_name('expression');
+    $this->_expression = Lavender::get_extension_by_name('expression');
     $this->_expression->tokenize_content($content);
   }
 
@@ -50,4 +50,4 @@ class Jade_Extension_Each extends Jade_Node
   }
 }
 
-Jade::register_extension('each', 'Jade_Extension_Each', array('each', 'for'));
+Lavender::register_extension('each', 'Lavender_Extension_Each', array('each', 'for'));

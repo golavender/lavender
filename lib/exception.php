@@ -1,6 +1,6 @@
 <?php
 
-class Jade_Exception extends Exception
+class Lavender_Exception extends Exception
 {
   private $_line;
   private $_message;

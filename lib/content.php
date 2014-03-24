@@ -1,6 +1,6 @@
 <?php
 
-class Jade_Content
+class Lavender_Content
 {
   public $_content;
   private $_line = 1;

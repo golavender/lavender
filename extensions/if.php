@@ -1,14 +1,14 @@
 <?php
 
-class Jade_Extension_If extends Jade_Node
+class Lavender_Extension_If extends Lavender_Node
 {
   private $_expression;
 
-  public function tokenize_content(Jade_Content $content)
+  public function tokenize_content(Lavender_Content $content)
   {
     $content->consume_until(" "); // the 'if'
 
-    $this->_expression = Jade::get_extension_by_name('expression');
+    $this->_expression = Lavender::get_extension_by_name('expression');
     $this->_expression->tokenize_content($content);
   }
 
@@ -22,4 +22,4 @@ class Jade_Extension_If extends Jade_Node
   }
 }
 
-Jade::register_extension('if', 'Jade_Extension_If', array('if'));
+Lavender::register_extension('if', 'Lavender_Extension_If', array('if'));

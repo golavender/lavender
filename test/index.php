@@ -1,17 +1,17 @@
 <?php
 
-require '../jade.php';
+require '../lavender.php';
 
 class test
 {
   public $key = 'object value';
 }
 
-Jade::config(array(
+Lavender::config(array(
   'view_dir' => __DIR__.'/views'
 ));
 
-$view = Jade::view('hello.jade');
+$view = Lavender::view('hello.lavender');
 
 $_GET['test_array'] = array(
   'key' => 'array value',
@@ -33,5 +33,5 @@ $_GET['test'] = function($arg1, $arg2) {
   return 'this is a test function: ' . $arg1 . ' ' . $arg2;
 };
 
-echo $view->compile($_GET);
 
+echo $view->compile($_GET);
