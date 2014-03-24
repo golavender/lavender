@@ -17,7 +17,7 @@ class Jade_View
       return $this->_view_file->compile($scope);
     }
     catch (Jade_Exception $e) {
-      die("error in {$this->_name} at line: {$e->get_line()}");
+      die("{$e->get_message()}. {$this->_name} at line: {$e->get_line()}");
     }
     catch (Exception $e) {
       die("error in {$this->_name} at line: {$this->_view_file->get_content()->get_line()}");

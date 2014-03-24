@@ -46,7 +46,7 @@ class Jade_Extension_Extends extends Jade_Node
         $child->set_mode_definition();
       }
       else {
-        throw new Jade_Exception($this->content, 'templates that extend another can only have blocks in them');
+        throw new Jade_Exception($this->_content, 'templates that extend another can only have blocks in them');
       }
     }
   }
