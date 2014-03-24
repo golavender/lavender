@@ -1,79 +1,80 @@
+extends layout.jade
 
-h1 welcome to the new templating era motherfucker
+block content
+  div.bam#asdf(style="border: 1px solid red;")
+    span(awesome-attribute="foobar")
+    | red
 
-div.bam#asdf(style="border: 1px solid red;")
-  span(awesome-attribute="foobar")
-  | red
+  each value, key in test_array
+    div(id=key,style="border: 1px solid black; margin-top: 5px;")= value 
 
-each value, key in test_array
-  div(id=key,style="border: 1px solid black; margin-top: 5px;")= value 
+  #thisdiv(style="border: 1px solid green; margin-top: 5px;") green
 
-#thisdiv(style="border: 1px solid green; margin-top: 5px;") green
+  if foo
+    div(style="border: 1px solid black; margin-top: 5px;")= foo
+     
+  if bar
+    div(style="border: 1px solid black; margin-top: 5px;")
+      = bar
 
-if foo
-  div(style="border: 1px solid black; margin-top: 5px;")= foo
-   
-if bar
+  if 7 == seven
+    div(style="border: 1px dashed blue; margin-top: 5px;")
+      | 7 == seven
+
+  if 6.6 > 6.5 
+    div(style="border: 1px dashed blue; margin-top: 5px;")
+      | 6.6 > 6.5 
+
+  if 4 % 2 == 0 
+    div(style="border: 1px dashed blue; margin-top: 5px;")
+      | 4 % 2 == 0
+
+block content2
+  if seven > eight
+    div(style="border: 1px dashed blue; margin-top: 5px;")
+      | seven is bigger than eight
+  if eight > seven 
+    div(style="border: 1px dashed blue; margin-top: 5px;")
+      | eight is bigger than seven
+  if eight >= seven 
+    div(style="border: 1px dashed blue; margin-top: 5px;")
+      | eight is bigger or equal to than seven
+  if eight >= eight 
+    div(style="border: 1px dashed blue; margin-top: 5px;")
+      | eight is bigger or equal to than eight 
+
+  if seven < eight
+    div(style="border: 1px dashed blue; margin-top: 5px;")
+      | seven is less than eight
+  if eight < seven 
+    div(style="border: 1px dashed blue; margin-top: 5px;")
+      | eight is less than seven 
+  if seven <= eight 
+    div(style="border: 1px dashed blue; margin-top: 5px;")
+      | eight is less or equal to than seven
+  if eight <= eight 
+    div(style="border: 1px dashed blue; margin-top: 5px;")
+      | eight is less or equal to than eight 
+
+  if eight > seven && seven < eight 
+    div(style="border: 1px dashed red; margin-top: 5px;")
+      | eight > seven && seven < eight
+
+  if eight > seven || eight < seven 
+    div(style="border: 1px dashed red; margin-top: 5px;")
+      | eight > seven || eight < seven
+
+  if test_array.key
+    div(style="border: 1px dashed orange; margin-top: 5px;")
+      = test_array.key
+
+  if test_object.key
+    div(style="border: 1px dashed orange; margin-top: 5px;")
+      = test_object.key
+
   div(style="border: 1px solid black; margin-top: 5px;")
-    = bar
+    = test("aasdf", baz)
 
-if 7 == seven
-  div(style="border: 1px dashed blue; margin-top: 5px;")
-    | 7 == seven
+  #thisdiv2(style="border: 1px solid blue; margin-top: 5px;") blue
 
-if 6.6 > 6.5 
-  div(style="border: 1px dashed blue; margin-top: 5px;")
-    | 6.6 > 6.5 
-
-if 4 % 2 == 0 
-  div(style="border: 1px dashed blue; margin-top: 5px;")
-    | 4 % 2 == 0
-
-if seven > eight
-  div(style="border: 1px dashed blue; margin-top: 5px;")
-    | seven is bigger than eight
-if eight > seven 
-  div(style="border: 1px dashed blue; margin-top: 5px;")
-    | eight is bigger than seven
-if eight >= seven 
-  div(style="border: 1px dashed blue; margin-top: 5px;")
-    | eight is bigger or equal to than seven
-if eight >= eight 
-  div(style="border: 1px dashed blue; margin-top: 5px;")
-    | eight is bigger or equal to than eight 
-
-if seven < eight
-  div(style="border: 1px dashed blue; margin-top: 5px;")
-    | seven is less than eight
-if eight < seven 
-  div(style="border: 1px dashed blue; margin-top: 5px;")
-    | eight is less than seven 
-if seven <= eight 
-  div(style="border: 1px dashed blue; margin-top: 5px;")
-    | eight is less or equal to than seven
-if eight <= eight 
-  div(style="border: 1px dashed blue; margin-top: 5px;")
-    | eight is less or equal to than eight 
-
-if eight > seven && seven < eight 
-  div(style="border: 1px dashed red; margin-top: 5px;")
-    | eight > seven && seven < eight
-
-if eight > seven || eight < seven 
-  div(style="border: 1px dashed red; margin-top: 5px;")
-    | eight > seven || eight < seven
-
-if test_array.key
-  div(style="border: 1px dashed orange; margin-top: 5px;")
-    = test_array.key
-
-if test_object.key
-  div(style="border: 1px dashed orange; margin-top: 5px;")
-    = test_object.key
-
-div(style="border: 1px solid black; margin-top: 5px;")
-  = test("aasdf", baz)
-
-#thisdiv2(style="border: 1px solid blue; margin-top: 5px;") blue
-
-include include.jade
+  include include.jade

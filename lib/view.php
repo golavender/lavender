@@ -15,13 +15,11 @@ class Jade_View
   {
     try {
       return $this->_view_file->compile($scope);
-
-    } catch (Jade_Exception $e) {
-
+    }
+    catch (Jade_Exception $e) {
       die("error in {$this->_name} at line: {$e->get_line()}");
-
-    } catch (Exception $e) {
-
+    }
+    catch (Exception $e) {
       die("error in {$this->_name} at line: {$this->_view_file->get_content()->get_line()}");
     }
   }

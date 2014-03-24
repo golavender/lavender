@@ -6,6 +6,7 @@ class Jade_File
   private $_children = array();
 
   private $_tokens = array();
+  private $_post_tokenize_hooks = array();
 
   public function __construct($path)
   {
@@ -20,8 +21,11 @@ class Jade_File
     while ($next = $this->_content->peek()) {
 
       if ($next == "\n") {
-        $this->_content->consume_next(); // the '\n'
-        $level = $this->_content->consume_whitespace();
+
+        while($this->_content->peek() == "\n") {
+          $this->_content->consume_next(); // the '\n'
+          $level = $this->_content->consume_whitespace();
+        }
 
         while ($level <= $parent->get_level()) {
           $parent = $parent->get_parent();
@@ -40,13 +44,27 @@ class Jade_File
           throw new Jade_Exception($this->_content);
         }
 
-        $node->tokenize_content($this->_content);
         $node->set_level($level);
-
         $parent->add_child($node);
+        $node->tokenize_content($this->_content);
+
         $parent = $node;
       }
     }
+
+    $this->_execute_post_tokenize_hooks();
+  }
+
+  private function _execute_post_tokenize_hooks()
+  {
+    foreach ($this->_post_tokenize_hooks as $hook) {
+      call_user_func($hook, $this);
+    }
+  }
+
+  public function post_tokenize_hook($hook)
+  {
+    $this->_post_tokenize_hooks[] = $hook;
   }
 
   public function compile(array $scope)
@@ -77,5 +95,10 @@ class Jade_File
     $child->set_parent($this);
 
     return $this;
+  }
+
+  public function get_children()
+  {
+    return $this->_children;
   }
 }

@@ -2,6 +2,7 @@
 
 abstract class Jade_Node
 {
+  private $_parent;
   private $_level;
   private $_children = array();
 
@@ -31,6 +32,16 @@ abstract class Jade_Node
     $child->set_parent($this);
 
     return $this;
+  }
+
+  public function set_children(array $children)
+  {
+    $this->_children = $children;
+  }
+
+  public function get_children()
+  {
+    return $this->_children;
   }
 
   public function compile(array $scope)
