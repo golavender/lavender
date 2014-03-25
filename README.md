@@ -122,7 +122,7 @@ you may have noticed how i snuck in using variables for your html attributes the
 
 **math**:
 
-math. you can do it. supported operators are `%`, `+`, `-`, `\*`, `/` 
+math. you can do it. supported operators are `%`, `+`, `-`, `*`, `/` 
 
 ```lavender
 div
