@@ -122,9 +122,25 @@ you may have noticed how i snuck in using variables for your html attributes the
 
 **math**:
 
-we're working on the math, we promise. we even have an issue [here](https://github.com/golavender/lavender/issues/1). for now we only support `%`
+math. you can do it. supported operators are `%`, `+`, `-`, `\*`, `/` 
 
 ```lavender
+div
+  | 1 + 1 = 
+  = 1 + 1
+
+div
+  | 2 - 3 = 
+  = 2 - 3
+
+div
+  | 2 * 3 = 
+  = 2 * 3
+
+div
+  | 10 / 5 = 
+  = 10 / 5
+
 ul
   each value, key in some_random_array
     if key % 2 == 0
