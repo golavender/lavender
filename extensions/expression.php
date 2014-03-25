@@ -24,7 +24,7 @@ class Lavender_Extension_Expression extends Lavender_Node
     '%'  => 1,
     '||' => 2,
     '&&' => 2,
-    '='  => 0,
+    '='  => 3,
   );
 
   public function tokenize_content(Lavender_Content $content)

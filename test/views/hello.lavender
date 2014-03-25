@@ -8,8 +8,11 @@ block content
   each value, key in test_array
     div(id=key,style="border: 1px solid black; margin-top: 5px;")= value 
 
-  - test_object.qwerty = 'hello world'
-  = test_object.qwerty 
+  - test_object.qwerty = 5 > 4
+  = test_object.qwerty
+
+  if test_object.qwerty 
+    | asdf
 
   #thisdiv(style="border: 1px solid green; margin-top: 5px;") green
 
