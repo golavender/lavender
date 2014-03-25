@@ -96,6 +96,63 @@ class Lavender_Extension_Expression extends Lavender_Node
 
         $expression[] = new Lavender_Expression_Node_String($string);
 
+      } else if ($next == '[') {
+        $content->consume_next(); // the '['
+        $content->consume_whitespace();
+
+        $bits = array();
+        while ($next = $content->peek()) {
+          switch ($next) {
+            case ']':
+              $content->consume_next(); // the ']'
+              break 2;
+            case ',':
+              $content->consume_next(); // the ','
+              break;
+            default:
+              $sub_expression = Lavender::get_extension_by_name('expression');
+              $sub_expression->tokenize_content($content);
+              $bits[] = $sub_expression;
+              break;
+          }
+          $content->consume_whitespace();
+        }
+
+        $expression[] = new Lavender_Expression_Node_Array($bits);
+
+      } else if ($next == '{') {
+        $content->consume_next(); // the '{'
+        $content->consume_whitespace();
+
+        $bits = array();
+        while ($next = $content->peek()) {
+          switch ($next) {
+            case '}':
+              $content->consume_next(); // the '}'
+              break 2;
+            case ',':
+              $content->consume_next(); // the ','
+              break;
+            default:
+              $key = $content->consume_regex('/[a-z0-9_]/i');
+              $content->consume_whitespace();
+
+              if ($content->peek() !== ':') {
+                throw new Lavender_Exception($content, "expected \":\" but got \"{$content->peek()}\"");
+              }
+              $content->consume_next(); // the ':'
+              $content->consume_whitespace();
+
+              $sub_expression = Lavender::get_extension_by_name('expression');
+              $sub_expression->tokenize_content($content);
+              $bits[$key] = $sub_expression;
+              break;
+          }
+          $content->consume_whitespace();
+        }
+
+        $expression[] = new Lavender_Expression_Node_Array($bits);
+
       } else if (preg_match('/[0-9]/', $next)) {
         $number = $content->consume_regex('/[0-9\.]/i');
         $expression[] = new Lavender_Expression_Node_Number($number);
@@ -221,6 +278,27 @@ class Lavender_Expression_Node_Number
   public function compile($context, $scope)
   {
     return (float) $this->_number;
+  }
+}
+
+class Lavender_Expression_Node_Array
+{
+  private $_array;
+
+  public function __construct(array $array)
+  {
+    $this->_array = $array;
+  }
+
+  public function compile($context, $scope)
+  {
+    $result = array();
+
+    foreach ($this->_array as $key => $bit) {
+      $result[$key] = $bit->compile($scope);
+    }
+
+    return $result;
   }
 }
 
