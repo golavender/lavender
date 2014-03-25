@@ -139,7 +139,7 @@ partials are a thing
 span stuff and things
 
 div.content
-  include /path/relative/to/view/directory/somefile.lavender
+  include /path/relative/to/view/directory/somefile
 ```
 
 **extends**
@@ -162,7 +162,7 @@ div.content
 and this is the child template
 
 ```
-extends layout.lavender
+extends layout
 
 block header
   div

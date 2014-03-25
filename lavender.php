@@ -18,7 +18,9 @@ require __DIR__ . '/extensions/block.php';
 class Lavender
 {
   private static $_extensions = array();
-  private static $_config = array();
+  private static $_config = array(
+    'file_extension' => 'lavender'
+  );
 
   public static function config(array $config)
   {
