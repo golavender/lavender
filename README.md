@@ -6,13 +6,13 @@
 **html**:
 
 ```lavender
-section.foo.bar(attribute1='foo',attribute2='bar')
+section#some_id.foo.bar(attribute1='foo',attribute2='bar')
 ```
 
 becomes
 
 ```html
-<section class="foo bar" attribute1="foo" attribute2="bar"></section>
+<section id="some_id" class="foo bar" attribute1="foo" attribute2="bar"></section>
 ```
 
 child nodes are indented below their parent
@@ -30,6 +30,22 @@ becomes
   <div data-something="foo"></div>
   <div data-something="bar"></div>
 </section>
+```
+
+there is a shortcut if you just want a div, you can skip right to class or id definitions
+
+
+```lavender
+
+.foobar text text
+#foobar text text
+```
+
+becomes
+
+```html
+<div class="foobar">text text</div>
+<div id="foobar">text text</div>
 ```
 
 text can be added to nodes in two ways
