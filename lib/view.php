@@ -8,7 +8,7 @@ class Lavender_View
   public function __construct($name)
   {
     $this->_name      = $name;
-    $this->_view_file = new Lavender_File(Lavender::get_config('view_dir') . '/' . $name);
+    $this->_view_file = new Lavender_File($name);
   }
 
   public function compile($scope = array())

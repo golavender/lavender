@@ -11,7 +11,7 @@ Lavender::config(array(
   'view_dir' => __DIR__.'/views'
 ));
 
-$view = Lavender::view('hello.lavender');
+$view = Lavender::view('hello');
 
 $_GET['test_array'] = array(
   'key' => 'array value',
