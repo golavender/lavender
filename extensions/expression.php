@@ -2,6 +2,7 @@
 
 class Lavender_Extension_Expression extends Lavender_Node
 {
+  private $_output          = TRUE;
   private $_expression_tree = array();
   private $_operators       = array(
     '>=' => 'Lavender_Expression_Node_Greater_Than_Equal_To',
@@ -12,6 +13,7 @@ class Lavender_Extension_Expression extends Lavender_Node
     '%'  => 'Lavender_Expression_Node_Modulus',
     '>'  => 'Lavender_Expression_Node_Greater_Than',
     '<'  => 'Lavender_Expression_Node_Less_Than',
+    '='  => 'Lavender_Expression_Node_Assignment',
   );
   private $_operator_order  = array(
     '>=' => 1,
@@ -22,6 +24,7 @@ class Lavender_Extension_Expression extends Lavender_Node
     '%'  => 1,
     '||' => 2,
     '&&' => 2,
+    '='  => 0,
   );
 
   public function tokenize_content(Lavender_Content $content)
@@ -30,6 +33,10 @@ class Lavender_Extension_Expression extends Lavender_Node
 
     if ($content->peek() == '=') {
       $content->consume_next(); // the '='
+    }
+    else if ($content->peek() == '-') {
+      $this->_output = FALSE;
+      $content->consume_next(); // the '-'
     }
 
     $this->_expression_tree = $this->_parse_left_to_right($content);
@@ -134,7 +141,23 @@ class Lavender_Extension_Expression extends Lavender_Node
     throw new Exception('expressions cannot have children');
   }
 
-  public function compile(array $scope)
+  public function assign(array &$scope, $value)
+  {
+    return $scope = $this->_assign($this->_expression_tree, $value, $scope);
+  }
+
+  private function _assign($tree, $value, $scope)
+  {
+    $current = array_shift($tree);
+
+    if ($tree) {
+      $value = $this->_assign($tree, $value, $current->compile($scope, $scope));
+    }
+
+    return $current->assign($scope, $value);
+  }
+
+  public function compile(array &$scope)
   {
     $context = NULL;
 
@@ -142,7 +165,12 @@ class Lavender_Extension_Expression extends Lavender_Node
       $context = $node->compile($context, $scope);
     }
 
-    return $context;
+    if ($this->_output) {
+      return $context;
+    }
+    else {
+      return '';
+    }
   }
 
   public function is_truthy(array $scope)
@@ -156,7 +184,7 @@ class Lavender_Extension_Expression extends Lavender_Node
   }
 }
 
-Lavender::register_extension('expression', 'Lavender_Extension_Expression', array('='));
+Lavender::register_extension('expression', 'Lavender_Extension_Expression', array('=', '-'));
 
 class Lavender_Expression_Node_String
 {
@@ -195,6 +223,19 @@ class Lavender_Expression_Node_Variable
   public function __construct($name)
   {
     $this->_name = $name;
+  }
+
+  public function assign($scope, $value)
+  {
+    if (is_array($scope)) {
+      $scope[$this->_name] = $value;
+    } else if (is_object($scope)) {
+      $scope->{$this->_name} = $value;
+    } else {
+      throw new Exception('asdf');
+    }
+
+    return $scope;
   }
 
   public function compile($context, $scope)
@@ -249,33 +290,33 @@ abstract class Lavender_Expression_Node_Comparison
     $this->_right = $right;
   }
 
-  abstract public function compile($context, $scope);
+  abstract public function compile($context, &$scope);
 }
 
 class Lavender_Expression_Node_Greater_Than extends Lavender_Expression_Node_Comparison
 {
-  public function compile($content, $scope)
+  public function compile($context, &$scope)
   {
     return $this->_left->compile($scope) > $this->_right->compile($scope);
   }
 }
 class Lavender_Expression_Node_Less_Than extends Lavender_Expression_Node_Comparison
 {
-  public function compile($content, $scope)
+  public function compile($context, &$scope)
   {
     return $this->_left->compile($scope) < $this->_right->compile($scope);
   }
 }
 class Lavender_Expression_Node_Greater_Than_Equal_To extends Lavender_Expression_Node_Comparison
 {
-  public function compile($content, $scope)
+  public function compile($context, &$scope)
   {
     return $this->_left->compile($scope) >= $this->_right->compile($scope);
   }
 }
 class Lavender_Expression_Node_Less_Than_Equal_To extends Lavender_Expression_Node_Comparison
 {
-  public function compile($content, $scope)
+  public function compile($context, &$scope)
   {
     return $this->_left->compile($scope) <= $this->_right->compile($scope);
   }
@@ -283,29 +324,36 @@ class Lavender_Expression_Node_Less_Than_Equal_To extends Lavender_Expression_No
 
 class Lavender_Expression_Node_Or extends Lavender_Expression_Node_Comparison
 {
-  public function compile($content, $scope)
+  public function compile($context, &$scope)
   {
     return $this->_left->compile($scope) || $this->_right->compile($scope);
   }
 }
 class Lavender_Expression_Node_And extends Lavender_Expression_Node_Comparison
 {
-  public function compile($content, $scope)
+  public function compile($context, &$scope)
   {
     return $this->_left->compile($scope) && $this->_right->compile($scope);
   }
 }
 class Lavender_Expression_Node_Equal_To extends Lavender_Expression_Node_Comparison
 {
-  public function compile($content, $scope)
+  public function compile($context, &$scope)
   {
     return $this->_left->compile($scope) == $this->_right->compile($scope);
   }
 }
 class Lavender_Expression_Node_Modulus extends Lavender_Expression_Node_Comparison
 {
-  public function compile($content, $scope)
+  public function compile($context, &$scope)
   {
     return $this->_left->compile($scope) % $this->_right->compile($scope);
+  }
+}
+class Lavender_Expression_Node_Assignment extends Lavender_Expression_Node_Comparison
+{
+  public function compile($context, &$scope)
+  {
+    return $this->_left->assign($scope, $this->_right->compile($scope));
   }
 }
