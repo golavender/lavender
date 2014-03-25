@@ -232,7 +232,7 @@ class Lavender_Expression_Node_Variable
     } else if (is_object($scope)) {
       $scope->{$this->_name} = $value;
     } else {
-      throw new Exception('asdf');
+      throw new Exception('cannot assign value to this non-object/non-array');
     }
 
     return $scope;
