@@ -1,6 +1,23 @@
 extends layout.lavender
 
 block content
+
+  div
+    | 1 + 1 = 
+    = 1 + 1
+
+  div
+    | 2 - 3 = 
+    = 2 - 3
+
+  div
+    | 2 * 3 = 
+    = 2 * 3
+
+  div
+    | 10 / 5 = 
+    = 10 / 5
+
   div.bam#asdf(style="border: 1px solid red;")
     span(awesome-attribute="foobar")
     | red

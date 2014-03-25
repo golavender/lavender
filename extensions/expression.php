@@ -14,17 +14,25 @@ class Lavender_Extension_Expression extends Lavender_Node
     '>'  => 'Lavender_Expression_Node_Greater_Than',
     '<'  => 'Lavender_Expression_Node_Less_Than',
     '='  => 'Lavender_Expression_Node_Assignment',
+    '/'  => 'Lavender_Expression_Node_Divide',
+    '*'  => 'Lavender_Expression_Node_Multiply',
+    '+'  => 'Lavender_Expression_Node_Add',
+    '-'  => 'Lavender_Expression_Node_Subtract',
   );
   private $_operator_order  = array(
-    '>=' => 1,
-    '<=' => 1,
-    '>'  => 1,
-    '<'  => 1,
-    '==' => 1,
+    '/'  => 1,
+    '*'  => 1,
     '%'  => 1,
-    '||' => 2,
-    '&&' => 2,
-    '='  => 3,
+    '+'  => 2,
+    '-'  => 2,
+    '>=' => 3,
+    '<=' => 3,
+    '>'  => 3,
+    '<'  => 3,
+    '==' => 3,
+    '||' => 4,
+    '&&' => 4,
+    '='  => 5,
   );
 
   public function tokenize_content(Lavender_Content $content)
@@ -355,5 +363,33 @@ class Lavender_Expression_Node_Assignment extends Lavender_Expression_Node_Compa
   public function compile($context, &$scope)
   {
     return $this->_left->assign($scope, $this->_right->compile($scope));
+  }
+}
+class Lavender_Expression_Node_Divide extends Lavender_Expression_Node_Comparison
+{
+  public function compile($context, &$scope)
+  {
+    return $this->_left->compile($scope) / $this->_right->compile($scope);
+  }
+}
+class Lavender_Expression_Node_Multiply extends Lavender_Expression_Node_Comparison
+{
+  public function compile($context, &$scope)
+  {
+    return $this->_left->compile($scope) * $this->_right->compile($scope);
+  }
+}
+class Lavender_Expression_Node_Add extends Lavender_Expression_Node_Comparison
+{
+  public function compile($context, &$scope)
+  {
+    return $this->_left->compile($scope) + $this->_right->compile($scope);
+  }
+}
+class Lavender_Expression_Node_Subtract extends Lavender_Expression_Node_Comparison
+{
+  public function compile($context, &$scope)
+  {
+    return $this->_left->compile($scope) - $this->_right->compile($scope);
   }
 }
