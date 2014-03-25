@@ -36,7 +36,6 @@ there is a shortcut if you just want a div, you can skip right to class or id de
 
 
 ```lavender
-
 .foobar text text
 #foobar text text
 ```
@@ -87,7 +86,7 @@ becomes
 
 **conditionals**:
 
-markup can be conditionally rendered using the `if` keyword. Lavender supports all the conditional operations you know and love (`&&`, `||`, `<`. `>`, `<=`, `>=`)
+markup can be conditionally rendered using the `if` keyword. Lavender supports all the conditional operations you know and love `&&`, `||`, `<`. `>`, `<=`, `>=` and does a truthy check against the result.
 
 ```lavender
 - some_variable = "this is stored in a variable"
@@ -137,7 +136,6 @@ ul
 partials are a thing
 
 ```lavender
-
 span stuff and things
 
 div.content
@@ -150,7 +148,6 @@ Lavender supports block style layout extension. this means that in the parent te
 
 so if this was layout.lavender
 ```lavender
-
 h1 this is a pretty cool web page
 
 block header
