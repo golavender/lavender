@@ -84,6 +84,18 @@ becomes
 <span class="bar">this is stored in a variable</div>
 ```
 
+arrays too
+
+```lavender
+- some_array = ['foo', 'bar', 'baz']
+```
+
+and associative arrays
+
+```lavender
+- some_array = {key1: 'foo', key2: 'bar', key3: 'baz'} 
+```
+
 **conditionals**:
 
 markup can be conditionally rendered using the `if` keyword. Lavender supports all the conditional operations you know and love `&&`, `||`, `<`. `>`, `<=`, `>=` and does a truthy check against the result.

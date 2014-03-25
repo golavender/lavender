@@ -22,11 +22,13 @@ block content
     span(awesome-attribute="foobar")
     | red
 
+  - test_array = ['asdf', 'asdf2', 'asdf3']
+
   each value, key in test_array
     div(id=key,style="border: 1px solid black; margin-top: 5px;")= value 
 
-  - test_object.qwerty = 5 > 4
-  = test_object.qwerty
+  - test_array2 = {key1: 'foooooooooo', key2: 'qwer'} 
+  = test_array2.key1
 
   if test_object.qwerty 
     | asdf
