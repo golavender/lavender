@@ -10,12 +10,24 @@ block content
 
   if TRUE
     div this should show
+  else
+    div this should not
 
   if FALSE
     div this should not
+  else
+    div this is an else
 
   if !FALSE
     div this should
+
+  - empty_array = []
+  
+  each value in empty_array
+    div= value
+  else
+    div empty array :(
+
 
   div
     | 1 + 1 = 
