@@ -5,6 +5,7 @@ class Lavender_Extension_Each extends Lavender_Node
   private $_expression;
   private $_iterator;
   private $_key_iterator;
+  private $_array;
 
   public function tokenize_content(Lavender_Content $content)
   {
@@ -36,7 +37,7 @@ class Lavender_Extension_Each extends Lavender_Node
 
   public function compile(array $scope)
   {
-    $array = $this->_expression->compile($scope);
+    $array = $this->_array($scope);
     $result = '';
 
     foreach ($array as $key => $iterator) {
@@ -47,6 +48,21 @@ class Lavender_Extension_Each extends Lavender_Node
     }
 
     return $result;
+  }
+
+  public function is_truthy(array $scope)
+  {
+    return (bool) $this->_array($scope);
+  }
+
+  private function _array(array $scope)
+  {
+    if ($this->_array == NULL) {
+      return $this->_array = $this->_expression->compile($scope);
+    }
+    else {
+      return $this->_array;
+    }
   }
 }
 

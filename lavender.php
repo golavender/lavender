@@ -15,6 +15,7 @@ require __DIR__ . '/extensions/include.php';
 require __DIR__ . '/extensions/extends.php';
 require __DIR__ . '/extensions/block.php';
 require __DIR__ . '/extensions/doctype.php';
+require __DIR__ . '/extensions/else.php';
 
 class Lavender
 {
