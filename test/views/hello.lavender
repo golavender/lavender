@@ -2,6 +2,8 @@ extends layout
 
 block content
 
+  input(type="text",value="fooooobar")
+
   if TRUE
     div this should show
 

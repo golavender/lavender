@@ -56,6 +56,18 @@ section.foo
     | this is also some text 
 ```
 
+Lavender knows not to put a closing tag on certain nodes. (we got the list from [here](http://www.w3.org/html/wg/drafts/html/master/syntax.html#void-elements)
+
+```lavender
+input(type="text",value="fooooobar")
+```
+
+becomes
+
+```html
+<input type="text" value="fooooobar">
+```
+
 **variables**:
 
 lavender views can be passed variables from the parent php application or they can be defined right in the template.
@@ -130,7 +142,7 @@ if false
 
 **loops**:
 
-lavender supports iterating over arrays and associative arrays with the `each` keyword
+Lavender supports iterating over arrays and associative arrays with the `each` keyword
 
 ```lavender
 ul
