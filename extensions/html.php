@@ -5,7 +5,24 @@ class Lavender_Extension_Html extends Lavender_Node
   private $_name;
   private $_classes = array();
   private $_attributes = array();
-  private $_self_closing_tags = array('area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'keygen', 'link', 'menuitem', 'meta', 'param', 'source', 'track', 'wbr');
+  private $_self_closing_tags = array(
+    'area',
+    'base',
+    'br',
+    'col',
+    'embed',
+    'hr',
+    'img',
+    'input',
+    'keygen',
+    'link',
+    'menuitem',
+    'meta',
+    'param',
+    'source',
+    'track',
+    'wbr'
+  );
 
   public function set_class($class)
   {
