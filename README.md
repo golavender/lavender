@@ -194,7 +194,7 @@ div.content
   include /path/relative/to/view/directory/somefile
 ```
 
-**extends**
+**extends**:
 
 Lavender supports block style layout extension. this means that in the parent template you define blocks using the `block` keyword. then in the child template you **only have blocks** which override the blocks in the parent template
 
@@ -263,5 +263,5 @@ becomes
 <div>
   <span>im gonna filter some stuff. it's gonna be cool. SOME REALLY COOL TEXT</span>
 </div>
-
+````
 profound right? not that we invented this, we copied the idea from [twig](http://twig.sensiolabs.org/).
