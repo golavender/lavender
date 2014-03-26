@@ -2,6 +2,12 @@ extends layout
 
 block content
 
+  if TRUE
+    div this should show
+
+  if FALSE
+    div this should not
+
   div
     | 1 + 1 = 
     = 1 + 1

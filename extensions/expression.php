@@ -4,6 +4,12 @@ class Lavender_Extension_Expression extends Lavender_Node
 {
   private $_output          = TRUE;
   private $_expression_tree = array();
+  private $_constants       = array(
+    'true'  => 'Lavender_Expression_Node_True',
+    'false' => 'Lavender_Expression_Node_False',
+    'TRUE'  => 'Lavender_Expression_Node_True',
+    'FALSE' => 'Lavender_Expression_Node_False',
+  );
   private $_operators       = array(
     '>=' => 'Lavender_Expression_Node_Greater_Than_Equal_To',
     '<=' => 'Lavender_Expression_Node_Less_Than_Equal_To',
@@ -81,6 +87,19 @@ class Lavender_Extension_Expression extends Lavender_Node
           $expression = array($operator_object);
 
           continue 2; // the while
+        }
+      }
+
+      foreach ($this->_constants as $constant => $class) {
+        $length = strlen($constant);
+
+        if ($content->peek($length) == $constant) {
+
+          $content->consume_next($length);
+
+          $expression[] = new $class();
+
+          continue 2;
         }
       }
 
@@ -250,6 +269,22 @@ class Lavender_Extension_Expression extends Lavender_Node
 }
 
 Lavender::register_extension('expression', 'Lavender_Extension_Expression', array('=', '-'));
+
+class Lavender_Expression_Node_True
+{
+  public function compile($context, $scope)
+  {
+    return TRUE;
+  }
+}
+
+class Lavender_Expression_Node_False
+{
+  public function compile($context, $scope)
+  {
+    return FALSE;
+  }
+}
 
 class Lavender_Expression_Node_String
 {
