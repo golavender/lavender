@@ -156,6 +156,24 @@ ul
 
 you may have noticed how i snuck in using variables for your html attributes there, yea you can do that too.
 
+**else**
+
+the else keyword can be used after loops or conditionals
+
+```lavender
+if FALSE
+  div will not show up
+else
+  div will show up
+
+- empty_array = []
+
+each value in empty_array
+  div nothing to see here
+else
+  div empty array!
+```
+
 **math**:
 
 math. you can do it. supported operators are `%`, `+`, `-`, `*`, `/` 
