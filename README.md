@@ -243,3 +243,25 @@ and you were to render the child temlate, you would get
   moar content
 </div>
 ```
+
+###filters
+
+programatic expressions in Lavender are a little limited, none of your favorite php functions are available for modifying the template data. this is by design, we don't think there should be a ton of logic in templates when that logic could be in controllers or models. however since you have to be able to *some* templating logic we added filters. it's super easy to add your own filters to Lavender and there are (or will be) plenty in place out of the box. heres how they work.
+
+```lavender
+- myvariable = "some really cool text"
+
+div
+  span
+    | i'm gonna filter some stuff. it's gonna be cool. 
+    = myvariable | upper 
+```
+
+becomes
+
+```html
+<div>
+  <span>im gonna filter some stuff. it's gonna be cool. SOME REALLY COOL TEXT</span>
+</div>
+
+profound right? not that we invented this, we copied the idea from [twig](http://twig.sensiolabs.org/).

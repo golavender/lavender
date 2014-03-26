@@ -1,19 +1,23 @@
 <?php
 
-require __DIR__ . '/lib/content.php';
-require __DIR__ . '/lib/view.php';
-require __DIR__ . '/lib/file.php';
-require __DIR__ . '/lib/node.php';
-require __DIR__ . '/lib/exception.php';
-
-require __DIR__ . '/extensions/text.php';
-require __DIR__ . '/extensions/html.php';
-require __DIR__ . '/extensions/expression.php';
-require __DIR__ . '/extensions/if.php';
-require __DIR__ . '/extensions/each.php';
-require __DIR__ . '/extensions/include.php';
-require __DIR__ . '/extensions/extends.php';
-require __DIR__ . '/extensions/block.php';
+$files = scandir(__DIR__ . '/lib/');
+foreach($files as $file) {
+  if ($file[0] !== '.') {
+    require __DIR__ . '/lib/'.$file;
+  }
+}
+$files = scandir(__DIR__ . '/extensions/');
+foreach($files as $file) {
+  if ($file[0] !== '.') {
+    require __DIR__ . '/extensions/'.$file;
+  }
+}
+$files = scandir(__DIR__ . '/filters/');
+foreach($files as $file) {
+  if ($file[0] !== '.') {
+    require __DIR__ . '/filters/'.$file;
+  }
+}
 
 class Lavender
 {
@@ -35,6 +39,16 @@ class Lavender
   public static function view($name)
   {
     return new Lavender_View($name);
+  }
+
+  public static function register_filter($name, $class)
+  {
+    static::register_extension('filter|'.$name, $class);
+  }
+
+  public static function get_filter_by_name($name)
+  {
+    return static::get_extension_by_name('filter|'.$name);
   }
 
   public static function register_extension($name, $class, array $tokens = array())

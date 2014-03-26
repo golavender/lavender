@@ -4,6 +4,10 @@ block content
 
   input(type="text",value="fooooobar")
 
+  span
+    | im gonna filter some stuff. its gonna be cool. 
+    = myvariable | upper 
+
   if TRUE
     div this should show
 
