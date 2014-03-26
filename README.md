@@ -116,7 +116,7 @@ becomes
 <span class="foo">this is stored in a variable</div>
 ```
 
-`TRUE` and `FALSE` (and `true` and `false`) are keywords in Lavender, they can be assinged to variables or used in conditionals directly (but if you actually do that then [wat](https://www.destroyallsoftware.com/talks/wat)
+`TRUE` and `FALSE` (and `true` and `false`) are keywords in Lavender, they can be assinged to variables or used in conditionals directly (but if you actually do that then [wat](https://www.destroyallsoftware.com/talks/wat))
 
 ```lavender
 - my_variable = TRUE
