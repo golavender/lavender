@@ -56,7 +56,7 @@ section.foo
     | this is also some text 
 ```
 
-Lavender knows not to put a closing tag on certain nodes. (we got the list from [here](http://www.w3.org/html/wg/drafts/html/master/syntax.html#void-elements)
+Lavender knows not to put a closing tag on certain nodes. (we got the list from [here](http://www.w3.org/html/wg/drafts/html/master/syntax.html#void-elements))
 
 ```lavender
 input(type="text",value="fooooobar")
