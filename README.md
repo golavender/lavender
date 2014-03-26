@@ -68,6 +68,25 @@ becomes
 <input type="text" value="fooooobar">
 ```
 
+**doctype**:
+
+do you always forget the syntax for doctype? Lavender exists to solve your first world problems. just throw a `!!!` at the top of your layout and you get yourself a nice html doctype. other types supported are `html`, `transitional`, `strict`, `frameset`, `1.1`, `basic` and `mobile`. here are some pretty examples.
+
+```lavender
+!!!
+```
+defaults to html but you can also specify
+```lavender
+!!! html
+```
+the word `doctype` works too
+```lavender
+doctype html
+```
+```lavender
+doctype strict
+```
+
 **variables**:
 
 lavender views can be passed variables from the parent php application or they can be defined right in the template.
