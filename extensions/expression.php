@@ -185,6 +185,34 @@ class Lavender_Extension_Expression extends Lavender_Node
         $number = $content->consume_regex('/[0-9\.]/i');
         $expression[] = new Lavender_Expression_Node_Number($number);
       }
+      else if ($next == '|') {
+        $content->consume_next(); // the "|"
+        $content->consume_whitespace();
+
+        $name = $content->consume_regex('/[a-z0-9_]/i');
+
+        $arguments = array();
+        if ($content->peek() == '(') {
+          $content->consume_next(); // the '('
+
+          while (($next = $content->peek()) !== '') {
+            switch ($next) {
+              case ')':
+                $content->consume_next(); // the ')'
+                break 2;
+              case ',':
+                $content->consume_next(); // the ','
+                break;
+              default:
+                $sub_expression = Lavender::get_extension_by_name('expression');
+                $sub_expression->tokenize_content($content);
+                $arguments[] = $sub_expression;
+            }
+          }
+        }
+
+        $expression[] = new Lavender_Expression_Node_Filter($name, $arguments);
+      }
       else if (preg_match('/[a-z]/i', $next)) {
 
         $name = $content->consume_regex('/[a-z0-9_]/i');
@@ -358,6 +386,30 @@ class Lavender_Expression_Node_Array
     }
 
     return $result;
+  }
+}
+
+class Lavender_Expression_Node_Filter
+{
+  private $_filter;
+  private $_arguments;
+
+  public function __construct($name, $arguments)
+  {
+    $this->_filter = Lavender::get_filter_by_name($name);
+    $this->_arguments = $arguments;
+
+    if (!$this->_filter) {
+      throw new Exception("$name filter could not be found");
+    }
+  }
+
+  public function compile($context, $scope)
+  {
+    $context = $context ?: $scope;
+    array_unshift($this->_arguments, $context);
+
+    return call_user_func_array(array($this->_filter, 'execute'), $this->_arguments);
   }
 }
 
