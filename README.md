@@ -156,7 +156,7 @@ ul
 
 you may have noticed how i snuck in using variables for your html attributes there, yea you can do that too.
 
-**else**
+**else**:
 
 the else keyword can be used after loops or conditionals
 
