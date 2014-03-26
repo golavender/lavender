@@ -5,6 +5,24 @@ class Lavender_Extension_Html extends Lavender_Node
   private $_name;
   private $_classes = array();
   private $_attributes = array();
+  private $_self_closing_tags = array(
+    'area',
+    'base',
+    'br',
+    'col',
+    'embed',
+    'hr',
+    'img',
+    'input',
+    'keygen',
+    'link',
+    'menuitem',
+    'meta',
+    'param',
+    'source',
+    'track',
+    'wbr'
+  );
 
   public function set_class($class)
   {
@@ -77,6 +95,7 @@ class Lavender_Extension_Html extends Lavender_Node
           break;
         case " ":
         case "\t":
+          $content->consume_whitespace();
           # the rest of the line should just be text
           $text = $content->consume_until("\n");
           $text_node = Lavender::get_extension_by_name('text');
@@ -109,7 +128,10 @@ class Lavender_Extension_Html extends Lavender_Node
 
     $result = "<{$this->_name}{$attributes}>";
     $result .= parent::compile($scope);
-    $result .= "</{$this->_name}>";
+
+    if (!in_array($this->_name, $this->_self_closing_tags)) {
+      $result .= "</{$this->_name}>";
+    }
 
     return $result;
   }
