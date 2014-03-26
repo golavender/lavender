@@ -98,7 +98,7 @@ and associative arrays
 
 **conditionals**:
 
-markup can be conditionally rendered using the `if` keyword. Lavender supports all the conditional operations you know and love `&&`, `||`, `<`. `>`, `<=`, `>=` and does a truthy check against the result.
+markup can be conditionally rendered using the `if` keyword. Lavender supports all the conditional operations you know and love `&&`, `||`, `<`. `>`, `<=`, `>=`, `==` and does a truthy check against the result.
 
 ```lavender
 - some_variable = "this is stored in a variable"
