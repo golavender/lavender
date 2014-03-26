@@ -107,15 +107,24 @@ class Lavender_Extension_Expression extends Lavender_Node
         // todo - '.' should probably have some more robust logic
         // just a separator, no need to actually do anything with it
         $content->consume_next();
+      }
+      else if ($next == '!') {
+        $content->consume_next(); // the '!'
+        $content->consume_whitespace();
 
-      } else if ($next == '"' || $next == "'") {
+        $sub_expression = Lavender::get_extension_by_name('expression');
+        $sub_expression->tokenize_content($content);
+
+        $expression[] = new Lavender_Expression_Node_Not($sub_expression);
+      }
+      else if ($next == '"' || $next == "'") {
         $content->consume_next(); // the '"'
         $string = $content->consume_until($next);
         $content->consume_next(); // the '"'
 
         $expression[] = new Lavender_Expression_Node_String($string);
-
-      } else if ($next == '[') {
+      }
+      else if ($next == '[') {
         $content->consume_next(); // the '['
         $content->consume_whitespace();
 
@@ -138,8 +147,8 @@ class Lavender_Extension_Expression extends Lavender_Node
         }
 
         $expression[] = new Lavender_Expression_Node_Array($bits);
-
-      } else if ($next == '{') {
+      }
+      else if ($next == '{') {
         $content->consume_next(); // the '{'
         $content->consume_whitespace();
 
@@ -171,12 +180,12 @@ class Lavender_Extension_Expression extends Lavender_Node
         }
 
         $expression[] = new Lavender_Expression_Node_Array($bits);
-
-      } else if (preg_match('/[0-9]/', $next)) {
+      }
+      else if (preg_match('/[0-9]/', $next)) {
         $number = $content->consume_regex('/[0-9\.]/i');
         $expression[] = new Lavender_Expression_Node_Number($number);
-
-      } else if (preg_match('/[a-z]/i', $next)) {
+      }
+      else if (preg_match('/[a-z]/i', $next)) {
 
         $name = $content->consume_regex('/[a-z0-9_]/i');
 
@@ -211,8 +220,8 @@ class Lavender_Extension_Expression extends Lavender_Node
           $method->set_arguments($arguments);
           $expression[] = $method;
         }
-
-      } else {
+      }
+      else {
         break;
       }
     }
@@ -283,6 +292,21 @@ class Lavender_Expression_Node_False
   public function compile($context, $scope)
   {
     return FALSE;
+  }
+}
+
+class Lavender_Expression_Node_Not
+{
+  private $_sub_expression;
+
+  public function __construct($expression)
+  {
+    $this->_sub_expression = $expression;
+  }
+
+  public function compile($context, &$scope)
+  {
+    return !$this->_sub_expression->compile($scope);
   }
 }
 
