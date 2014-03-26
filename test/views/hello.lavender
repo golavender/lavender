@@ -10,6 +10,9 @@ block content
   if FALSE
     div this should not
 
+  if !FALSE
+    div this should
+
   div
     | 1 + 1 = 
     = 1 + 1
