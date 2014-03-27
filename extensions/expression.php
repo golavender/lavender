@@ -407,9 +407,15 @@ class Lavender_Expression_Node_Filter
   public function compile($context, $scope)
   {
     $context = $context ?: $scope;
-    array_unshift($this->_arguments, $context);
 
-    return call_user_func_array(array($this->_filter, 'execute'), $this->_arguments);
+    $arguments = array();
+    foreach ($this->_arguments as $argument) {
+      $arguments[] = $argument->compile($scope);
+    }
+
+    array_unshift($arguments, $context);
+
+    return call_user_func_array(array($this->_filter, 'execute'), $arguments);
   }
 }
 
