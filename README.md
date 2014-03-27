@@ -139,12 +139,22 @@ if some_variable
 
 if some_variable_that_doesnt_exist
   span.foo this won't be rendered
+
+if FALSE
+  div this isn't rendered
+elseif FALSE
+  div still not rendered
+elseif TRUE
+  div wooooooooo
+else
+  div sadface
 ```
 
 becomes
 
 ```html
 <span class="foo">this is stored in a variable</div>
+<div>wooooooooo</div>
 ```
 
 `TRUE` and `FALSE` (and `true` and `false`) are keywords in Lavender, they can be assinged to variables or used in conditionals directly (but if you actually do that then [wat](https://www.destroyallsoftware.com/talks/wat))

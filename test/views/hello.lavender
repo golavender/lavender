@@ -4,6 +4,8 @@ block content
 
   input(type="text",value="fooooobar")
 
+  - myvariable = "asfasdfasdf"
+
   span
     | im gonna filter some stuff. its gonna be cool. 
     = myvariable | upper 
@@ -15,6 +17,10 @@ block content
 
   if FALSE
     div this should not
+  elseif FALSE
+    div elseif here
+  elseif TRUE
+    div elseif here2
   else
     div this is an else
 

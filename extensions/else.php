@@ -11,7 +11,7 @@ class Lavender_Extension_Else extends Lavender_Node
     $siblings = $this->get_parent()->get_children();
 
     if (count($siblings) < 2) {
-      throw new Lavender_Exception($content, 'else node used out of context');
+      throw new Lavender_Exception($content, 'else node used with no previous conditional');
     }
 
     $before_me = $siblings[count($siblings)-2];
