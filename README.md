@@ -315,12 +315,16 @@ profound right? not that we invented this, we copied the idea from [twig](http:/
 
 **upper**:
 `="string"|upper` becomes `STRING`
+
 **trim**:
 `=" string  "|trim` becomes `string`
+
 **title**:
 `="this is a title"|title` becomes `This Is A Title`
+
 **split**:
 `"these are some words"|split(' ')` becomes the array `['these', 'are', 'some', 'words']`
+
 **sort**:
 `"these are some words"|split(' ')|sort` becomes the array `['are', 'some', 'these', 'words']`
 
