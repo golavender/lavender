@@ -1,6 +1,6 @@
 <?php
 
-class Lavender_Filter_Upper
+class Lavender_Filter_Trim
 {
   public function execute($string, $characters = " \t\n\r\0\x0B")
   {
