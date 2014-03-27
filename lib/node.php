@@ -44,7 +44,7 @@ abstract class Lavender_Node
     return $this->_children;
   }
 
-  public function compile(array $scope)
+  public function compile(array &$scope)
   {
     $result = '';
 

@@ -17,7 +17,17 @@ class Lavender_View
       return $this->_view_file->compile($scope);
     }
     catch (Lavender_Exception $e) {
-      die("{$e->get_message()}. {$this->_name} at line: {$e->get_line()}");
+
+      $view_file = $this->_view_file->get_content()->get_full_content();
+
+      die(
+        Lavender::view(__DIR__.'/error_template.lavender')
+          ->compile(array(
+            'exception' => $e,
+            'view_name' => $this->_name,
+            'lines'     => explode("\n", $view_file),
+          ))
+      );
     }
     catch (Exception $e) {
       die("error in {$this->_name} at line: {$this->_view_file->get_content()->get_line()}");

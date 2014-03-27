@@ -2,12 +2,18 @@
 
 class Lavender_Content
 {
+  public $_full_content;
   public $_content;
   private $_line = 1;
 
   public function __construct($raw_content)
   {
-    $this->_content = $raw_content;
+    $this->_content = $this->_full_content = $raw_content;
+  }
+
+  public function get_full_content()
+  {
+    return $this->_full_content;
   }
 
   public function get_line()

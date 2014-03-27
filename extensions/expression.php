@@ -441,9 +441,19 @@ class Lavender_Expression_Node_Variable
 
     if (is_array($context) && isset($context[$this->_name])) {
       return $context[$this->_name];
-    } else if (is_object($context) && isset($context->{$this->_name})) {
-      return $context->{$this->_name};
-    } else {
+    }
+    else if (is_object($context) && method_exists($context, $this->_name)) {
+
+      $name = $this->_name;
+
+      // since we can't return a reference to this function, stub a wrapper and return that
+      return function() use ($context, $name) {
+        return call_user_func_array(array($context, $name), func_get_args());
+      };
+    }
+    else if (is_object($context) && isset($context->{$this->_name})) {
+    }
+    else {
       return NULL;
     }
   }
@@ -464,7 +474,6 @@ class Lavender_Expression_Node_Method extends Lavender_Expression_Node_Variable
     $arguments = array();
 
     if ($method) {
-
       foreach ($this->_arguments as $argument) {
         $arguments[] = $argument->compile($scope);
       }
@@ -572,7 +581,16 @@ class Lavender_Expression_Node_Add extends Lavender_Expression_Node_Comparison
 {
   public function compile($context, &$scope)
   {
-    return $this->_left->compile($scope) + $this->_right->compile($scope);
+    $left = $this->_left->compile($scope);
+    $right = $this->_right->compile($scope);
+
+    if (gettype($left) == 'string') {
+      return $left . $right;
+    }
+    else {
+      return $left + $right;
+    }
+
   }
 }
 class Lavender_Expression_Node_Subtract extends Lavender_Expression_Node_Comparison

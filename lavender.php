@@ -1,29 +1,21 @@
 <?php
 
-$files = scandir(__DIR__ . '/lib/');
-foreach($files as $file) {
-  if ($file[0] !== '.') {
-    require __DIR__ . '/lib/'.$file;
-  }
+foreach (glob(__DIR__."/lib/*.php") as $filename) {
+  require $filename;
 }
-$files = scandir(__DIR__ . '/extensions/');
-foreach($files as $file) {
-  if ($file[0] !== '.') {
-    require __DIR__ . '/extensions/'.$file;
-  }
+foreach (glob(__DIR__."/extensions/*.php") as $filename) {
+  require $filename;
 }
-$files = scandir(__DIR__ . '/filters/');
-foreach($files as $file) {
-  if ($file[0] !== '.') {
-    require __DIR__ . '/filters/'.$file;
-  }
+foreach (glob(__DIR__."/filters/*.php") as $filename) {
+  require $filename;
 }
 
 class Lavender
 {
   private static $_extensions = array();
   private static $_config = array(
-    'file_extension' => 'lavender'
+    'file_extension' => 'lavender',
+    'handle_errors'  => TRUE,
   );
 
   public static function config(array $config)

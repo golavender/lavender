@@ -12,7 +12,7 @@ class Lavender_Extension_Each extends Lavender_Node
     $content->consume_until(" "); // the 'each'
     $content->consume_whitespace();
 
-    $this->_iterator = $content->consume_regex("/[a-z0-9]/i");
+    $this->_iterator = $content->consume_regex("/[a-z0-9_]/i");
 
     $content->consume_whitespace();
 
@@ -20,7 +20,7 @@ class Lavender_Extension_Each extends Lavender_Node
       $content->consume_next(); // the ','
       $content->consume_whitespace();
 
-      $this->_key_iterator = $content->consume_regex("/[a-z0-9]/i");
+      $this->_key_iterator = $content->consume_regex("/[a-z0-9_]/i");
 
       $content->consume_whitespace();
     }
@@ -57,12 +57,7 @@ class Lavender_Extension_Each extends Lavender_Node
 
   private function _array(array $scope)
   {
-    if ($this->_array == NULL) {
-      return $this->_array = $this->_expression->compile($scope);
-    }
-    else {
-      return $this->_array;
-    }
+    return $this->_expression->compile($scope);
   }
 }
 

@@ -10,7 +10,12 @@ class Lavender_File
 
   public function __construct($name)
   {
-    $path = Lavender::get_config('view_dir') . '/' . $name . '.' . Lavender::get_config('file_extension');
+    if ($name[0] == '/') {
+      $path = $name;
+    }
+    else {
+      $path = Lavender::get_config('view_dir') . '/' . $name . '.' . Lavender::get_config('file_extension');
+    }
     $this->_content = new Lavender_Content(file_get_contents($path));
   }
 
