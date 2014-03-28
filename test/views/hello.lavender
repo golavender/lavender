@@ -4,11 +4,22 @@ block content
 
   input(type="text",value="fooooobar")
 
-  - myvariable = "asfasdfasdf"
+  - myvariable = "im gonna filter some stuff. its gonna be cool."
 
-  span
-    | im gonna filter some stuff. its gonna be cool. 
-    = myvariable | upper 
+  div
+    = myvariable | upper
+
+  div
+    = myvariable | title
+
+  div
+    = myvariable | trim('.')
+
+  each value in myvariable|split(' ')
+    div(style="border: 1px solid red;")= value
+ 
+  each value in "these are some words"|split(' ')|sort
+    div= value
 
   if TRUE
     div this should show
@@ -33,7 +44,6 @@ block content
     div= value
   else
     div empty array :(
-
 
   div
     | 1 + 1 = 

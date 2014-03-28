@@ -311,4 +311,25 @@ becomes
   <span>im gonna filter some stuff. it's gonna be cool. SOME REALLY COOL TEXT</span>
 </div>
 ````
-profound right? not that we invented this, we copied the idea from [twig](http://twig.sensiolabs.org/).
+profound right? not that we invented this, we copied the idea from [twig](http://twig.sensiolabs.org/). the filters Lavender comes with are:
+
+**upper**:
+`="string"|upper` becomes `STRING`
+
+**trim**:
+`=" string  "|trim` becomes `string`
+
+**title**:
+`="this is a title"|title` becomes `This Is A Title`
+
+**split**:
+`"these are some words"|split(' ')` becomes the array `['these', 'are', 'some', 'words']`
+
+**sort**:
+`"these are some words"|split(' ')|sort` becomes the array `['are', 'some', 'these', 'words']`
+
+
+
+
+
+
