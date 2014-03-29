@@ -10,7 +10,7 @@ first get yourself some [composer](https://getcomposer.org/doc/00-intro.md#insta
 ```json
 {
   "require": {
-    "lavender/lavender": "v0.1.1"
+    "lavender/lavender": "*"
   }
 }
 ```
