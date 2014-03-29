@@ -17,7 +17,7 @@ first get yourself some [composer](https://getcomposer.org/doc/00-intro.md#insta
 
 then run `php composer.phar install` or `composer install` depending on how you installed composer. once composer has finished it will generate an autoloader in `vendor/autoload.php` which you can `require()` from your application's bootstrap process.
 
-**via git**
+**via git**:
 
 add the lavender submodule with `git submodule add git@github.com:golavender/lavender.git <folder to clone to>` and include it with `require "<where you put lavender>/src/Lavender/lavender.php` 
 
