@@ -51,7 +51,6 @@ Lavender::config(array(
 rendering a template is as easy as
 
 ```php
-// render a template
 Lavender::view('some_template')->compile();
 
 $output = Lavender::view('some_template')->compile(array(
