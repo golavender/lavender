@@ -73,7 +73,7 @@ class Lavender_File
     $this->_post_tokenize_hooks[] = $hook;
   }
 
-  public function compile(array $scope)
+  public function compile(array &$scope)
   {
     $this->_tokenize();
     $result = '';

@@ -51,7 +51,7 @@ class Lavender_Extension_Extends extends Lavender_Node
     }
   }
 
-  public function compile(array $scope)
+  public function compile(array &$scope)
   {
     return $this->_parent_view->compile(array_merge($scope, $this->_blocks));
   }

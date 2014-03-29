@@ -110,7 +110,7 @@ class Lavender_Extension_Html extends Lavender_Node
     }
   }
 
-  public function compile(array $scope)
+  public function compile(array &$scope)
   {
     if ($this->_classes) {
       $this->set_attribute('class', implode(' ', $this->_classes));

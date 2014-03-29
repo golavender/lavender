@@ -35,7 +35,7 @@ class Lavender_Extension_Each extends Lavender_Node
     $this->_expression->tokenize_content($content);
   }
 
-  public function compile(array $scope)
+  public function compile(array &$scope)
   {
     $array = $this->_array($scope);
     $result = '';

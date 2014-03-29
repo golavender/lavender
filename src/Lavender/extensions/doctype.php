@@ -23,7 +23,7 @@ class Lavender_Extension_Doctype extends Lavender_Node
     }
   }
 
-  public function compile(array $scope)
+  public function compile(array &$scope)
   {
     if (isset($this->_types[$this->_type])) {
       return $this->_types[$this->_type];

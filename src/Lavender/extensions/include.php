@@ -13,7 +13,7 @@ class Lavender_Extension_Include extends Lavender_Node
     $this->_subview = new Lavender_View($path);
   }
 
-  public function compile(array $scope)
+  public function compile(array &$scope)
   {
     return $this->_subview->compile($scope);
   }

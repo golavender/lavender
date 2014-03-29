@@ -11,7 +11,7 @@ class Lavender_View
     $this->_view_file = new Lavender_File($name);
   }
 
-  public function compile($scope = array())
+  public function compile(array &$scope = array())
   {
     try {
       return $this->_view_file->compile($scope);

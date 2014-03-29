@@ -16,7 +16,7 @@ class Lavender_Extension_Block extends Lavender_Node
     }
   }
 
-  public function compile(array $scope)
+  public function compile(array &$scope)
   {
     if ($this->_mode !== 'definition') {
 

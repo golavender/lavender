@@ -17,7 +17,7 @@ class Lavender_Extension_Text extends Lavender_Node
     $this->_text = $text;
   }
 
-  public function compile(array $scope)
+  public function compile(array &$scope)
   {
     return $this->_text;
   }
