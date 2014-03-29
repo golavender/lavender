@@ -11,13 +11,19 @@ class Lavender_View
     $this->_view_file = new Lavender_File($name);
   }
 
-  public function compile(array &$scope = array())
+  public function compile(array $scope = array())
   {
     try {
       return $this->_view_file->compile($scope);
     }
-    catch (Lavender_Exception $e) {
+    catch (Exception $e) {
+      $this->_handle_exception($e);
+    }
+  }
 
+  private function _handle_exception($e)
+  {
+    if (Lavender::get_config('handle_errors') && $e instanceof Lavender_Exception) {
       $view_file = $this->_view_file->get_content()->get_full_content();
 
       die(
@@ -29,9 +35,12 @@ class Lavender_View
           ))
       );
     }
-    catch (Exception $e) {
+    elseif(Lavender::get_config('handle_errors')) {
       die("error in {$this->_name} at line: {$this->_view_file->get_content()->get_line()}");
     }
-  }
+    else {
+      throw $e;
+    }
 
+  }
 }

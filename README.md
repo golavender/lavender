@@ -1,6 +1,66 @@
 #Lavender
 **php templates that don't suck**
 
+##installation
+
+**via composer**:
+
+first get yourself some [composer](https://getcomposer.org/doc/00-intro.md#installation-nix). next you need to make yourself a `composer.json`, here's an example.
+
+```json
+{
+  "require": {
+    "lavender/lavender": "v0.1.1"
+  }
+}
+```
+
+then run `php composer.phar install` or `composer install` depending on how you installed composer. once composer has finished it will generate an autoloader in `vendor/autoload.php` which you can `require()` from your application's bootstrap process.
+
+**via git**:
+
+add the lavender submodule with `git submodule add git@github.com:golavender/lavender.git <folder to clone to>` and include it with `require "<where you put lavender>/src/Lavender/lavender.php` 
+
+##usage
+
+once you have installed and included lavender the only required configuration is to tell lavender where the views directory is.
+
+```php
+Lavender::config(array(
+  
+  /*
+   * required - path to views directory
+   */
+  'view_dir'       => String,
+
+  /*
+   * optional - defaults to "lavender"
+   */
+  'file_extension' => String,
+
+  /*
+   * optional - defaults to TRUE
+   *
+   * renders a debugging error page instead of throwing an exception.
+   * in production you should disable this and use a 500 page.
+   */
+  'handle_errors'  => Boolean, 
+));
+```
+
+rendering a template is as easy as
+
+```php
+$output = Lavender::view('some_template')->compile();
+
+// or if you need to pass data into the template (probably the case)
+
+$output = Lavender::view('some_template')->compile(array(
+  'data'      => 'some data that the template will use',
+  'more_data' => "moar data",
+));
+```
+
 ##language reference
 
 **html**:
@@ -293,7 +353,7 @@ and you were to render the child temlate, you would get
 
 ###filters
 
-programatic expressions in Lavender are a little limited, none of your favorite php functions are available for modifying the template data. this is by design, we don't think there should be a ton of logic in templates when that logic could be in controllers or models. however since you have to be able to do *some* templating logic we added filters. it's super easy to add your own filters to Lavender and there are (or will be) plenty in place out of the box. heres how they work.
+programatic expressions in Lavender are a little limited, none of your favorite php functions are available for modifying the template data. this is by design, we don't think there should be a ton of logic in templates when that logic could be in controllers or models. however since you have to be able to do *some* templating logic we added filters. it's super easy to add your own filters to Lavender and there are (or will be) plenty in place out of the box. here's how they work.
 
 ```lavender
 - myvariable = "some really cool text"
