@@ -1,6 +1,6 @@
 <?php
 
-require '../lavender.php';
+require '../src/Lavender/lavender.php';
 
 class test
 {
