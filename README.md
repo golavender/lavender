@@ -27,9 +27,24 @@ once you have installed and included lavender the only required configuration is
 
 ```php
 Lavender::config(array(
-  'view_dir'       => path to views directory,
-  'file_extension' => defaults to "lavender",
-  'handle_errors'  => defaults to `TRUE` renders a debugging error page instead of throwing an exception. in production you should disable this and use a 500 page.
+  
+  /*
+   * required - path to views directory
+   */
+  'view_dir'       => String,
+
+  /*
+   * optional - defaults to "lavender"
+   */
+  'file_extension' => String,
+
+  /*
+   * optional - defaults to TRUE
+   *
+   * renders a debugging error page instead of throwing an exception.
+   * in production you should disable this and use a 500 page.
+   */
+  'handle_errors'  => Boolean, 
 ));
 ```
 
