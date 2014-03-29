@@ -5,7 +5,7 @@
 
 **via composer**:
 
-first get yourself some [composer](https://getcomposer.org/doc/00-intro.md#installation-nix). next you need to make yourself a `composer.json`, heres an example.
+first get yourself some [composer](https://getcomposer.org/doc/00-intro.md#installation-nix). next you need to make yourself a `composer.json`, here's an example.
 
 ```json
 {
@@ -337,7 +337,7 @@ and you were to render the child temlate, you would get
 
 ###filters
 
-programatic expressions in Lavender are a little limited, none of your favorite php functions are available for modifying the template data. this is by design, we don't think there should be a ton of logic in templates when that logic could be in controllers or models. however since you have to be able to do *some* templating logic we added filters. it's super easy to add your own filters to Lavender and there are (or will be) plenty in place out of the box. heres how they work.
+programatic expressions in Lavender are a little limited, none of your favorite php functions are available for modifying the template data. this is by design, we don't think there should be a ton of logic in templates when that logic could be in controllers or models. however since you have to be able to do *some* templating logic we added filters. it's super easy to add your own filters to Lavender and there are (or will be) plenty in place out of the box. here's how they work.
 
 ```lavender
 - myvariable = "some really cool text"
