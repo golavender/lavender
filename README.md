@@ -1,6 +1,50 @@
 #Lavender
 **php templates that don't suck**
 
+##installation
+
+**via composer**:
+
+first get yourself some [composer](https://getcomposer.org/doc/00-intro.md#installation-nix). next you need to make yourself a `composer.json`, heres an example.
+
+```json
+{
+  "require": {
+    "lavender/lavender": "v0.1.1"
+  }
+}
+```
+
+then run `php composer.phar install` or `composer install` depending on how you installed composer. once composer has finished it will generate an autoloader in `vendor/autoload.php` which you can `require()` from your application's bootstrap process.
+
+**via git**
+
+add the lavender submodule with `git submodule add git@github.com:golavender/lavender.git <folder to clone to>` and include it with `require "<where you put lavender>/src/Lavender/lavender.php` 
+
+##usage
+
+once you have installed and included lavender the only required configuration is to tell lavender where the views directory is.
+
+```php
+Lavender::config(array(
+  'view_dir'       => path to views directory,
+  'file_extension' => defaults to "lavender",
+  'handle_errors'  => defaults to `TRUE` renders a debugging error page instead of throwing an exception. in production you should disable this and use a 500 page.
+));
+```
+
+rendering a template is as easy as
+
+```php
+// render a template
+Lavender::view('some_template')->compile();
+
+$output = Lavender::view('some_template')->compile(array(
+  'data'      => 'some data that the template will use',
+  'more_data' => "moar data",
+));
+```
+
 ##language reference
 
 **html**:
