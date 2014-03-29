@@ -1,0 +1,29 @@
+{
+  "name": "lavender/lavender",
+  "description": "jade-esque templates for PHP 5.3",
+  "keywords": ["templating", "jade", "haml"],
+  "homepage": "http://golavender.com",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Thomas Woodward",
+      "email": "tom@daftlabs.com",
+      "homepage": "http://daftlabs.com",
+      "role": "Developer"
+    },
+    {
+      "name": "James Thompson",
+      "email": "jt@daftlabs.com",
+      "homepage": "http://daftlabs.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.0"
+  },
+  "autoload": {
+    "psr-0": {
+      "Lavender": "src"
+    }
+  }
+}
