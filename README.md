@@ -388,8 +388,30 @@ profound right? not that we invented this, we copied the idea from [twig](http:/
 **sort**:
 `"these are some words"|split(' ')|sort` becomes the array `['are', 'some', 'these', 'words']`
 
+**capitalize**:
+`= "these are some words"|capitalize` becomes `These are some words`
 
+**date**:
+`= "1396372567"|date` becomes `4/1/2014`
+`= "1396372567"|date('Y')` becomes `2014`
 
+**default**:
+`= []|default('foobar')` becomes `foobar`
 
+**first**:
+`= ['asdf','qwer']|first` becomes `asdf`
+
+**last**:
+`= ['asdf','qwer']|last` becomes `qwer`
+
+**join**:
+`= ['asdf','qwer']|join` becomes `asdf qwer`
+`= ['asdf','qwer']|join('-')` becomes `asdf-qwer`
+
+**keys**:
+`{'asdf': 'foo','qwer': 'bar'}|join` becomes the array `['asdf', 'qwer']`
+
+**length**:
+`= ['asdf','qwer']|length` becomes `2`
 
 

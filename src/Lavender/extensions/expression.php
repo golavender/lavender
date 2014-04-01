@@ -280,7 +280,7 @@ class Lavender_Extension_Expression extends Lavender_Node
 
   public function compile(array &$scope)
   {
-    $context = NULL;
+    $context = $scope;
 
     foreach($this->_expression_tree as $node) {
       $context = $node->compile($context, $scope);
@@ -406,8 +406,6 @@ class Lavender_Expression_Node_Filter
 
   public function compile($context, $scope)
   {
-    $context = $context ?: $scope;
-
     $arguments = array();
     foreach ($this->_arguments as $argument) {
       $arguments[] = $argument->compile($scope);
@@ -443,8 +441,6 @@ class Lavender_Expression_Node_Variable
 
   public function compile($context, $scope)
   {
-    $context = $context ?: $scope;
-
     if (is_array($context) && isset($context[$this->_name])) {
       return $context[$this->_name];
     }
