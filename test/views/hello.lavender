@@ -2,6 +2,23 @@ extends layout
 
 block content
 
+  div
+    = ['asdf','qwer']|length
+  div
+    = ['asdf','qwer']|last
+  div
+    = ['asdf','qwer']|first
+  div
+    = ['asdf','qwer']|keys|first
+  div
+    = ['asdf','qwer']|join
+  div
+    = ''|default('foobar')
+  div
+    = '1396372567'|date()
+  div
+    = "foo bar"|capitalize
+
   input(type="text",value="fooooobar")
 
   - myvariable = "im gonna filter some stuff. its gonna be cool."
