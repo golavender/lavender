@@ -349,6 +349,9 @@ class Lavender_Expression_Node_String
 
   public function compile($context, $scope)
   {
+    $this->_string = str_replace('\n', "\n", $this->_string);
+    $this->_string = str_replace('\t', "\t", $this->_string);
+
     return $this->_string;
   }
 }
