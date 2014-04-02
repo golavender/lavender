@@ -445,6 +445,8 @@ profound right? not that we invented this, we copied the idea from [twig](http:/
 **floor**:
 `= 10000000000.12345|floor` becomes `10000000000`
 
+**relative**:
+if you had a `timestamp` variable `timestamp|relative` would return things like 'just now' or 'in 3 days' or `6 minutes ago`
 
 
 
