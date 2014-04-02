@@ -2,26 +2,20 @@
 
 class Lavender_Filter_Relative
 {
-  private $_minute = 60;
-  private $_hour   = 3600;
-  private $_day    = 86400;
-  private $_month  = 2592000;
-  private $_year   = 31536000;
-
   private $_intervals = array(
     'minute' => 60,
     'hour'   => 3600,
     'day'    => 86400,
     'month'  => 2592000,
     'year'   => 31536000,
-    '_'      => NULL,
+    '_'      => NULL, // this exists so that times greater than one year will be caught
   );
 
   private function _past($now, $timestamp)
   {
     $diff = $now - $timestamp;
 
-    if ($diff <= $this->_minute) {
+    if ($diff <= $this->_intervals['minute']) {
       return 'just now';
     }
 
@@ -39,7 +33,7 @@ class Lavender_Filter_Relative
   {
     $diff = $timestamp - $now;
 
-    if ($diff <= $this->_minute) {
+    if ($diff <= $this->_intervals['minute']) {
       return 'right now';
     }
 
