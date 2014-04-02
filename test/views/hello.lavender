@@ -18,6 +18,26 @@ block content
     = '1396372567'|date()
   div
     = "foo bar"|capitalize
+  div
+    = "FOO BAR"|lower
+  div
+    = "new\nline"|nl2br
+  div
+    = 12345.123|round(2)
+  each value in ['foo', 'bar']|merge(['baz']) 
+    div(style="border: 1px solid red;")= value
+  div
+    = "foo bar"|replace(' ', '-')
+  div
+    = ['asdf', 'qwer']|reverse|join()
+  each value in ['foo', 'bar']|merge(['baz'])|slice(1,1)
+    div(style="border: 1px solid red;")= value
+  div
+    = 10000000000.12345|number_format(2, ',', '.')
+  div
+    = 10000000000.12345|ceil
+  div
+    = 10000000000.12345|floor
 
   input(type="text",value="fooooobar")
 

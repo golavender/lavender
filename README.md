@@ -414,4 +414,37 @@ profound right? not that we invented this, we copied the idea from [twig](http:/
 **length**:
 `= ['asdf','qwer']|length` becomes `2`
 
+**lower**:
+`= "FOO BAR"|lower` becomes `foo bar`
+
+**nl2br**:
+`= "new\nline"|nl2br` becomes `new<br>line`
+
+**round**:
+`= 12345.123|round(2)` becomes `12345.12`
+
+**merge**:
+`['foo', 'bar']|merge(['baz'])` becomes the array `['foo', 'bar', 'baz']`
+
+**replace**:
+`= "foo bar"|replace(' ', '-')` becomes `foo-bar`
+
+**reverse**:
+`['asdf', 'qwer']|reverse` becomes the array `['qwer', 'asdf']`
+
+**slice**:
+`['foo', 'bar', 'baz']|slice(1, 1)` becomes the array `['bar']`
+
+**number_format**:
+`= 10000000000.12345|number_format()` becomes `10,000,000,000`
+`= 10000000000.12345|number_format(2, ',', '.')` becomes `10.000.000.000,12`
+
+**ceil**:
+`= 10000000000.12345|ceil` becomes `10000000001`
+    
+**floor**:
+`= 10000000000.12345|floor` becomes `10000000000`
+
+
+
 
