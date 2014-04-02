@@ -19,7 +19,7 @@ then run `php composer.phar install` or `composer install` depending on how you 
 
 **via git**:
 
-add the lavender submodule with `git submodule add git@github.com:golavender/lavender.git <folder to clone to>` and include it with `require "<where you put lavender>/src/Lavender/lavender.php` 
+add the lavender submodule with `git submodule add git@github.com:golavender/lavender.git <folder to clone to>` and include it with `require "<where you put lavender>/src/Lavender/lavender.php"` 
 
 ##usage
 
