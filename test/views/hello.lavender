@@ -41,6 +41,9 @@ block content
   div
     = 10000000000.12345|floor
 
+  // this is a comment
+    so is this
+
   input(type="text",value="fooooobar")
 
   - myvariable = "im gonna filter some stuff. its gonna be cool."
