@@ -37,10 +37,10 @@ class Lavender_File
           $parent = $parent->get_parent();
         }
       } else {
-        $token = trim($this->_content->peek_until(" \n"));
 
         // just ignore extra whitespace that is not newline
-        if (!$token) {
+        $this->_content->consume_whitespace();
+        if ($this->_content->peek() == "\n") {
           continue;
         }
 
@@ -48,11 +48,24 @@ class Lavender_File
           $node = Lavender::get_extension_by_name('text');
         }
         else {
-          $node = Lavender::get_extension_by_token($token) ?: Lavender::get_extension_by_name('html');
+
+          $token = '';
+          $node  = NULL;
+
+          while(
+            $this->_content->peek(strlen($token)+1, strlen($token)) &&
+            $this->_content->peek(1, strlen($token)) !== "\n"
+          ) {
+            $token = $this->_content->peek(strlen($token)+1);
+            $node = Lavender::get_extension_by_token($token) ?: $node;
+          }
+
+          $node = $node ?: Lavender::get_extension_by_name('html');
         }
 
+        // something seriously wrong
         if (!$node) {
-          throw new Lavender_Exception($this->_content);
+          throw new Lavender_Exception($this->_content, "something is seriously wrong. maybe the html extesions isn't loaded?");
         }
 
         $node->set_level($level);
