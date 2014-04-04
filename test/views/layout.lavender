@@ -1,6 +1,6 @@
 !!!
 
-h1 welcome to the new templating era motherfucker
+h1 welcome to the new #{"templating"|title} era motherfucker
 
 block content
   | default

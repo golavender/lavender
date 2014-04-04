@@ -97,9 +97,8 @@ class Lavender_Extension_Html extends Lavender_Node
         case "\t":
           $content->consume_whitespace();
           # the rest of the line should just be text
-          $text = $content->consume_until("\n");
           $text_node = Lavender::get_extension_by_name('text');
-          $text_node->set_text($text);
+          $text_node->tokenize_content($content);
           $this->add_child($text_node);
           break;
         case "\n":
