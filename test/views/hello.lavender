@@ -8,6 +8,12 @@ block content
     asdfasdfsadf
     zxcvzxcvzxcv
 
+  div
+    |asdfasdfasd asdfsadf
+    |asdfasdfasdfasdfasdf
+    |asdfasdfsadf
+    |zxcvzxcvzxcv
+
   - foo = {key: "bar"}
   - bar = "zxcv"
   div
