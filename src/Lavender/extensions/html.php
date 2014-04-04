@@ -50,8 +50,15 @@ class Lavender_Extension_Html extends Lavender_Node
       switch ($next) {
         case '.':
           $content->consume_next(); // the '.'
-          $class = $content->consume_until($special_characters);
-          $this->set_class($class);
+
+          if (trim($content->peek())) {
+            $class = $content->consume_until($special_characters);
+            $this->set_class($class);
+          } else {
+            $this->text_children_only = TRUE;
+            return;
+          }
+
           break;
         case '#':
           $content->consume_next(); // the '#'
