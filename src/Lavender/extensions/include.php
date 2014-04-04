@@ -24,4 +24,4 @@ class Lavender_Extension_Include extends Lavender_Node
   }
 }
 
-Lavender::register_extension('include', 'Lavender_Extension_Include', array('include'));
+Lavender::register_extension('include', 'Lavender_Extension_Include', array('include '));

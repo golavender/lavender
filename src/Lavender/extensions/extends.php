@@ -62,4 +62,4 @@ class Lavender_Extension_Extends extends Lavender_Node
   }
 }
 
-Lavender::register_extension('extends', 'Lavender_Extension_Extends', array('extends'));
+Lavender::register_extension('extends', 'Lavender_Extension_Extends', array('extends '));

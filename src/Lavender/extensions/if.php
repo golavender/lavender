@@ -29,4 +29,4 @@ class Lavender_Extension_If extends Lavender_Node
   }
 }
 
-Lavender::register_extension('if', 'Lavender_Extension_If', array('if'));
+Lavender::register_extension('if', 'Lavender_Extension_If', array('if '));

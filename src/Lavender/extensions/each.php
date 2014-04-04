@@ -61,4 +61,4 @@ class Lavender_Extension_Each extends Lavender_Node
   }
 }
 
-Lavender::register_extension('each', 'Lavender_Extension_Each', array('each', 'for'));
+Lavender::register_extension('each', 'Lavender_Extension_Each', array('each ', 'for '));

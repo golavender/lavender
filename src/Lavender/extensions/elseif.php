@@ -52,4 +52,4 @@ class Lavender_Extension_Elseif extends Lavender_Node
   }
 }
 
-Lavender::register_extension('elseif', 'Lavender_Extension_Elseif', array('elseif'));
+Lavender::register_extension('elseif', 'Lavender_Extension_Elseif', array('elseif '));
