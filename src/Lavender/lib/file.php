@@ -65,7 +65,7 @@ class Lavender_File
 
         // something seriously wrong
         if (!$node) {
-          throw new Lavender_Exception($this->_content, "something is seriously wrong. maybe the html extesions isn't loaded?");
+          throw new Lavender_Exception($this->_content, "something is seriously wrong. maybe the html extensions isn't loaded?");
         }
 
         $node->set_level($level);
