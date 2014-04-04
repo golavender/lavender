@@ -457,6 +457,7 @@ class Lavender_Expression_Node_Variable
       };
     }
     else if (is_object($context) && isset($context->{$this->_name})) {
+      return $context->{$this->_name};
     }
     else {
       return NULL;
