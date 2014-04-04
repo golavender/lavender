@@ -31,7 +31,7 @@ class Lavender_Extension_Extends extends Lavender_Node
     $extends = Lavender::get_extension_by_name('extends');
     $block = Lavender::get_extension_by_name('block');
 
-    $extend_cound = 0;
+    $extend_count = 0;
     foreach ($file->get_children() as $child) {
 
       if (get_class($child) == get_class($extends)) {
