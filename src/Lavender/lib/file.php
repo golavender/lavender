@@ -8,6 +8,8 @@ class Lavender_File
   private $_tokens = array();
   private $_post_tokenize_hooks = array();
 
+  public  $text_children_only = FALSE;
+
   public function __construct($name)
   {
     if ($name[0] == '/') {
