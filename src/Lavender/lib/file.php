@@ -44,7 +44,12 @@ class Lavender_File
           continue;
         }
 
-        $node = Lavender::get_extension_by_token($token) ?: Lavender::get_extension_by_name('html');
+        if ($parent->text_children_only) {
+          $node = Lavender::get_extension_by_name('text');
+        }
+        else {
+          $node = Lavender::get_extension_by_token($token) ?: Lavender::get_extension_by_name('html');
+        }
 
         if (!$node) {
           throw new Lavender_Exception($this->_content);

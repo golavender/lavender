@@ -2,6 +2,12 @@ extends layout
 
 block content
 
+  div.
+    asdfasdfasd asdfsadf
+    asdfasdfasdfasdfasdf
+    asdfasdfsadf
+    zxcvzxcvzxcv
+
   - foo = {key: "bar"}
   - bar = "zxcv"
   div

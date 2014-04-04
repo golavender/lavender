@@ -6,6 +6,8 @@ abstract class Lavender_Node
   private $_level;
   private $_children = array();
 
+  public $text_children_only = FALSE;
+
   public function set_level($level)
   {
     $this->_level = $level;
