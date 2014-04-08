@@ -74,7 +74,9 @@ class Lavender_File
         $parent->add_child($node);
         $node->tokenize_content($this->_content);
 
-        $parent = $node;
+        if (!$parent->text_children_only) {
+          $parent = $node;
+        }
       }
     }
 
