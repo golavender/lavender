@@ -4,7 +4,6 @@ class Lavender_Extension_Elseif extends Lavender_Node
 {
   private $_previous;
   private $_expression;
-  private $_is_truthy = NULL;
 
   public function tokenize_content(Lavender_Content $content)
   {
@@ -43,12 +42,7 @@ class Lavender_Extension_Elseif extends Lavender_Node
     if ($this->_previous->is_truthy($scope)) {
       return TRUE;
     }
-    elseif ($this->_is_truthy == NULL) {
-      return $this->_is_truthy = $this->_expression->is_truthy($scope);
-    }
-    else {
-      return $this->_is_truthy;
-    }
+    return $this->_expression->is_truthy($scope);
   }
 }
 
