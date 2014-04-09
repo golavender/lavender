@@ -2,6 +2,9 @@ extends layout
 
 block content
 
+  - checked = false
+  input(type="checkbox",checked=checked)
+
   div.
     asdfasdfasd asdfsadf
     asdfasdfasdfasdfasdf

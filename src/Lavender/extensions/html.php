@@ -129,7 +129,9 @@ class Lavender_Extension_Html extends Lavender_Node
         $value = $value->compile($scope);
       }
 
-      $attributes .= " $name=\"$value\"";
+      if ($value !== FALSE && $value !== NULL) {
+        $attributes .= " $name=\"$value\"";
+      }
     }
 
     $result = "<{$this->_name}{$attributes}>";
