@@ -35,12 +35,7 @@ class Lavender_View
           ))
       );
     }
-    elseif(Lavender::get_config('handle_errors')) {
-      die("error in {$this->_name} at line: {$this->_view_file->get_content()->get_line()}");
-    }
-    else {
-      throw $e;
-    }
 
+    throw $e;
   }
 }
