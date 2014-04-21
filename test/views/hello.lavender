@@ -6,8 +6,8 @@ block content
   input(type="checkbox",checked=checked)
 
   div.
-    asdfasdfasd asdfsadf
-    asdfasdfasdfasdfasdf
+    asdf #{ "i r werking" } asdfasd asdfsadf
+    asdfasdfa#sdfasdfasdf
     asdfasdfsadf
     zxcvzxcvzxcv
 
