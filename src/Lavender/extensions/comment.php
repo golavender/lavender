@@ -4,7 +4,6 @@ class Lavender_Extension_Comment extends Lavender_Node
 {
   public $text_children_only = TRUE;
 
-  private $_output = TRUE;
   private $_comment;
 
   public function tokenize_content(Lavender_Content $content)

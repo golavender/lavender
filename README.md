@@ -147,6 +147,27 @@ doctype html
 doctype strict
 ```
 
+**conditional comments**
+
+the `IE` shorthand can be used to generate conditional comments for Internet Explorer. check out [this](http://www.quirksmode.org/css/condcom.html) if you're not farmiliar with conditional comments.
+
+```lavender
+IE
+  script(src="some script to make IE work")
+IE lt 7
+  script(src="some script to make super old IE work")
+```
+becomes
+```html
+<!--[if IE]>
+  <script src="some script to make IE work"></script>
+<![endif]-->
+<!--[if lt IE 7]>
+  <script src="some script to make super old IE work"></script>
+<![endif]-->
+```
+
+
 **variables**:
 
 lavender views can be passed variables from the parent php application or they can be defined right in the template.
