@@ -118,10 +118,19 @@ class Lavender_Extension_Expression extends Lavender_Node
       }
       else if ($next == '"' || $next == "'") {
         $content->consume_next(); // the '"'
-        $string = $content->consume_until($next);
-        $content->consume_next(); // the '"'
 
-        $expression[] = new Lavender_Expression_Node_String($string);
+        $text = Lavender::get_extension_by_name('text');
+        $text->add_stop($next);
+        $text->tokenize_content($content);
+
+        if ($content->peek() == $next) {
+          $content->consume_next(); // the '"'
+        }
+        else {
+          throw new Lavender_Exception($content, 'unclosed string');
+        }
+
+        $expression[] = new Lavender_Expression_Node_String($text);
       }
       else if ($next == '[') {
         $content->consume_next(); // the '['
@@ -348,10 +357,7 @@ class Lavender_Expression_Node_String
 
   public function compile($context, $scope)
   {
-    $this->_string = str_replace('\n', "\n", $this->_string);
-    $this->_string = str_replace('\t', "\t", $this->_string);
-
-    return $this->_string;
+    return $this->_string->compile($scope);
   }
 }
 
