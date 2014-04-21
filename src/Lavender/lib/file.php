@@ -125,6 +125,11 @@ class Lavender_File
     return $this;
   }
 
+  public function remove_child_at($index)
+  {
+    unset($this->_children[$index]);
+  }
+
   public function get_children()
   {
     return $this->_children;

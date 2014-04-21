@@ -28,11 +28,12 @@ class Lavender_Extension_Extends extends Lavender_Node
 
   public function validate(Lavender_File $file)
   {
-    $extends = Lavender::get_extension_by_name('extends');
-    $block = Lavender::get_extension_by_name('block');
-
+    $extends      = Lavender::get_extension_by_name('extends');
+    $block        = Lavender::get_extension_by_name('block');
+    $extends_node = NULL;
     $extend_count = 0;
-    foreach ($file->get_children() as $child) {
+
+    foreach ($file->get_children() as $key => $child) {
 
       if (get_class($child) == get_class($extends)) {
         $extend_count++;
@@ -40,20 +41,28 @@ class Lavender_Extension_Extends extends Lavender_Node
         if ($extend_count > 1) {
           throw new Lavender_Exception($this->content, 'can only extend one parent');
         }
+
+        // stash and remove so we can put it back at the end
+        $extends_node = $child;
+        $file->remove_child_at($key);
       }
       else if (get_class($child) == get_class($block)) {
         $this->_blocks[$child->get_block_id()] = $child->get_children();
         $child->set_mode_definition();
       }
-      else {
-        throw new Lavender_Exception($this->_content, 'templates that extend another can only have blocks in them');
+      else if ($child->has_output()) {
+        throw new Lavender_Exception($this->_content, 'templates that extend another cannot have output outside blocks');
       }
     }
+
+    $file->add_child($extends_node);
   }
 
   public function compile(array &$scope)
   {
-    return $this->_parent_view->compile(array_merge($scope, $this->_blocks));
+    $scope = array_merge($scope, $this->_blocks);
+
+    return $this->_parent_view->compile($scope);
   }
 
   public function add_child($child)

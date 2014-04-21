@@ -18,7 +18,7 @@ class Lavender_Extension_Block extends Lavender_Node
 
   public function compile(array &$scope)
   {
-    if ($this->_mode !== 'definition') {
+    if ($this->_output) {
 
       if (isset($scope[$this->get_block_id()])) {
         $this->set_children($scope[$this->get_block_id()]);
@@ -30,7 +30,7 @@ class Lavender_Extension_Block extends Lavender_Node
 
   public function set_mode_definition()
   {
-    $this->_mode = 'definition';
+    $this->_output = FALSE;
   }
 
   public function get_block_id()

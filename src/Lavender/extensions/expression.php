@@ -2,7 +2,6 @@
 
 class Lavender_Extension_Expression extends Lavender_Node
 {
-  private $_output          = TRUE;
   private $_expression_tree = array();
   private $_constants       = array(
     'true'  => 'Lavender_Expression_Node_True',
