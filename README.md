@@ -147,6 +147,15 @@ doctype html
 doctype strict
 ```
 
+**comments**
+
+comments are a thing
+
+```lavender
+// this is an html comment. it will be rendered to the page
+//- this is a lavender comment. it will not be rendered
+```
+
 **conditional comments**
 
 the `IE` shorthand can be used to generate conditional comments for Internet Explorer. check out [this](http://www.quirksmode.org/css/condcom.html) if you're not farmiliar with conditional comments.
