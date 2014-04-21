@@ -4,17 +4,39 @@ class Lavender_View
 {
   private $_name;
   private $_view_file;
+  private $_data = array();
 
-  public function __construct($name)
+  public function __construct($name = NULL)
+  {
+    if ($name) {
+      $this->set_view($name);
+    }
+  }
+
+  public function set_view($name)
   {
     $this->_name      = $name;
     $this->_view_file = new Lavender_File($name);
   }
 
+  public function set($key, $value)
+  {
+    if (is_array($key)) {
+      $this->_data = array_merge($this->_data, $key);
+    }
+    elseif($key) {
+      $this->_data[$key] = $value;
+    }
+
+    return $this;
+  }
+
   public function compile(array $scope = array())
   {
+    $this->set($scope);
+
     try {
-      return $this->_view_file->compile($scope);
+      return $this->_view_file->compile($this->_data);
     }
     catch (Exception $e) {
       $this->_handle_exception($e);

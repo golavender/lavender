@@ -28,7 +28,7 @@ class Lavender
     return static::$_config[$key];
   }
 
-  public static function view($name)
+  public static function view($name = NULL)
   {
     return new Lavender_View($name);
   }
