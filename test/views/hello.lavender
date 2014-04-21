@@ -1,5 +1,7 @@
 extends layout
 
+-title = "dis be a title"
+
 block content
 
   // some comment 
@@ -9,8 +11,8 @@ block content
   input(type="checkbox",checked=checked)
 
   div.
-    asdfasdfasd asdfsadf
-    asdfasdfasdfasdfasdf
+    asdf #{ "i r werking" } asdfasd asdfsadf
+    asdfasdfa#sdfasdfasdf
     asdfasdfsadf
     zxcvzxcvzxcv
 
