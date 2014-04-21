@@ -2,6 +2,9 @@ extends layout
 
 block content
 
+  // some comment 
+  //- some hidden comment
+
   - checked = false
   input(type="checkbox",checked=checked)
 
