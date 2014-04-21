@@ -6,7 +6,15 @@ abstract class Lavender_Node
   private $_level;
   private $_children = array();
 
+  // set this to FALSE if your node doesn't output anything
+  protected $_output = TRUE;
+
   public $text_children_only = FALSE;
+
+  public function has_output()
+  {
+    return $this->_output;
+  }
 
   public function set_level($level)
   {
