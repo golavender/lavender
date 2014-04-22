@@ -19,7 +19,7 @@ class Lavender_View
     $this->_view_file = new Lavender_File($name);
   }
 
-  public function set($key, $value)
+  public function set($key, $value = NULL)
   {
     if (is_array($key)) {
       $this->_data = array_merge($this->_data, $key);
