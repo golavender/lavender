@@ -32,6 +32,7 @@ block content
   div
     = ['asdf','qwer']|length
   div
+    | last
     = ['asdf','qwer']|last
   div
     = ['asdf','qwer']|first

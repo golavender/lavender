@@ -2,13 +2,15 @@
 
 class Lavender_Filter_Last
 {
-  public function execute(array $array)
+  public function execute(array $array, $number = 1)
   {
-    if (isset($array[count($array)-1])) {
-      return $array[count($array)-1];
+    $last = array_slice($array, $number*-1);
+
+    if ($number == 1 && count($last) == 1) {
+      return $last[0];
     }
     else {
-      return NULL;
+      return $last;
     }
   }
 }

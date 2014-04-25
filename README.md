@@ -431,12 +431,13 @@ profound right? not that we invented this, we copied the idea from [twig](http:/
 **first**:
 `= ['asdf','qwer']|first` becomes `asdf`
 
-**last**:
-`= ['asdf','qwer']|last` becomes `qwer`
-
 **join**:
 `= ['asdf','qwer']|join` becomes `asdf qwer`
 `= ['asdf','qwer']|join('-')` becomes `asdf-qwer`
+
+**last**:
+`= ['asdf','qwer']|last` becomes `qwer`
+`= ['asdf','qwer', 'zxcv']|last(2)|join('-')` becomes `qwer-zxcv`
 
 **keys**:
 `{'asdf': 'foo','qwer': 'bar'}|join` becomes the array `['asdf', 'qwer']`
