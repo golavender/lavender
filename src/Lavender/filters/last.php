@@ -9,6 +9,9 @@ class Lavender_Filter_Last
     if ($number == 1 && count($last) == 1) {
       return $last[0];
     }
+    else if ($number == 1 && !$last) {
+      return NULL;
+    }
     else {
       return $last;
     }
