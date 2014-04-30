@@ -17,6 +17,8 @@ class Lavender_View
   {
     $this->_name      = $name;
     $this->_view_file = new Lavender_File($name);
+
+    return $this;
   }
 
   public function set($key, $value = NULL)
