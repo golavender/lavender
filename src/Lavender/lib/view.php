@@ -33,6 +33,16 @@ class Lavender_View
     return $this;
   }
 
+  public function get($key)
+  {
+    if (isset($this->_data[$key])) {
+      return $this->_data[$key];
+    }
+    else {
+      return NULL;
+    }
+  }
+
   public function compile(array $scope = array())
   {
     $this->set($scope);
