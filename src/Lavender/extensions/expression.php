@@ -15,6 +15,7 @@ class Lavender_Extension_Expression extends Lavender_Node
     '||' => 'Lavender_Expression_Node_Or',
     '&&' => 'Lavender_Expression_Node_And',
     '==' => 'Lavender_Expression_Node_Equal_To',
+    '!=' => 'Lavender_Expression_Node_Not_Equal_To',
     '%'  => 'Lavender_Expression_Node_Modulus',
     '>'  => 'Lavender_Expression_Node_Greater_Than',
     '<'  => 'Lavender_Expression_Node_Less_Than',
@@ -35,6 +36,7 @@ class Lavender_Extension_Expression extends Lavender_Node
     '>'  => 3,
     '<'  => 3,
     '==' => 3,
+    '!=' => 3,
     '||' => 4,
     '&&' => 4,
     '='  => 5,
@@ -558,6 +560,13 @@ class Lavender_Expression_Node_Equal_To extends Lavender_Expression_Node_Compari
   public function compile($context, &$scope)
   {
     return $this->_left->compile($scope) == $this->_right->compile($scope);
+  }
+}
+class Lavender_Expression_Node_Not_Equal_To extends Lavender_Expression_Node_Comparison
+{
+  public function compile($context, &$scope)
+  {
+    return $this->_left->compile($scope) != $this->_right->compile($scope);
   }
 }
 class Lavender_Expression_Node_Modulus extends Lavender_Expression_Node_Comparison

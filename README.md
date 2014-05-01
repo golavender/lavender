@@ -1,5 +1,6 @@
 #Lavender
-**php templates that don't suck**
+
+Lavender is a templating language for php loosely based on [jade](http://jade-lang.com/). 
 
 ##installation
 
@@ -36,7 +37,7 @@ Lavender::config(array(
   /*
    * optional - defaults to "lavender"
    */
-  'file_extension' => String,
+  //'file_extension' => String,
 
   /*
    * optional - defaults to TRUE
@@ -44,7 +45,7 @@ Lavender::config(array(
    * renders a debugging error page instead of throwing an exception.
    * in production you should disable this and use a 500 page.
    */
-  'handle_errors'  => Boolean, 
+  //'handle_errors'  => Boolean, 
 ));
 ```
 
@@ -219,7 +220,7 @@ and associative arrays
 
 **conditionals**:
 
-markup can be conditionally rendered using the `if` keyword. Lavender supports all the conditional operations you know and love `!`, `&&`, `||`, `<`. `>`, `<=`, `>=`, `==` and does a truthy check against the result.
+markup can be conditionally rendered using the `if` keyword. Lavender supports all the conditional operations you know and love `!`, `&&`, `||`, `<`. `>`, `<=`, `>=`, `==`, `!=` and does a truthy check against the result.
 
 ```lavender
 - some_variable = "this is stored in a variable"
