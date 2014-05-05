@@ -9,8 +9,13 @@ class Lavender_Extension_Each extends Lavender_Node
 
   public function tokenize_content(Lavender_Content $content)
   {
+    parent::tokenize_content($content);
+
     $content->consume_until(" "); // the 'each'
     $content->consume_whitespace();
+
+    $this->_content = $content;
+    $this->_line    = $content->get_line();
 
     $this->_iterator = $content->consume_regex("/[a-z0-9_]/i");
 
@@ -37,7 +42,12 @@ class Lavender_Extension_Each extends Lavender_Node
 
   public function compile(array &$scope)
   {
-    $array = $this->_array($scope);
+    $array = $this->_array($scope) ?: array();
+
+    if (!is_array($array)) {
+      $this->_throw_exception('invalid argument for each');
+    }
+
     $result = '';
 
     foreach ($array as $key => $iterator) {

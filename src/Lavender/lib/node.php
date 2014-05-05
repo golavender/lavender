@@ -6,6 +6,10 @@ abstract class Lavender_Node
   private $_level;
   private $_children = array();
 
+  // used for exception handling
+  private $_content;
+  private $_line;
+
   // set this to FALSE if your node doesn't output anything
   protected $_output = TRUE;
 
@@ -65,5 +69,14 @@ abstract class Lavender_Node
     return $result;
   }
 
-  public abstract function tokenize_content(Lavender_Content $content);
+  public function tokenize_content(Lavender_Content $content)
+  {
+    $this->_content = $content;
+    $this->_line    = $content->get_line();
+  }
+
+  protected function _throw_exception($message)
+  {
+    throw new Lavender_Exception($this->_content, $message, $this->_line);
+  }
 }

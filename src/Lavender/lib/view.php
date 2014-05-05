@@ -58,7 +58,7 @@ class Lavender_View
   private function _handle_exception($e)
   {
     if (Lavender::get_config('handle_errors') && $e instanceof Lavender_Exception) {
-      $view_file = $this->_view_file->get_content()->get_full_content();
+      $view_file = $e->get_file();
 
       die(
         Lavender::view(__DIR__.'/error_template.lavender')
