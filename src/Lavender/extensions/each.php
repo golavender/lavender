@@ -44,17 +44,18 @@ class Lavender_Extension_Each extends Lavender_Node
   {
     $array = $this->_array($scope) ?: array();
 
-    if (!is_array($array)) {
-      $this->_throw_exception('invalid argument for each');
+    if (is_array($array) || $array instanceof Traversable) {
+      $result = '';
+
+      foreach ($array as $key => $iterator) {
+        $scope[$this->_key_iterator] = $key;
+        $scope[$this->_iterator]     = $iterator;
+
+        $result .= parent::compile($scope);
+      }
     }
-
-    $result = '';
-
-    foreach ($array as $key => $iterator) {
-      $scope[$this->_key_iterator] = $key;
-      $scope[$this->_iterator]     = $iterator;
-
-      $result .= parent::compile($scope);
+    else {
+      $this->_throw_exception('invalid argument for each');
     }
 
     return $result;
