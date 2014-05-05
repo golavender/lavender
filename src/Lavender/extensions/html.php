@@ -67,9 +67,10 @@ class Lavender_Extension_Html extends Lavender_Node
           break;
         case '(':
           $content->consume_next(); // the '('
-          $content->consume_whitespace();
 
           while ($content->peek() != '' && $content->peek() != ')') {
+            $content->consume_regex("/[ \t\n]/i");
+
             $name = $content->consume_regex("/[a-z\-]/i");
             $content->consume_whitespace();
             if ($content->peek() != '=') {
@@ -87,8 +88,8 @@ class Lavender_Extension_Html extends Lavender_Node
 
             if ($content->peek() == ',') {
               $content->consume_next(); // the ','
-              $content->consume_whitespace();
             }
+            $content->consume_regex("/[ \t\n]/i");
           }
 
           $content->consume_next(); // the ')'
