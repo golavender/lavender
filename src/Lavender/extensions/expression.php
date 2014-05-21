@@ -26,6 +26,7 @@ class Lavender_Extension_Expression extends Lavender_Node
     '-'  => 'Lavender_Expression_Node_Subtract',
   );
   private $_operator_order  = array(
+    '!'  => 0,
     '/'  => 1,
     '*'  => 1,
     '%'  => 1,
@@ -114,7 +115,7 @@ class Lavender_Extension_Expression extends Lavender_Node
         $content->consume_whitespace();
 
         $sub_expression = Lavender::get_extension_by_name('expression');
-        $sub_expression->tokenize_content($content);
+        $sub_expression->set_tree($this->_parse_left_to_right($content, $next));
 
         $expression[] = new Lavender_Expression_Node_Not($sub_expression);
       }

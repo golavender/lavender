@@ -10,11 +10,12 @@ block content
   - checked = false
   input(type="checkbox",checked=checked)
 
-  div.
-    asdf #{ "i r werking" } asdfasd asdfsadf
-    asdfasdfa#sdfasdfasdf
-    asdfasdfsadf
-    zxcvzxcvzxcv
+  if !true || true 
+    div.
+      asdf #{ "i r werking" } asdfasd asdfsadf
+      asdfasdfa#sdfasdfasdf
+      asdfasdfsadf
+      zxcvzxcvzxcv
 
   div
     |asdfasdfasd asdfsadf
