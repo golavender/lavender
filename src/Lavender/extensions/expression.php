@@ -192,6 +192,20 @@ class Lavender_Extension_Expression extends Lavender_Node
 
         $expression[] = new Lavender_Expression_Node_Array($bits);
       }
+      else if ($next == '(') {
+        $content->consume_next(); // the '('
+
+        $sub_expression = Lavender::get_extension_by_name('expression');
+        $sub_expression->tokenize_content($content);
+        $expression[] = $sub_expression;
+
+        if ($content->peek() == ')') {
+          $content->consume_next(); // the ')'
+        }
+        else {
+          throw new Lavender_Exception($content, 'unclosed ")"');
+        }
+      }
       else if (preg_match('/[0-9]/', $next)) {
         $number = $content->consume_regex('/[0-9\.]/i');
         $expression[] = new Lavender_Expression_Node_Number($number);

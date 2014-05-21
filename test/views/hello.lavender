@@ -17,11 +17,12 @@ block content
       asdfasdfsadf
       zxcvzxcvzxcv
 
-  div
-    |asdfasdfasd asdfsadf
-    |asdfasdfasdfasdfasdf
-    |asdfasdfsadf
-    |zxcvzxcvzxcv
+  if !(0 * (5 + 5 + 5))
+    div
+      |asdfasdfasd asdfsadf
+      |asdfasdfasdfasdfasdf
+      |asdfasdfsadf
+      |zxcvzxcvzxcv
 
   - foo = {key: "bar"}
   - bar = "zxcv"
