@@ -296,7 +296,7 @@ else
 
 **math**:
 
-math. you can do it. supported operators are `%`, `+`, `-`, `*`, `/` 
+math. you can do it. supported operators are `%`, `+`, `-`, `*`, `/`, `(`, `)` 
 
 ```lavender
 div

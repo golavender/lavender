@@ -10,17 +10,19 @@ block content
   - checked = false
   input(type="checkbox",checked=checked)
 
-  div.
-    asdf #{ "i r werking" } asdfasd asdfsadf
-    asdfasdfa#sdfasdfasdf
-    asdfasdfsadf
-    zxcvzxcvzxcv
+  if !true || true 
+    div.
+      asdf #{ "i r werking" } asdfasd asdfsadf
+      asdfasdfa#sdfasdfasdf
+      asdfasdfsadf
+      zxcvzxcvzxcv
 
-  div
-    |asdfasdfasd asdfsadf
-    |asdfasdfasdfasdfasdf
-    |asdfasdfsadf
-    |zxcvzxcvzxcv
+  if !(0 * (5 + 5 + 5))
+    div
+      |asdfasdfasd asdfsadf
+      |asdfasdfasdfasdfasdf
+      |asdfasdfsadf
+      |zxcvzxcvzxcv
 
   - list = ['asdf', 'qwer', 'zxcv'] 
   - foo = {key: "bar"}
