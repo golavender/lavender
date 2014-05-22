@@ -24,10 +24,12 @@ block content
       |asdfasdfsadf
       |zxcvzxcvzxcv
 
+  - list = ['asdf', 'qwer', 'zxcv'] 
   - foo = {key: "bar"}
   - bar = "zxcv"
+  - key = 'key'
   div
-    | adfasdfasdf #{foo.key|upper} asdfasdfasdf #{bar} asdf
+    | adfasd#{list[2]|upper}fasdf #{foo[key]|upper} asdfasdfasdf #{bar} asdf
 
   div
     = 1397411960|relative
