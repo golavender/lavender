@@ -250,6 +250,12 @@ class Lavender_Extension_Expression extends Lavender_Node
       }
       return $sub_expression;
     }
+    else if ($next == '.') {
+      $content->consume_next(); // the '.'
+      $chain = $this->_parse_next($content, $parent, $expression);
+      $chain->set_context(array_pop($expression));
+      return $chain;
+    }
     else if (preg_match('/[a-z]/i', $next)) {
 
       $name = $content->consume_regex('/[a-z0-9_]/i');
@@ -257,17 +263,7 @@ class Lavender_Extension_Expression extends Lavender_Node
       if (!$name) {
         throw new Lavender_Exception($content);
       }
-
-      if ($content->peek() == '.') {
-        $content->consume_next(); // the '.'
-
-        $context = new Lavender_Expression_Node_Variable($name);
-
-        $chain = $this->_parse_next($content, $parent, $expression);
-        $chain->set_context($context);
-        return $chain;
-      }
-      else if ($content->peek() == '[') {
+      if ($content->peek() == '[') {
         $content->consume_next(); // the '['
 
         $sub_expression = Lavender::get_extension_by_name('expression');
