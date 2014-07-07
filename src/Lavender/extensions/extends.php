@@ -60,9 +60,11 @@ class Lavender_Extension_Extends extends Lavender_Node
 
   public function compile(array &$scope)
   {
-    $scope = array_merge($scope, $this->_blocks);
+    $scope  = array_merge($scope, $this->_blocks);
+    $result = $this->_parent_view->compile($scope);
+    $scope  = array_merge($this->_parent_view->get(), $scope);
 
-    return $this->_parent_view->compile($scope);
+    return $result;
   }
 
   public function add_child($child)

@@ -33,10 +33,13 @@ class Lavender_View
     return $this;
   }
 
-  public function get($key)
+  public function get($key = NULL)
   {
-    if (isset($this->_data[$key])) {
+    if ($key && isset($this->_data[$key])) {
       return $this->_data[$key];
+    }
+    else if (!$key) {
+      return $this->_data;
     }
     else {
       return NULL;
