@@ -71,7 +71,7 @@ class Lavender_Extension_Html extends Lavender_Node
           while ($content->peek() != '' && $content->peek() != ')') {
             $content->consume_regex("/[ \t\n]/i");
 
-            $name = $content->consume_regex("/[a-z\-]/i");
+            $name = $content->consume_regex("/[a-z0-9\-]/i");
             $content->consume_whitespace();
             if ($content->peek() != '=') {
               throw new Lavender_Exception($content, 'expected "=" in attribute expression');
