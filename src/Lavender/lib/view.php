@@ -51,7 +51,16 @@ class Lavender_View
     $this->set($scope);
 
     try {
-      return $this->_view_file->compile($this->_data);
+      $output = $this->_view_file->compile($this->_data);
+
+      if (Lavender::get_config('tidy')) {
+        $tidy = new Tidy();
+        $tidy->parseString($output, array('indent' => true));
+        $tidy->cleanRepair();
+        $output = $tidy;
+      }
+
+      return $output;
     }
     catch (Exception $e) {
       $this->_handle_exception($e);

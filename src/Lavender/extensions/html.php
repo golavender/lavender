@@ -142,11 +142,6 @@ class Lavender_Extension_Html extends Lavender_Node
       $result .= "</{$this->_name}>";
     }
 
-    if (Lavender::get_config('pretty_output')) {
-      $result = str_pad($result, $this->_level, ' ', STR_PAD_LEFT);
-      $result .= "\n";
-    }
-
     return $result;
   }
 }
