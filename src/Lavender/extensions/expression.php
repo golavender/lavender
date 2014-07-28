@@ -580,7 +580,14 @@ class Lavender_Expression_Node_Array_Bracket
       return NULL;
     }
     else {
-      return $array[$this->_sub_expression->compile($scope)];
+      $key = $this->_sub_expression->compile($scope);
+
+      if (array_key_exists($key, $array)) {
+        return $array[$key];
+      }
+      else {
+        return NULL;
+      }
     }
   }
 }
