@@ -582,6 +582,17 @@ class Lavender_Expression_Node_Array_Bracket
     else {
       $key = $this->_sub_expression->compile($scope);
 
+      if (is_numeric($key)) {
+        $intkey = (int) $key;
+
+        // a float was passed in, do nothing
+        if ($intkey != $key) {
+          return NULL;
+        }
+
+        $key = $intkey;
+      }
+
       if (array_key_exists($key, $array)) {
         return $array[$key];
       }
