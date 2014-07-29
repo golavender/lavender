@@ -444,7 +444,7 @@ profound right? not that we invented this, we copied the idea from [twig](http:/
 `= ['asdf','qwer', 'zxcv']|last(2)|join('-')` becomes `qwer-zxcv`
 
 **keys**:
-`{'asdf': 'foo','qwer': 'bar'}|join` becomes the array `['asdf', 'qwer']`
+`{'asdf': 'foo','qwer': 'bar'}|keys` becomes the array `['asdf', 'qwer']`
 
 **length**:
 `= ['asdf','qwer']|length` becomes `2`
