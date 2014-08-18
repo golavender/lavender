@@ -11,7 +11,7 @@ class Lavender_Extension_Text extends Lavender_Node
       $content->consume_next(); // the '|'
     }
 
-    while ($content->peek() && !in_array($content->peek(), $this->_stop_characters)) {
+    while ($content->peek() !== '' && !in_array($content->peek(), $this->_stop_characters)) {
       $this->_bits[] = $content->consume_until(implode('', array_merge($this->_stop_characters, array('#'))));
 
       if ($content->peek(2) == '#{') {
