@@ -9,7 +9,6 @@ class test
 
 Lavender::config(array(
   'view_dir' => __DIR__.'/views',
-  'tidy' => TRUE,
 ));
 
 $view = Lavender::view('hello');

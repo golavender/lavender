@@ -24,6 +24,40 @@ class Lavender_Extension_Html extends Lavender_Node
     'wbr'
   );
 
+  private $_inline_tags = array(
+    'b',
+    'big',
+    'i',
+    'small',
+    'tt',
+    'abbr',
+    'acronym',
+    'cite',
+    'code',
+    'dfn',
+    'em',
+    'kbd',
+    'strong',
+    'samp',
+    'var',
+    'a',
+    'bdo',
+    'br',
+    'img',
+    'map',
+    'object',
+    'q',
+    'script',
+    'span',
+    'sub',
+    'sup',
+    'button',
+    'input',
+    'label',
+    'select',
+    'textarea',
+  );
+
   public function set_class($class)
   {
     array_push($this->_classes, $class);
@@ -136,10 +170,14 @@ class Lavender_Extension_Html extends Lavender_Node
     }
 
     $result = "<{$this->_name}{$attributes}>";
-    $result .= parent::compile($scope);
 
     if (!in_array($this->_name, $this->_self_closing_tags)) {
+      $result .= parent::compile($scope);
       $result .= "</{$this->_name}>";
+    }
+
+    if (!in_array($this->_name, $this->_inline_tags)) {
+      $result .= "\n";
     }
 
     return $result;
