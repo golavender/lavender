@@ -59,6 +59,9 @@ class Lavender_View
         $tidy->cleanRepair();
         $output = $tidy;
       }
+      else {
+        $output = str_replace('><', ">\n<", $output);
+      }
 
       return $output;
     }
