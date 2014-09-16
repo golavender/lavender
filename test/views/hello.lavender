@@ -15,6 +15,19 @@ block content
   if ['qwer', 'asdf']|contains('foobar')
     div this is bad 
 
+  if 5|is('number')
+    div this is a number
+  if ['qwer', 'asdf']|is('list')
+    div the thing is a list 
+  if {qwer: 'asdf'}|is('list')
+    div this is bad
+  if {qwer: 'asdf'}|is('object')
+    div the thing is an object 
+  if "Asdf"|is('string')
+    div the thing is a string 
+  if 8|is('string')
+    div this is bad
+
   p
     |asdf asdf asdf asdf asdf
     a(href="#")- qwer

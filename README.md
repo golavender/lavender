@@ -500,8 +500,13 @@ profound right? not that we invented this, we copied the idea from [twig](http:/
 **relative**:
 if you had a `timestamp` variable `timestamp|relative` would return things like 'just now' or 'in 3 days' or `6 minutes ago`
 
-
 **contains**:
 `= ['asdf', 'qwer']|contains('asdf')` returns TRUE 
 
+
+**is**:
+`= ['asdf', 'qwer']|is('list')` returns TRUE 
+`= {asdf: 'qwer'}|is('object')` returns TRUE 
+`= 8|is('number')` returns TRUE 
+`= myVariable|is('My_Class_Name')` also works 
 
