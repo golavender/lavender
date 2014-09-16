@@ -224,4 +224,8 @@ block content2
 
   #thisdiv2(style="border: 1px solid blue; margin-top: 5px;") blue
 
-  include include with {foo: foo.key}
+  include include with {
+    foo: foo.key
+  }
+
+  div last

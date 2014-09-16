@@ -157,7 +157,8 @@ class Lavender_Extension_Expression extends Lavender_Node
             $content->consume_next(); // the ']'
             break 2;
           case ',':
-            $content->consume_next(); // the ','
+          case "\n":
+            $content->consume_next();
             break;
           default:
             $sub_expression = Lavender::get_extension_by_name('expression');
@@ -181,7 +182,8 @@ class Lavender_Extension_Expression extends Lavender_Node
             $content->consume_next(); // the '}'
             break 2;
           case ',':
-            $content->consume_next(); // the ','
+          case "\n":
+            $content->consume_next();
             break;
           default:
             $key = $content->consume_regex('/[a-z0-9_]/i');
