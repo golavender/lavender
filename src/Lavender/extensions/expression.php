@@ -57,14 +57,33 @@ class Lavender_Extension_Expression extends Lavender_Node
       $content->consume_next(); // the '-'
     }
 
-    $this->_expression_tree = $this->_parse_left_to_right($content);
+    $this->tokenize_internal($content);
+  }
 
-    $content->consume_whitespace();
+  public function tokenize_internal(Lavender_Content $content, $until = NULL)
+  {
+    while (TRUE) {
+
+      $this->_expression_tree = array_merge($this->_expression_tree, $this->_parse_left_to_right($content));
+      $content->consume_whitespace();
+
+      if ($until && $content->peek() != $until && $content->peek() == "\n") {
+        $content->consume_next();
+      }
+      else {
+        break;
+      }
+    }
   }
 
   private function _parse_left_to_right(Lavender_Content $content, $parent = NULL)
   {
     $content->consume_whitespace();
+    if ($content->peek() == "\n") {
+      $content->consume_next();
+    }
+    $content->consume_whitespace();
+
     $expression = array();
 
     while (($next = $content->peek()) !== '') {
@@ -162,7 +181,7 @@ class Lavender_Extension_Expression extends Lavender_Node
             break;
           default:
             $sub_expression = Lavender::get_extension_by_name('expression');
-            $sub_expression->tokenize_content($content);
+            $sub_expression->tokenize_internal($content);
             $bits[] = $sub_expression;
             break;
         }
@@ -196,7 +215,7 @@ class Lavender_Extension_Expression extends Lavender_Node
             $content->consume_whitespace();
 
             $sub_expression = Lavender::get_extension_by_name('expression');
-            $sub_expression->tokenize_content($content);
+            $sub_expression->tokenize_internal($content);
             $bits[$key] = $sub_expression;
             break;
         }
@@ -229,7 +248,7 @@ class Lavender_Extension_Expression extends Lavender_Node
               break;
             default:
               $sub_expression = Lavender::get_extension_by_name('expression');
-              $sub_expression->tokenize_content($content);
+              $sub_expression->tokenize_internal($content);
               $arguments[] = $sub_expression;
           }
         }
@@ -245,7 +264,7 @@ class Lavender_Extension_Expression extends Lavender_Node
       $content->consume_next(); // the '('
 
       $sub_expression = Lavender::get_extension_by_name('expression');
-      $sub_expression->tokenize_content($content);
+      $sub_expression->tokenize_internal($content, ')');
 
       if ($content->peek() == ')') {
         $content->consume_next(); // the ')'
@@ -272,7 +291,7 @@ class Lavender_Extension_Expression extends Lavender_Node
         $content->consume_next(); // the '['
 
         $sub_expression = Lavender::get_extension_by_name('expression');
-        $sub_expression->tokenize_content($content);
+        $sub_expression->tokenize_internal($content);
 
         if ($content->peek() == ']') {
           $content->consume_next(); // the ']'
@@ -299,7 +318,7 @@ class Lavender_Extension_Expression extends Lavender_Node
               break;
             default:
               $sub_expression = Lavender::get_extension_by_name('expression');
-              $sub_expression->tokenize_content($content);
+              $sub_expression->tokenize_internal($content);
               $arguments[] = $sub_expression;
           }
         }

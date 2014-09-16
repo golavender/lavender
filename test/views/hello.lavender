@@ -37,7 +37,25 @@ block content
     |. asdf asdf asdf asdf asdf
     |asdf asdf asdf asdf asdf
 
-  if !true || true 
+  div(
+    class="foo bar baz",
+    style="border: 1px solid red;" +
+      "background: #ccc;" +
+      "border-radius: 5px;"
+  )
+    = "asdfasdfasdfasdf " +
+      "asdfasdfsadfasd " +
+      "qwerqwerqwer "
+
+  if (
+    !true || true &&
+    true &&
+    true ||
+    (
+      true ||
+      false
+    )
+  ) 
     div.
       asdf #{ "i r werking" } asdfasd asdfsadf
       asdfasdfa#sdfasdfasdf
