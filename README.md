@@ -330,6 +330,9 @@ span stuff and things
 
 div.content
   include /path/relative/to/view/directory/somefile
+
+div.content
+  include /path/relative/to/view/directory/somefile with {stuff: "Asdfasdf"}
 ```
 
 **extends**:

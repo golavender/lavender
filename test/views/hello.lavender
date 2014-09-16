@@ -224,4 +224,4 @@ block content2
 
   #thisdiv2(style="border: 1px solid blue; margin-top: 5px;") blue
 
-  include include
+  include include with {foo: foo.key}

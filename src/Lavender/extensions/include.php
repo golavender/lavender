@@ -3,21 +3,46 @@
 class Lavender_Extension_Include extends Lavender_Node
 {
   private $_subview;
+  private $_expression;
 
   protected $_delimiter = '';
 
   public function tokenize_content(Lavender_Content $content)
   {
     $content->consume_until(" "); // the 'include'
+    $content->consume_whitespace();
 
-    $path = trim($content->consume_until("\n"));
+    $path = $content->consume_until(" \n");
+
+    $content->consume_whitespace();
+
+    if ($content->peek(4) == "with") {
+      $content->consume_until("{\n");
+
+      if ($content->peek() == "\n") {
+        throw new Lavender_Exception($content, 'expected "{" in include');
+      }
+      $this->_expression = Lavender::get_extension_by_name('expression');
+      $this->_expression->tokenize_content($content);
+    }
 
     $this->_subview = new Lavender_View($path);
   }
 
   public function _compile(array &$scope)
   {
-    return $this->_subview->compile($scope);
+    if ($this->_expression) {
+      $stuff = $this->_expression->compile($scope);
+    }
+    else {
+      $stuff = array();
+    }
+
+    if (!is_array($stuff)) {
+      throw new Exception('Invalid argument to include');
+    }
+
+    return $this->_subview->compile(array_merge($scope, $stuff));
   }
 
   public function add_child($child)
