@@ -501,4 +501,7 @@ profound right? not that we invented this, we copied the idea from [twig](http:/
 if you had a `timestamp` variable `timestamp|relative` would return things like 'just now' or 'in 3 days' or `6 minutes ago`
 
 
+**contains**:
+`= ['asdf', 'qwer']|contains('asdf')` returns TRUE 
+
 

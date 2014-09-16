@@ -10,6 +10,10 @@ block content
   - checked = false
   input(type="checkbox",checked=checked)
 
+  if ['qwer', 'asdf']|contains('asdf')
+    div the thing is in the thing
+  if ['qwer', 'asdf']|contains('foobar')
+    div this is bad 
 
   p
     |asdf asdf asdf asdf asdf
