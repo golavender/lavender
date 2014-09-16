@@ -2,6 +2,8 @@
 
 class Lavender_Extension_Expression extends Lavender_Node
 {
+  protected $_delimiter = '';
+
   private $_expression_tree = array();
   private $_constants       = array(
     'true'  => 'Lavender_Expression_Node_True',
@@ -131,6 +133,7 @@ class Lavender_Extension_Expression extends Lavender_Node
       $content->consume_next(); // the '"'
 
       $text = Lavender::get_extension_by_name('text');
+      $text->set_delimiter('');
       $text->add_stop($next);
       $text->tokenize_content($content);
 
@@ -330,7 +333,7 @@ class Lavender_Extension_Expression extends Lavender_Node
     return $current->assign($scope, $value);
   }
 
-  public function compile(array &$scope)
+  public function _compile(array &$scope)
   {
     $value = NULL;
 

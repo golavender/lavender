@@ -6,6 +6,8 @@ class Lavender_Extension_Extends extends Lavender_Node
   private $_content;
   private $_blocks = array();
 
+  protected $_delimiter = '';
+
   public function tokenize_content(Lavender_Content $content)
   {
     $this->_content = $content;
@@ -58,7 +60,7 @@ class Lavender_Extension_Extends extends Lavender_Node
     $file->add_child($extends_node);
   }
 
-  public function compile(array &$scope)
+  public function _compile(array &$scope)
   {
     $scope  = array_merge($scope, $this->_blocks);
     $result = $this->_parent_view->compile($scope);

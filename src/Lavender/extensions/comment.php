@@ -18,14 +18,9 @@ class Lavender_Extension_Comment extends Lavender_Node
     $this->_comment = $content->consume_until("\n");
   }
 
-  public function compile(array &$scope)
+  public function _compile(array &$scope)
   {
-    if ($this->_output) {
-      return "<!--{$this->_comment}-->";
-    }
-    else {
-      return '';
-    }
+    return "<!--{$this->_comment}-->";
   }
 }
 

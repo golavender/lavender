@@ -7,6 +7,8 @@ class Lavender_Extension_Each extends Lavender_Node
   private $_key_iterator;
   private $_array;
 
+  protected $_delimiter = '';
+
   public function tokenize_content(Lavender_Content $content)
   {
     parent::tokenize_content($content);
@@ -40,7 +42,7 @@ class Lavender_Extension_Each extends Lavender_Node
     $this->_expression->tokenize_content($content);
   }
 
-  public function compile(array &$scope)
+  public function _compile(array &$scope)
   {
     $array = $this->_array($scope) ?: array();
 
@@ -51,7 +53,7 @@ class Lavender_Extension_Each extends Lavender_Node
         $scope[$this->_key_iterator] = $key;
         $scope[$this->_iterator]     = $iterator;
 
-        $result .= parent::compile($scope);
+        $result .= parent::_compile($scope);
       }
     }
     else {

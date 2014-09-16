@@ -5,6 +5,8 @@ class Lavender_Extension_Elseif extends Lavender_Node
   private $_previous;
   private $_expression;
 
+  protected $_delimiter = '';
+
   public function tokenize_content(Lavender_Content $content)
   {
     $content->consume_until(" "); // the 'elseif'
@@ -27,10 +29,10 @@ class Lavender_Extension_Elseif extends Lavender_Node
     $this->_previous = $before_me;
   }
 
-  public function compile(array &$scope)
+  public function _compile(array &$scope)
   {
     if (!$this->_previous->is_truthy($scope) && $this->is_truthy($scope)) {
-      return parent::compile($scope);
+      return parent::_compile($scope);
     } else {
       return '';
     }

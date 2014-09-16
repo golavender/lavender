@@ -5,6 +5,8 @@ class Lavender_Extension_Block extends Lavender_Node
   private $_mode;
   private $_name;
 
+  protected $_delimiter = '';
+
   public function tokenize_content(Lavender_Content $content)
   {
     $content->consume_until(" "); // the 'block'
@@ -16,16 +18,13 @@ class Lavender_Extension_Block extends Lavender_Node
     }
   }
 
-  public function compile(array &$scope)
+  public function _compile(array &$scope)
   {
-    if ($this->_output) {
-
-      if (isset($scope[$this->get_block_id()])) {
-        $this->set_children($scope[$this->get_block_id()]);
-      }
-
-      return parent::compile($scope);
+    if (isset($scope[$this->get_block_id()])) {
+      $this->set_children($scope[$this->get_block_id()]);
     }
+
+    return parent::_compile($scope);
   }
 
   public function set_mode_definition()

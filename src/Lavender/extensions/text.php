@@ -5,6 +5,8 @@ class Lavender_Extension_Text extends Lavender_Node
   private $_bits = array();
   private $_stop_characters = array("\n");
 
+  protected $_delimiter = ' ';
+
   public function tokenize_content(Lavender_Content $content)
   {
     if ($content->peek() == '|') {
@@ -41,7 +43,7 @@ class Lavender_Extension_Text extends Lavender_Node
     return $this;
   }
 
-  public function compile(array &$scope)
+  public function _compile(array &$scope)
   {
     $text = '';
 

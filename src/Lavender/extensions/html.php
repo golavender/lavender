@@ -41,7 +41,7 @@ class Lavender_Extension_Html extends Lavender_Node
 
   public function tokenize_content(Lavender_Content $content)
   {
-    $special_characters = " .(#=\n";
+    $special_characters = " .(#=-\n";
 
     $this->_name = $content->consume_until($special_characters) ?: 'div';
 
@@ -64,6 +64,10 @@ class Lavender_Extension_Html extends Lavender_Node
           $content->consume_next(); // the '#'
           $id = $content->consume_until($special_characters);
           $this->set_attribute('id', $id);
+          break;
+        case '-':
+          $content->consume_next(); // the '-'
+          $this->_delimiter = '';
           break;
         case '(':
           $content->consume_next(); // the '('
@@ -117,7 +121,7 @@ class Lavender_Extension_Html extends Lavender_Node
     }
   }
 
-  public function compile(array &$scope)
+  public function _compile(array &$scope)
   {
     if ($this->_classes) {
       $this->set_attribute('class', implode(' ', $this->_classes));
@@ -138,7 +142,7 @@ class Lavender_Extension_Html extends Lavender_Node
     $result = "<{$this->_name}{$attributes}>";
 
     if (!in_array($this->_name, $this->_self_closing_tags)) {
-      $result .= parent::compile($scope);
+      $result .= rtrim(parent::_compile($scope), ' ');
       $result .= "</{$this->_name}>";
     }
 

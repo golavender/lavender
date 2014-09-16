@@ -12,8 +12,14 @@ abstract class Lavender_Node
 
   // set this to FALSE if your node doesn't output anything
   protected $_output = TRUE;
+  protected $_delimiter = "\n";
 
   public $text_children_only = FALSE;
+
+  public function set_delimiter($delimiter)
+  {
+    $this->_delimiter = $delimiter;
+  }
 
   public function has_output()
   {
@@ -58,7 +64,49 @@ abstract class Lavender_Node
     return $this->_children;
   }
 
+  public function previous()
+  {
+    $siblings = $this->get_parent()->get_children();
+
+    foreach ($siblings as $key => $sibling) {
+      if ($sibling == $this && isset($siblings[$key-1])) {
+        return $siblings[$key-1];
+      }
+    }
+
+    return NULL;
+  }
+
+  public function next()
+  {
+    $siblings = $this->get_parent()->get_children();
+
+    foreach ($siblings as $key => $sibling) {
+      if ($sibling == $this && isset($siblings[$key+1])) {
+        return $siblings[$key+1];
+      }
+    }
+
+    return NULL;
+  }
+
   public function compile(array &$scope)
+  {
+    $output = $this->_compile($scope);
+
+    if ($this->_output) {
+
+      if ($output && is_string($output) && $this->_delimiter) {
+        $output .= $this->_delimiter;
+      }
+
+      return $output;
+    }
+
+    return NULL;
+  }
+
+  protected function _compile(array &$scope)
   {
     $result = '';
 

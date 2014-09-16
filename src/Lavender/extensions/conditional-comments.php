@@ -31,12 +31,10 @@ class Lavender_Extension_Conditional_Comment extends Lavender_Node
     }
   }
 
-  public function compile(array &$scope)
+  public function _compile(array &$scope)
   {
     $output = "<!--[if {$this->_comparison} IE {$this->_version}]>";
-
-    $output .= parent::compile($scope);
-
+    $output .= parent::_compile($scope);
     $output .= "<![endif]-->";
 
     return $output;

@@ -4,6 +4,8 @@ class Lavender_Extension_Include extends Lavender_Node
 {
   private $_subview;
 
+  protected $_delimiter = '';
+
   public function tokenize_content(Lavender_Content $content)
   {
     $content->consume_until(" "); // the 'include'
@@ -13,7 +15,7 @@ class Lavender_Extension_Include extends Lavender_Node
     $this->_subview = new Lavender_View($path);
   }
 
-  public function compile(array &$scope)
+  public function _compile(array &$scope)
   {
     return $this->_subview->compile($scope);
   }

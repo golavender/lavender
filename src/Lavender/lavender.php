@@ -16,7 +16,6 @@ class Lavender
   private static $_config = array(
     'file_extension' => 'lavender',
     'handle_errors'  => TRUE,
-    'tidy'           => FALSE,
   );
 
   public static function config(array $config)
