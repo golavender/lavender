@@ -41,9 +41,9 @@ class Lavender_Extension_Html extends Lavender_Node
 
   public function tokenize_content(Lavender_Content $content)
   {
-    $special_characters = " .(#=-\n";
+    $special_characters = " .(#=\n";
 
-    $this->_name = $content->consume_until($special_characters) ?: 'div';
+    $this->_name = $content->consume_until($special_characters.'-') ?: 'div';
 
     while ($next = $content->peek()) {
 

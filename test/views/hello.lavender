@@ -8,7 +8,7 @@ block content
   //- some hidden comment
 
   - checked = false
-  input(type="checkbox",checked=checked)
+  input.asdf-asdf(type="checkbox",checked=checked)
 
   if ['qwer', 'asdf']|contains('asdf')
     div the thing is in the thing
