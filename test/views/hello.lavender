@@ -28,6 +28,9 @@ block content
   if 8|is('string')
     div this is bad
 
+  div
+    = {asdf: 'zzxcv', qwer: 'zxcv'}|json
+
   p
     |asdf asdf asdf asdf asdf
     a(href="#")- qwer
