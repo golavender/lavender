@@ -25,6 +25,10 @@ class Lavender
 
   public static function get_config($key)
   {
+    if ($key == 'handle_errors' && isset($_GET['disable_lavender_errors'])) {
+      return FALSE;
+    }
+
     return static::$_config[$key];
   }
 

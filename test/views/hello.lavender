@@ -10,6 +10,15 @@ block content
   - checked = false
   input.asdf-asdf(type="checkbox",checked=checked)
 
+  div foo
+
+  -arr = {}
+  -arr.qwerboo = 'bar'
+
+  div= arr.qwerboo
+
+  div bar
+
   if ['qwer', 'asdf']|contains('asdf')
     div the thing is in the thing
   if ['qwer', 'asdf']|contains('foobar')

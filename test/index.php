@@ -22,5 +22,10 @@ $_GET['test'] = function($arg1, $arg2) {
   return 'this is a test function: ' . $arg1 . ' ' . $arg2;
 };
 
+$_GET['array_function'] = function() {
+  return array('foo', 'bar');
+};
+
+$_GET['arr'] = (object) array('foo' => array());
 
 echo $view->compile($_GET);

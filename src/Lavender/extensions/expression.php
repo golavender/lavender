@@ -118,8 +118,7 @@ class Lavender_Extension_Expression extends Lavender_Node
         $content->consume_next($length);
         $content->consume_whitespace();
 
-        $left = Lavender::get_extension_by_name('expression');
-        $left->set_tree($expression);
+        $left = array_pop($expression);
 
         $right = Lavender::get_extension_by_name('expression');
         $right->set_tree($this->_parse_left_to_right($content, $operator));
@@ -164,6 +163,22 @@ class Lavender_Extension_Expression extends Lavender_Node
       }
 
       return new Lavender_Expression_Node_String($text);
+    }
+    else if ($next == '[' && $expression && $expression[count($expression)-1] instanceof Lavender_Expression_Interface_Data_Container) {
+      $content->consume_next(); // the '['
+      $context = array_pop($expression);
+
+      $sub_expression = Lavender::get_extension_by_name('expression');
+      $sub_expression->tokenize_internal($content, ']');
+
+      if ($content->peek() == ']') {
+        $content->consume_next(); // the ']'
+      }
+      else {
+        throw new Lavender_Exception($content, 'expected "]"');
+      }
+
+      return new Lavender_Expression_Node_Array_Bracket($context, $sub_expression);
     }
     else if ($next == '[') {
       $content->consume_next(); // the '['
@@ -260,6 +275,31 @@ class Lavender_Extension_Expression extends Lavender_Node
       $filter->set_context($context);
       return $filter;
     }
+    else if ($next == '(' && $expression && $expression[count($expression)-1] instanceof Lavender_Expression_Interface_Data_Container) {
+      $content->consume_next(); // the '('
+      $context = array_pop($expression);
+
+      $arguments = array();
+
+      while (($next = $content->peek()) !== '') {
+        switch ($next) {
+          case ')':
+            $content->consume_next(); // the ')'
+            break 2;
+          case ',':
+            $content->consume_next(); // the ','
+            break;
+          default:
+            $sub_expression = Lavender::get_extension_by_name('expression');
+            $sub_expression->tokenize_internal($content);
+            $arguments[] = $sub_expression;
+        }
+      }
+      $method = new Lavender_Expression_Node_Method();
+      $method->set_context($context);
+      $method->set_arguments($arguments);
+      return $method;
+    }
     else if ($next == '(') {
       $content->consume_next(); // the '('
 
@@ -276,8 +316,9 @@ class Lavender_Extension_Expression extends Lavender_Node
     }
     else if ($next == '.') {
       $content->consume_next(); // the '.'
+      $context = array_pop($expression);
       $chain = $this->_parse_next($content, $parent, $expression);
-      $chain->set_context(array_pop($expression));
+      $chain->set_context($context);
       return $chain;
     }
     else if (preg_match('/[a-z]/i', $next)) {
@@ -287,47 +328,7 @@ class Lavender_Extension_Expression extends Lavender_Node
       if (!$name) {
         throw new Lavender_Exception($content);
       }
-      if ($content->peek() == '[') {
-        $content->consume_next(); // the '['
-
-        $sub_expression = Lavender::get_extension_by_name('expression');
-        $sub_expression->tokenize_internal($content);
-
-        if ($content->peek() == ']') {
-          $content->consume_next(); // the ']'
-        }
-        else {
-          throw new Lavender_Exception($content, 'expected "]"');
-        }
-
-        $context = new Lavender_Expression_Node_Variable($name);
-        return new Lavender_Expression_Node_Array_Bracket($context, $sub_expression);
-      }
-      else if ($content->peek() == '(') {
-        // we got a method here bud
-        $content->consume_next(); // the '('
-        $arguments = array();
-
-        while (($next = $content->peek()) !== '') {
-          switch ($next) {
-            case ')':
-              $content->consume_next(); // the ')'
-              break 2;
-            case ',':
-              $content->consume_next(); // the ','
-              break;
-            default:
-              $sub_expression = Lavender::get_extension_by_name('expression');
-              $sub_expression->tokenize_internal($content);
-              $arguments[] = $sub_expression;
-          }
-        }
-        $method = new Lavender_Expression_Node_Method($name);
-        $method->set_arguments($arguments);
-        return $method;
-      }
       else {
-        // just a variable
         return new Lavender_Expression_Node_Variable($name);
       }
     }
@@ -382,6 +383,17 @@ class Lavender_Extension_Expression extends Lavender_Node
 }
 
 Lavender::register_extension('expression', 'Lavender_Extension_Expression', array('=', '-'));
+
+
+interface Lavender_Expression_Interface_Data_Container
+{
+  public function set_context($context);
+}
+interface Lavender_Expression_Interface_Assignable
+{
+  public function assign(&$scope, $value);
+  public function assignable();
+}
 
 class Lavender_Expression_Node_True
 {
@@ -500,7 +512,7 @@ class Lavender_Expression_Node_Filter
   }
 }
 
-class Lavender_Expression_Node_Variable
+class Lavender_Expression_Node_Variable implements Lavender_Expression_Interface_Data_Container, Lavender_Expression_Interface_Assignable
 {
   private $_name;
   private $_context;
@@ -510,13 +522,39 @@ class Lavender_Expression_Node_Variable
     $this->_name = $name;
   }
 
-  public function assign($scope, $value)
+  public function assignable()
+  {
+    return
+      !$this->_context ||
+      (
+        $this->_context instanceof Lavender_Expression_Interface_Assignable &&
+        $this->_context->assignable()
+      );
+  }
+
+  public function assign(&$scope, $value)
+  {
+    if ($this->_context) {
+      $compiled = $this->_context->compile($scope);
+      $compiled = $this->_assign($compiled, $value);
+      $scope = $this->_context->assign($scope, $compiled);
+    }
+    else {
+      $scope = $this->_assign($scope, $value);
+    }
+
+    return $scope;
+  }
+
+  private function _assign($scope, $value)
   {
     if (is_array($scope)) {
       $scope[$this->_name] = $value;
-    } else if (is_object($scope)) {
+    }
+    else if (is_object($scope)) {
       $scope->{$this->_name} = $value;
-    } else {
+    }
+    else {
       throw new Exception('cannot assign value to this non-object/non-array');
     }
 
@@ -559,9 +597,16 @@ class Lavender_Expression_Node_Variable
   }
 }
 
-class Lavender_Expression_Node_Method extends Lavender_Expression_Node_Variable
+class Lavender_Expression_Node_Method implements Lavender_Expression_Interface_Data_Container
 {
+  private $_context;
   private $_arguments;
+
+  public function set_context($context)
+  {
+    $this->_context = $context;
+    return $this;
+  }
 
   public function set_arguments(array $arguments = array())
   {
@@ -570,7 +615,7 @@ class Lavender_Expression_Node_Method extends Lavender_Expression_Node_Variable
 
   public function compile($scope)
   {
-    $method = parent::compile($scope);
+    $method = $this->_context->compile($scope);
     $arguments = array();
 
     if ($method) {
@@ -585,44 +630,92 @@ class Lavender_Expression_Node_Method extends Lavender_Expression_Node_Variable
   }
 }
 
-class Lavender_Expression_Node_Array_Bracket
+class Lavender_Expression_Node_Array_Bracket implements Lavender_Expression_Interface_Data_Container, Lavender_Expression_Interface_Assignable
 {
-  private $_array;
+  private $_context;
   private $_sub_expression;
 
-  public function __construct($array, $sub_expression)
+  public function __construct($context, $sub_expression)
   {
-    $this->_array          = $array;
+    $this->_context        = $context;
     $this->_sub_expression = $sub_expression;
+  }
+
+  public function assignable()
+  {
+    return
+      !$this->_context ||
+      (
+        $this->_context instanceof Lavender_Expression_Interface_Assignable &&
+        $this->_context->assignable()
+      );
+  }
+
+  public function assign(&$scope, $value)
+  {
+    $compiled = $this->_context->compile($scope);
+
+    $key = $this->_key($scope);
+
+    $value = $this->_assign($compiled, $key, $value);
+
+    $scope = $this->_context->assign($scope, $value);
+
+    return $scope;
+  }
+
+  private function _assign($scope, $key, $value)
+  {
+    if (is_array($scope)) {
+      $scope[$key] = $value;
+    }
+    else if (is_object($scope)) {
+      $scope->{$key} = $value;
+    }
+    else {
+      throw new Exception('cannot assign value to this non-object/non-array');
+    }
+
+    return $scope;
+  }
+
+  public function set_context($context)
+  {
+    $this->_context = $context;
+    return $this;
+  }
+
+  private function _key($scope)
+  {
+    $key = $this->_sub_expression->compile($scope);
+
+    if (is_numeric($key)) {
+      $intkey = (int) $key;
+
+      // a float was passed in, do nothing
+      if ($intkey != $key) {
+        return NULL;
+      }
+
+      $key = $intkey;
+    }
+
+    return $key;
   }
 
   public function compile(&$scope)
   {
-    $array = $this->_array->compile($scope);
+    $thing = $this->_context->compile($scope);
+    $key   = $this->_key($scope);
 
-    if (!is_array($array)) {
-      return NULL;
+    if (is_array($thing) && array_key_exists($key, $thing)) {
+      return $thing[$key];
+    }
+    else if (is_object($thing) && property_exists($thing, $key)) {
+      return $thing->$key;
     }
     else {
-      $key = $this->_sub_expression->compile($scope);
-
-      if (is_numeric($key)) {
-        $intkey = (int) $key;
-
-        // a float was passed in, do nothing
-        if ($intkey != $key) {
-          return NULL;
-        }
-
-        $key = $intkey;
-      }
-
-      if (array_key_exists($key, $array)) {
-        return $array[$key];
-      }
-      else {
-        return NULL;
-      }
+      return NULL;
     }
   }
 }
@@ -705,8 +798,21 @@ class Lavender_Expression_Node_Modulus extends Lavender_Expression_Node_Comparis
     return $this->_left->compile($scope) % $this->_right->compile($scope);
   }
 }
-class Lavender_Expression_Node_Assignment extends Lavender_Expression_Node_Comparison
+class Lavender_Expression_Node_Assignment
 {
+  protected $_left;
+  protected $_right;
+
+  public function __construct(Lavender_Expression_Interface_Assignable $left, $right)
+  {
+    if (!$left->assignable()) {
+      throw new Exception('trying to assign to a thing which is not assignable');
+    }
+
+    $this->_left = $left;
+    $this->_right = $right;
+  }
+
   public function compile(&$scope)
   {
     return $this->_left->assign($scope, $this->_right->compile($scope));
@@ -732,6 +838,7 @@ class Lavender_Expression_Node_Add extends Lavender_Expression_Node_Comparison
   {
     $left = $this->_left->compile($scope);
     $right = $this->_right->compile($scope);
+
 
     if (gettype($left) == 'string') {
       return $left . $right;

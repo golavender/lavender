@@ -50,25 +50,57 @@ class Lavender_View
   {
     $this->set($scope);
 
+    $that = $this;
+
+    if (Lavender::get_config('handle_errors')) {
+      $old_error_handler = set_error_handler(function($errno, $errstr, $errfile, $errline) use ($that) {
+        $that->_handle_exception($errstr);
+      });
+    }
+
     try {
-      return $this->_view_file->compile($this->_data);
+      $response = $this->_view_file->compile($this->_data);
+
+      if (Lavender::get_config('handle_errors') && $old_error_handler) {
+        set_error_handler($old_error_handler);
+      }
+
+      return $response;
     }
     catch (Exception $e) {
       $this->_handle_exception($e);
     }
   }
 
-  private function _handle_exception($e)
+  public function _handle_exception($e = NULL)
   {
-    if (Lavender::get_config('handle_errors') && $e instanceof Lavender_Exception) {
-      $view_file = $e->get_file();
+    if (Lavender::get_config('handle_errors')) {
+
+      if ($e instanceof Lavender_Exception) {
+        $file    = $e->get_file();
+        $line    = $e->get_line();
+      }
+      else {
+        $content = $this->_view_file->get_content();
+        $file    = $content->get_full_content();
+        $line    = $content->get_line();
+      }
+
+      if ($e instanceof Exception) {
+        $message = $e->getMessage();
+      }
+      else if (is_string($e)) {
+        $message = $e;
+      }
 
       die(
         Lavender::view(__DIR__.'/error_template.lavender')
           ->compile(array(
-            'exception' => $e,
-            'view_name' => $this->_name,
-            'lines'     => explode("\n", $view_file),
+            'exception'  => $e,
+            'view_name'  => $this->_name,
+            'error_line' => $line,
+            'message'    => $message,
+            'lines'      => explode("\n", $file),
           ))
       );
     }

@@ -1,17 +1,18 @@
 body(style="margin: 0; padding: 0;background:#ccc;")
   h1(style="display: block; background: #754C78; color: white; font-size: 1.5em; padding: 15px; font-weight: normal; margin:0;")
     | Lavender_Exception: 
-    = exception.get_message()
+    = message
+   
   div(style="padding: 10px;")
     each line, line_number in lines
 
       - context_range = 10
       - line_number = line_number + 1
 
-      if line_number - exception.get_line() < context_range && exception.get_line() - line_number < context_range
+      if line_number - error_line < context_range && error_line - line_number < context_range
 
         - style = "list-style-type: none; display: block;padding-left:6px;"
-        if line_number == exception.get_line()
+        if line_number == error_line 
           - style = style + "background: #754C78; color: white;"
         else
           - style = style + "background: white;"
@@ -19,3 +20,5 @@ body(style="margin: 0; padding: 0;background:#ccc;")
         li(style=style)
           span(style="width:30px;display:inline-block;")= line_number
           pre(style="margin:0;display:inline-block;")= line 
+  div
+    a(href="?disable_lavender_errors=1", style="float: right; padding: 20px;") show native error 

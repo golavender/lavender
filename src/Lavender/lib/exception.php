@@ -10,7 +10,7 @@ class Lavender_Exception extends Exception
   {
     $this->_line    = $line;
     $this->_content = $content;
-    $this->_message = $message;
+    parent::__construct($message);
   }
 
   public function get_file()
@@ -21,10 +21,5 @@ class Lavender_Exception extends Exception
   public function get_line()
   {
     return $this->_line ?: $this->_content->get_line();
-  }
-
-  public function get_message()
-  {
-    return $this->_message;
   }
 }
