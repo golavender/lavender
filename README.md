@@ -504,6 +504,7 @@ if you had a `timestamp` variable `timestamp|relative` would return things like 
 `= ['asdf', 'qwer']|contains('asdf')` returns TRUE 
 
 **is**:
+
 `= ['asdf', 'qwer']|is('list')` returns TRUE 
 
 `= {asdf: 'qwer'}|is('object')` returns TRUE 
