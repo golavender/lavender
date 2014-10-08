@@ -9,6 +9,9 @@ foreach (glob(__DIR__."/extensions/*.php") as $filename) {
 foreach (glob(__DIR__."/filters/*.php") as $filename) {
   require $filename;
 }
+foreach (glob(__DIR__."/helpers/*.php") as $filename) {
+  require $filename;
+}
 
 class Lavender
 {
@@ -35,6 +38,16 @@ class Lavender
   public static function view($name = NULL)
   {
     return new Lavender_View($name);
+  }
+
+  public static function register_helper($name, $class)
+  {
+    static::register_extension('helper|'.$name, $class);
+  }
+
+  public static function get_helper_by_name($name)
+  {
+    return static::get_extension_by_name('helper|'.$name);
   }
 
   public static function register_filter($name, $class)

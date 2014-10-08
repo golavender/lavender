@@ -567,6 +567,11 @@ class Lavender_Expression_Node_Variable implements Lavender_Expression_Interface
     return $this;
   }
 
+  public function get_name()
+  {
+    return $this->_name;
+  }
+
   public function compile($scope)
   {
     if ($this->_context) {
@@ -613,17 +618,29 @@ class Lavender_Expression_Node_Method implements Lavender_Expression_Interface_D
     $this->_arguments = $arguments;
   }
 
+  private function _compile_arguments($scope)
+  {
+    $arguments = array();
+
+    foreach ($this->_arguments as $argument) {
+      $arguments[] = $argument->compile($scope);
+    }
+
+    return $arguments;
+  }
+
   public function compile($scope)
   {
     $method = $this->_context->compile($scope);
-    $arguments = array();
 
     if ($method) {
-      foreach ($this->_arguments as $argument) {
-        $arguments[] = $argument->compile($scope);
-      }
+      return call_user_func_array($method, $this->_compile_arguments($scope));
 
-      return call_user_func_array($method, $arguments);
+    } else if (
+      $this->_context instanceof Lavender_Expression_Node_Variable &&
+      $helper = Lavender::get_helper_by_name($this->_context->get_name())
+    ) {
+      return call_user_func_array(array($helper, 'execute'), $this->_compile_arguments($scope));
     } else {
       return NULL;
     }

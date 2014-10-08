@@ -2,6 +2,8 @@
 
 require '../src/Lavender/lavender.php';
 
+const HELLOTHERE = 'asdfasdfasdf';
+
 class test
 {
   public $key = 'object value';
