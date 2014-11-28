@@ -4,7 +4,7 @@ class Lavender_Filter_Reverse
 {
   public function execute(array $array)
   {
-    return array_reverse($array, TRUE);
+    return array_reverse($array);
   }
 }
 
