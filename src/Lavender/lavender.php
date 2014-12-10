@@ -15,7 +15,9 @@ foreach (glob(__DIR__."/helpers/*.php") as $filename) {
 
 class Lavender
 {
-  private static $_extensions = array();
+  private static $_extensions       = array();
+  private static $_extension_tokens = array();
+
   private static $_config = array(
     'file_extension' => 'lavender',
     'handle_errors'  => TRUE,
@@ -62,19 +64,17 @@ class Lavender
 
   public static function register_extension($name, $class, array $tokens = array())
   {
-    static::$_extensions[] = array(
-      'name'   => $name,
-      'class'  => $class,
-      'tokens' => $tokens,
-    );
+    static::$_extensions[$name] = $class;
+
+    foreach ($tokens as $token) {
+      static::$_extension_tokens[$token] = $name;
+    }
   }
 
   public static function get_extension_by_name($name)
   {
-    foreach (static::$_extensions as $extension) {
-      if ($extension['name'] == $name) {
-        return new $extension['class'];
-      }
+    if (isset(static::$_extensions[$name])) {
+      return new static::$_extensions[$name];
     }
 
     return FALSE;
@@ -82,11 +82,8 @@ class Lavender
 
   public static function get_extension_by_token($token)
   {
-    foreach (static::$_extensions as $extension) {
-
-      if (in_array($token, $extension['tokens'])) {
-        return new $extension['class'];
-      }
+    if (isset(static::$_extension_tokens[$token])) {
+      return static::get_extension_by_name(static::$_extension_tokens[$token]);
     }
 
     return FALSE;
