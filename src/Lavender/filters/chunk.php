@@ -1,6 +1,6 @@
 <?php
 
-class Lavender_Filter_Contains
+class Lavender_Filter_Chunk
 {
   public function execute($array, $size)
   {
