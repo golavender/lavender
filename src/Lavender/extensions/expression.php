@@ -185,7 +185,7 @@ class Lavender_Extension_Expression extends Lavender_Node
       $content->consume_whitespace();
 
       $bits = array();
-      while ($next = $content->peek()) {
+      while (($next = $content->peek()) !== NULL) {
         switch ($next) {
           case ']':
             $content->consume_next(); // the ']'
