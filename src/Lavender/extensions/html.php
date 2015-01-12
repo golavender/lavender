@@ -146,8 +146,32 @@ class Lavender_Extension_Html extends Lavender_Node
     $result = "<{$this->_name}{$attributes}>";
 
     if (!in_array($this->_name, $this->_self_closing_tags)) {
-      $result .= rtrim(parent::_compile($scope), ' ');
+      $result .= rtrim($this->_compile_children($scope), ' ');
       $result .= "</{$this->_name}>";
+    }
+
+    return $result;
+  }
+
+  private function _compile_children($scope)
+  {
+    $result = '';
+
+    $base_level = NULL;
+    foreach ($this->get_children() as $child) {
+      if ($child->get_level() < $base_level || $base_level === NULL) {
+        $base_level = $child->get_level();
+      }
+    }
+
+    foreach ($this->get_children() as $child) {
+      $prefix = '';
+
+      if ($this->text_children_only && $child->get_level()) {
+        $prefix = str_repeat(' ', $child->get_level() - $base_level);
+      }
+
+      $result .= $prefix . $child->compile($scope);
     }
 
     return $result;

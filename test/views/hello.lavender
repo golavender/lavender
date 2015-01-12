@@ -5,7 +5,8 @@ extends layout
 block content
 
   pre.
-    asdf
+      asdf
+      asdf
     asdf
 
   // some comment 
