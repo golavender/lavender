@@ -4,6 +4,10 @@ extends layout
 
 block content
 
+  pre.
+    asdf
+    asdf
+
   // some comment 
   //- some hidden comment
 
