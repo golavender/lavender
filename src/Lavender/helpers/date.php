@@ -4,7 +4,12 @@ class Lavender_Helper_Date
 {
   public function execute($format, $timestamp = NULL)
   {
-    return date($format, $timestamp);
+    if ($timestamp) {
+      return date($format, $timestamp);
+    }
+    else {
+      return date($format);
+    }
   }
 }
 
