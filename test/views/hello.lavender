@@ -12,6 +12,12 @@ block content
   // some comment 
   //- some hidden comment
 
+  div
+    = collection('asdf')|join
+ 
+  collection asdf thing thing
+  collection asdf thing thing
+   
   - checked = false
   input.asdf-asdf(type="checkbox",checked=checked)
 
