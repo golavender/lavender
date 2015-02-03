@@ -2,8 +2,12 @@
 
 class Lavender_Filter_Length
 {
-  public function execute(array $array)
+  public function execute($array)
   {
+    if (!$array instanceof Countable && !is_array($array)) {
+      throw new exception(gettype($array) . ' cannot be counted');
+    }
+
     return count($array);
   }
 }
