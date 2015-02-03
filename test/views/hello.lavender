@@ -12,6 +12,17 @@ block content
   // some comment 
   //- some hidden comment
 
+  -list = ['asdf', 'qwer', 'foo', 'bar']
+
+  div
+    = list|float('qwer')|join
+  div
+    = list|sink('qwer')|join
+  div
+    = list|float(['qwer', 'asdf'])|join
+  div
+    = list|sink(['qwer', 'asdf'])|join
+
   div
     = collection('asdf')|join
  
