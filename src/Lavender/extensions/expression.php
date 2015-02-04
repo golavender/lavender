@@ -731,6 +731,9 @@ class Lavender_Expression_Node_Array_Bracket implements Lavender_Expression_Inte
     else if (is_object($thing) && property_exists($thing, $key)) {
       return $thing->$key;
     }
+    else if (is_object($thing) && $thing instanceof ArrayAccess && $thing->offsetExists($key)) {
+      return $thing[$key];
+    }
     else {
       return NULL;
     }
