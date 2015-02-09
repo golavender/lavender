@@ -8,16 +8,27 @@ class Lavender_Filter_Sink
       $items = array($items);
     }
 
-    usort($array, function($thing1, $thing2) use ($items) {
-      $thing1value = array_search($thing1, $items);
-      $thing2value = array_search($thing2, $items);
-      $thing1present = $thing1value !== FALSE;
-      $thing2present = $thing2value !== FALSE;
+    usort($array, function($thing1, $thing2) use ($items, $array) {
+      $thing1_sink_value = array_search($thing1, $items);
+      $thing2_sink_value = array_search($thing2, $items);
 
-      if ($thing1present && (!$thing2present || $thing1value < $thing2value)) {
+      $thing1_natural_value = array_search($thing1, $array);
+      $thing2_natural_value = array_search($thing2, $array);
+
+      $thing1present = $thing1_sink_value !== FALSE;
+      $thing2present = $thing2_sink_value !== FALSE;
+
+      if ($thing1present && (!$thing2present || $thing1_sink_value > $thing2_sink_value)) {
         return 1;
       }
-      if ($thing2present && (!$thing1present || $thing2value < $thing1value)) {
+      if ($thing2present && (!$thing1present || $thing2_sink_value > $thing1_sink_value)) {
+        return -1;
+      }
+
+      if ($thing1_natural_value > $thing2_natural_value) {
+        return 1;
+      }
+      if ($thing2_natural_value > $thing1_natural_value) {
         return -1;
       }
 
