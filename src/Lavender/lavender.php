@@ -22,6 +22,8 @@ class Lavender
     'file_extension' => 'lavender',
     'handle_errors'  => TRUE,
   );
+  private static $_filter_config = array(
+  );
 
   public static function config(array $config)
   {
@@ -35,6 +37,16 @@ class Lavender
     }
 
     return static::$_config[$key];
+  }
+
+  public static function filter_config($filter, $config)
+  {
+    static::$_filter_config[$filter] = $config;
+  }
+
+  public static function get_filter_config($filter, $key)
+  {
+    return static::$_filter_config[$filter][$key];
   }
 
   public static function view($name = NULL)
@@ -52,9 +64,10 @@ class Lavender
     return static::get_extension_by_name('helper|'.$name);
   }
 
-  public static function register_filter($name, $class)
+  public static function register_filter($name, $class, $config = array())
   {
     static::register_extension('filter|'.$name, $class);
+    static::filter_config($name, $config);
   }
 
   public static function get_filter_by_name($name)

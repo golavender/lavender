@@ -17,7 +17,16 @@ class Lavender_Filter_Is
         return is_array($thing) && array_values($thing) != $thing;
       default:
         if (gettype($thing) == 'object') {
-          return get_class($thing) == $type;
+          $namespaces = Lavender::get_filter_config('is', 'namespaces', array());
+
+          foreach ($namespaces as $namespace) {
+            $class = $namespace . $type;
+            if ($thing instanceof $class) {
+              return TRUE;
+            }
+          }
+
+          return FALSE;
         }
         else {
           return gettype($thing) == $type;
@@ -26,4 +35,4 @@ class Lavender_Filter_Is
   }
 }
 
-Lavender::register_filter('is', 'Lavender_Filter_Is');
+Lavender::register_filter('is', 'Lavender_Filter_Is', array('namespaces' => array('\\')));
