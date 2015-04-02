@@ -48,6 +48,10 @@ class Lavender_View
 
   public function compile(array $scope = array())
   {
+    if (!array_key_exists('global', $scope)) {
+      $scope['global'] = array();
+    }
+
     $this->set($scope);
 
     $that = $this;

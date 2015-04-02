@@ -153,7 +153,7 @@ class Lavender_Extension_Html extends Lavender_Node
     return $result;
   }
 
-  private function _compile_children($scope)
+  private function _compile_children(&$scope)
   {
     $result = '';
 

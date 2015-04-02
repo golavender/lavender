@@ -44,7 +44,11 @@ class Lavender_Extension_Include extends Lavender_Node
 
     $subview = new Lavender_View($this->_path);
 
-    return $subview->compile(array_merge($scope, $stuff));
+    $result = $subview->compile(array_merge($scope, $stuff));
+
+    $scope['global'] = $subview->get('global');
+
+    return $result;
   }
 
   public function add_child($child)
