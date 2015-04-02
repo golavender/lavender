@@ -2,7 +2,7 @@
 
 class Lavender_Extension_Include extends Lavender_Node
 {
-  private $_subview;
+  private $_path;
   private $_expression;
 
   protected $_delimiter = '';
@@ -26,7 +26,7 @@ class Lavender_Extension_Include extends Lavender_Node
       $this->_expression->tokenize_content($content);
     }
 
-    $this->_subview = new Lavender_View($path);
+    $this->_path = $path;
   }
 
   public function _compile(array &$scope)
@@ -42,7 +42,9 @@ class Lavender_Extension_Include extends Lavender_Node
       throw new Exception('Invalid argument to include');
     }
 
-    return $this->_subview->compile(array_merge($scope, $stuff));
+    $subview = new Lavender_View($this->_path);
+
+    return $subview->compile(array_merge($scope, $stuff));
   }
 
   public function add_child($child)

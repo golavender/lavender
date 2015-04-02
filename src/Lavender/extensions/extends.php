@@ -2,21 +2,18 @@
 
 class Lavender_Extension_Extends extends Lavender_Node
 {
-  private $_parent_view;
-  private $_content;
+  private $_parent_view_path;
   private $_blocks = array();
 
   protected $_delimiter = '';
 
   public function tokenize_content(Lavender_Content $content)
   {
-    $this->_content = $content;
-
     $content->consume_until(" "); // the 'extends'
 
     $path = trim($content->consume_until("\n"));
 
-    $this->_parent_view = new Lavender_View($path);
+    $this->_parent_view_path = $path;
 
     $parent_node = $this->get_parent();
 
@@ -41,7 +38,7 @@ class Lavender_Extension_Extends extends Lavender_Node
         $extend_count++;
 
         if ($extend_count > 1) {
-          throw new Lavender_Exception($this->content, 'can only extend one parent');
+          throw new Lavender_Exception($file->get_content(), 'can only extend one parent');
         }
 
         // stash and remove so we can put it back at the end
@@ -53,7 +50,7 @@ class Lavender_Extension_Extends extends Lavender_Node
         $child->set_mode_definition();
       }
       else if ($child->has_output()) {
-        throw new Lavender_Exception($this->_content, 'templates that extend another cannot have output outside blocks');
+        throw new Lavender_Exception($file->get_content(), 'templates that extend another cannot have output outside blocks');
       }
     }
 
@@ -62,9 +59,10 @@ class Lavender_Extension_Extends extends Lavender_Node
 
   public function _compile(array &$scope)
   {
-    $scope  = array_merge($scope, $this->_blocks);
-    $result = $this->_parent_view->compile($scope);
-    $scope  = array_merge($this->_parent_view->get(), $scope);
+    $parent_view = new Lavender_View($this->_parent_view_path);
+    $scope       = array_merge($scope, $this->_blocks);
+    $result      = $parent_view->compile($scope);
+    $scope       = array_merge($parent_view->get(), $scope);
 
     return $result;
   }
