@@ -5,7 +5,7 @@ class Lavender_Extension_Html extends Lavender_Node
   private $_name;
   private $_classes = array();
   private $_attributes = array();
-  private $_self_closing_tags = array(
+  private static $_self_closing_tags = array(
     'area',
     'base',
     'br',
@@ -145,7 +145,7 @@ class Lavender_Extension_Html extends Lavender_Node
 
     $result = "<{$this->_name}{$attributes}>";
 
-    if (!in_array($this->_name, $this->_self_closing_tags)) {
+    if (!in_array($this->_name, static::$_self_closing_tags)) {
       $result .= rtrim($this->_compile_children($scope), ' ');
       $result .= "</{$this->_name}>";
     }

@@ -5,13 +5,13 @@ class Lavender_Extension_Expression extends Lavender_Node
   protected $_delimiter = '';
 
   private $_expression_tree = array();
-  private $_constants       = array(
+  private static $_constants       = array(
     'true'  => 'Lavender_Expression_Node_True',
     'false' => 'Lavender_Expression_Node_False',
     'TRUE'  => 'Lavender_Expression_Node_True',
     'FALSE' => 'Lavender_Expression_Node_False',
   );
-  private $_operators       = array(
+  private static $_operators       = array(
     '>=' => 'Lavender_Expression_Node_Greater_Than_Equal_To',
     '<=' => 'Lavender_Expression_Node_Less_Than_Equal_To',
     '||' => 'Lavender_Expression_Node_Or',
@@ -27,7 +27,7 @@ class Lavender_Extension_Expression extends Lavender_Node
     '+'  => 'Lavender_Expression_Node_Add',
     '-'  => 'Lavender_Expression_Node_Subtract',
   );
-  private $_operator_order  = array(
+  private static $_operator_order  = array(
     '!'  => 0,
     '/'  => 1,
     '*'  => 1,
@@ -106,12 +106,12 @@ class Lavender_Extension_Expression extends Lavender_Node
     $content->consume_whitespace();
     $next = $content->peek();
 
-    foreach ($this->_operators as $operator => $class) {
+    foreach (static::$_operators as $operator => $class) {
       $length = strlen($operator);
 
       if ($content->peek($length) == $operator) {
 
-        if ($parent && $this->_operator_order[$operator] >= $this->_operator_order[$parent]) {
+        if ($parent && static::$_operator_order[$operator] >= static::$_operator_order[$parent]) {
           return NULL;
         }
 
@@ -127,7 +127,7 @@ class Lavender_Extension_Expression extends Lavender_Node
       }
     }
 
-    foreach ($this->_constants as $constant => $class) {
+    foreach (static::$_constants as $constant => $class) {
       $length = strlen($constant);
 
       if ($content->peek($length) == $constant) {
