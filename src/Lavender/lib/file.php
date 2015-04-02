@@ -3,6 +3,7 @@
 class Lavender_File
 {
   private $_content;
+  private $_name;
   private $_children = array();
 
   private $_tokens = array();
@@ -18,7 +19,59 @@ class Lavender_File
     else {
       $path = Lavender::get_config('view_dir') . '/' . $name . '.' . Lavender::get_config('file_extension');
     }
+    $this->_name = $name;
     $this->_content = new Lavender_Content(file_get_contents($path));
+  }
+
+  private function _get_cache_file()
+  {
+    $path = [];
+
+    if (!$cache_dir = Lavender::get_config('cache_dir')) {
+      $cache_dir = sys_get_temp_dir();
+      $path[] = 'lavender';
+    }
+
+    $path       = array_merge($path, explode('/', $this->_name));
+    $file_name  = array_pop($path);
+
+    foreach ($path as $part) {
+      $cache_dir .= DIRECTORY_SEPARATOR . $part;
+
+      if(!is_dir($cache_dir)) {
+        mkdir($cache_dir);
+      }
+    }
+
+    return $cache_dir . DIRECTORY_SEPARATOR . $file_name;
+  }
+
+  private function _save_to_cache()
+  {
+    if (!Lavender::get_config('caching')) {
+      return;
+    }
+
+    file_put_contents(
+      $this->_get_cache_file(),
+      serialize($this->_children)
+    );
+  }
+
+  private function _load_from_cache()
+  {
+    if (!Lavender::get_config('caching')) {
+      return FALSE;
+    }
+
+    $cache_file = $this->_get_cache_file();
+
+    if (is_file($cache_file)) {
+      $this->_children = unserialize(file_get_contents($cache_file));
+      return TRUE;
+    }
+
+    return FALSE;
   }
 
   private function _tokenize()
@@ -100,7 +153,11 @@ class Lavender_File
 
   public function compile(array &$scope)
   {
-    $this->_tokenize();
+    if (!$this->_load_from_cache()) {
+      $this->_tokenize();
+      $this->_save_to_cache();
+    }
+
     $result = '';
 
     foreach ($this->_children as $child) {

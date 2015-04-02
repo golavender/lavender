@@ -19,6 +19,8 @@ class Lavender
   private static $_extension_tokens = array();
 
   private static $_config = array(
+    'caching'        => FALSE,
+    'cache_dir'      => NULL,
     'file_extension' => 'lavender',
     'handle_errors'  => TRUE,
   );
