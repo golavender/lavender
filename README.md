@@ -33,6 +33,18 @@ Lavender::config(array(
    * required - path to views directory
    */
   'view_dir'       => String,
+  
+  /*
+   * optional - cache view files, if this is true
+   *            the cache folder needs to be emptied
+   *            every time view files are changed
+   */
+  //'caching'        => FALSE,
+  
+  /*
+   * optional - defaults to something random in your tmp directory
+   */
+  //'cache_dir'      => NULL,
 
   /*
    * optional - defaults to "lavender"
