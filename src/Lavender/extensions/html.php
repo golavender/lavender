@@ -138,6 +138,7 @@ class Lavender_Extension_Html extends Lavender_Node
         $attributes .= " $name";
 
         if ($value !== TRUE) {
+          $value = htmlentities($value);
           $attributes .= "=\"$value\"";
         }
       }
