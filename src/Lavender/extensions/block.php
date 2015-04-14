@@ -23,8 +23,9 @@ class Lavender_Extension_Block extends Lavender_Node
     if (isset($scope[$this->get_block_id()])) {
       $this->set_children($scope[$this->get_block_id()]);
     }
-
-    return parent::_compile($scope);
+    if ($this->_output) {
+      return parent::_compile($scope);
+    }
   }
 
   public function set_mode_definition()
