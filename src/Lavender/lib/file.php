@@ -43,7 +43,7 @@ class Lavender_File
       }
     }
 
-    return $cache_dir . DIRECTORY_SEPARATOR . $file_name;
+    return $cache_dir . DIRECTORY_SEPARATOR . $file_name . '.lavenderc';
   }
 
   private function _save_to_cache()
