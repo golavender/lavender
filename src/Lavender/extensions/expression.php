@@ -860,11 +860,11 @@ class Lavender_Expression_Node_Add extends Lavender_Expression_Node_Comparison
     $right = $this->_right->compile($scope);
 
 
-    if (gettype($left) == 'string' && !is_numeric($left)) {
-      return $left . $right;
+    if (is_numeric($left) && is_numeric($right)) {
+      return $left + $right;
     }
     else {
-      return $left + $right;
+      return $left . $right;
     }
 
   }
