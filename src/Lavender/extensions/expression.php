@@ -584,6 +584,9 @@ class Lavender_Expression_Node_Variable implements Lavender_Expression_Interface
     if (is_array($context) && isset($context[$this->_name])) {
       return $context[$this->_name];
     }
+    else if (is_object($context) && isset($context->{$this->_name})) {
+      return $context->{$this->_name};
+    }
     else if (is_object($context) && method_exists($context, $this->_name)) {
 
       $name = $this->_name;
@@ -592,9 +595,6 @@ class Lavender_Expression_Node_Variable implements Lavender_Expression_Interface
       return function() use ($context, $name) {
         return call_user_func_array(array($context, $name), func_get_args());
       };
-    }
-    else if (is_object($context) && isset($context->{$this->_name})) {
-      return $context->{$this->_name};
     }
     else {
       return NULL;
