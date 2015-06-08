@@ -581,6 +581,10 @@ class Lavender_Expression_Node_Variable implements Lavender_Expression_Interface
       $context = $scope;
     }
 
+    if ($context instanceof Closure) {
+      return NULL;
+    }
+
     if (is_array($context) && isset($context[$this->_name])) {
       return $context[$this->_name];
     }
