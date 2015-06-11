@@ -4,7 +4,12 @@ class Lavender_Filter_Date
 {
   public function execute($timestamp, $format = 'n/j/Y')
   {
-    return date($format, $timestamp);
+    if ($timestamp) {
+      return date($format, $timestamp);
+    }
+    else {
+      return $timestamp;
+    }
   }
 }
 
