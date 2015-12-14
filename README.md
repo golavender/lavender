@@ -528,3 +528,6 @@ if you had a `timestamp` variable `timestamp|relative` would return things like 
 **json**:
 `= ['asdf', 'qwer']|json` returns "['asdf','qwer']" 
 
+**url_encode**:
+`= user@email.com|url_encode` becomes `user%40email.com` 
+
