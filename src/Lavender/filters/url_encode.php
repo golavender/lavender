@@ -8,4 +8,4 @@ class Lavender_Filter_Url_Encode
   }
 }
 
-Lavender::register_filter('url_encode', 'Lavender_Filter_Json');
+Lavender::register_filter('url_encode', 'Lavender_Filter_Url_Encode');
