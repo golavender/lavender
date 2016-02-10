@@ -56,10 +56,15 @@ class Lavender_Extension_Text extends Lavender_Node
       }
     }
 
-    $text = str_replace('\n', "\n", $text);
-    $text = str_replace('\t', "\t", $text);
-
-    return $text;
+    return preg_replace([
+      '/(?<!\\\\)\\\\n/',
+      '/(?<!\\\\)\\\\r/',
+      '/(?<!\\\\)\\\\t/'
+    ], [
+      "\n",
+      "\r",
+      "\t"
+    ], $text);
   }
 }
 
