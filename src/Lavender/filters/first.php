@@ -4,12 +4,7 @@ class Lavender_Filter_First
 {
   public function execute(array $array)
   {
-    if (isset($array[0])) {
-      return $array[0];
-    }
-    else {
-      return NULL;
-    }
+    return reset($array);
   }
 }
 
