@@ -4,12 +4,11 @@ class Lavender_Filter_First
 {
   public function execute(array $array)
   {
-    if (isset($array[0])) {
-      return $array[0];
+    if ($array && count($array) > 0) {
+      return array_values($array)[0];
     }
-    else {
-      return NULL;
-    }
+
+    return false;
   }
 }
 
